@@ -1,0 +1,27 @@
+#suggestion-img-container {
+    width: 120px;
+    height: 90px;
+}
+
+#suggestion-box-container {
+    display: flex;
+    margin: 5%;
+}
+
+#suggestion-detail-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+#suggestion-small-row-container {
+    display: flex;
+    justify-content: space-evenly;
+    font-size: x-small;
+}
+
+#suggestion-video-name {
+    width: 100%;
+    text-align: center;
+}
