@@ -1,0 +1,27 @@
+#single-request-container {
+    display: flex;
+    align-items: center;
+    height: 80px;
+    border: 2px solid black;
+    margin: 16px;
+}
+
+.request-spacers {
+    width: 20%;
+    display: flex;
+    justify-content: center;
+}
+
+#request-box-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    text-align: center;
+    width: 60%;
+    height: 100%;
+}
+
+#request-small-detail {
+    display: flex;
+    justify-content: space-between;
+}
