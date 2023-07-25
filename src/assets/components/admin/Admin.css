@@ -1,0 +1,29 @@
+#admin-container {
+    display: flex;
+}
+
+#requests-container {
+    width: 50%;
+}
+
+#playlist-container {
+    width: 50%;
+}
+
+#requests-control-container {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.admin-headers {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: larger;
+    font-weight: bold;
+    height: 80px;
+}
+
+#requests-map-container {
+    padding: 5%;
+}
