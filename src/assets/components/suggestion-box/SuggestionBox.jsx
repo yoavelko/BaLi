@@ -1,18 +1,33 @@
 import './SuggestionBox.css'
 
-function SuggestionBox({video}) {
+function SuggestionBox({ video }) {
 
     const time = video.uploaded.slice(0, 4)
+    const uploaded = `${video.uploaded.slice(8, 10)}/${video.uploaded.slice(5, 7)}/${video.uploaded.slice(0, 4)}`
 
     function handleRequest() {
+
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        let mm = today.getMonth() + 1;
+        let dd = today.getDate();
+        if (dd < 10) dd = '0' + dd;
+        if (mm < 10) mm = '0' + mm;
+        const formattedToday = dd + '/' + mm + '/' + yyyy;
+
+        const hour = today.getHours();
+        const min = today.getMinutes();
+        const formattedTime = hour + ':' + min
+
         console.log(
             {
                 url: video.url,
                 name: video.name,
                 img: video.img,
                 artist: video.artist,
-                uploaded: video.uploaded,
-                timeSent: new Date()
+                uploaded: uploaded,
+                today: formattedToday,
+                timeRequested: formattedTime
             }
         );
     }
