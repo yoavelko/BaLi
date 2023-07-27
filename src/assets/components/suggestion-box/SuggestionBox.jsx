@@ -21,7 +21,8 @@ function SuggestionBox({ video }) {
             url: video.url,
             name: video.name,
             img: video.img,
-            artist: video.artist
+            artist: video.artist,
+            userId: localStorage.getItem('userId')
         })
             .then((res) => {
                 console.log(`sent: ${video.name}`);
