@@ -51,7 +51,7 @@ function Admin() {
                     <button className='requests-controls' onClick={() => console.log('push marked')}>push marked</button>
                 </div>
                 <div id='requests-map-container'>
-                    {requests.map((value, index) => {
+                    {requests && requests.map((value, index) => {
                         return <Request key={index} request={value} />
                     })}
                 </div>
