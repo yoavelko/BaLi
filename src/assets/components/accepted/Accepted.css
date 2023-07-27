@@ -1,4 +1,4 @@
-#single-request-container {
+#single-accept-container {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -7,12 +7,12 @@
     margin: 16px;
 }
 
-.request-spacers {
+.accept-spacers {
     display: flex;
     justify-content: center;
 }
 
-#request-box-container {
+#accept-box-container {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -21,11 +21,11 @@
     height: 100%;
 }
 
-#request-small-detail {
+#accept-small-detail {
     display: flex;
     justify-content: space-between;
 }
 
-#request-img {
+#accept-img {
     height: 70px;
 }
