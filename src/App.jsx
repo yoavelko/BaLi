@@ -6,10 +6,11 @@ import User from './assets/components/user/User';
 import Admin from './assets/components/admin/Admin';
 import { dateContext } from './contexts/dateContext';
 import { useContext, useEffect, useState } from 'react';
+import EstablishmentID from './assets/components/EstablishmentID/EstablishmentID';
 
 function App() {
 
-  
+
   const date = new Date();
   const yyyy = date.getFullYear();
   let mm = date.getMonth() + 1;
@@ -20,10 +21,10 @@ function App() {
   let hour = date.getHours();
   let min = date.getMinutes();
   if (hour.toString().length < 2) {
-      hour = `0${date.getHours()}`
+    hour = `0${date.getHours()}`
   }
   if (min.toString().length < 2) {
-      min = `0${date.getMinutes()}`
+    min = `0${date.getMinutes()}`
   }
 
   const [today, setToday] = useState(dd + '/' + mm + '/' + yyyy)
@@ -33,6 +34,7 @@ function App() {
     <div id='app-container'>
       <dateContext.Provider value={{ today, setToday, time, setTime }}>
         <Routes>
+          <Route path='/on-start/:id' element={<EstablishmentID />} />
           <Route path='/' element={<><Outlet /><Footer /></>}>
             <Route index element={<User />} />
             <Route path='/admin' element={<><Header /><Admin /></>} />
