@@ -1,35 +1,34 @@
 import './SuggestionBox.css'
+import axios from 'axios';
+import { sendSong } from '../../../utils/UserRoutes';
+import { dateContext } from '../../../contexts/dateContext';
+import { useContext } from 'react';
 
 function SuggestionBox({ video }) {
 
-    const time = video.uploaded.slice(0, 4)
+    const { today, setToday, time, setTime } = useContext(dateContext);
+
+    const uploadedYear = video.uploaded.slice(0, 4)
     const uploaded = `${video.uploaded.slice(8, 10)}/${video.uploaded.slice(5, 7)}/${video.uploaded.slice(0, 4)}`
 
     function handleRequest() {
 
-        const today = new Date();
-        const yyyy = today.getFullYear();
-        let mm = today.getMonth() + 1;
-        let dd = today.getDate();
-        if (dd < 10) dd = '0' + dd;
-        if (mm < 10) mm = '0' + mm;
-        const formattedToday = dd + '/' + mm + '/' + yyyy;
-
-        const hour = today.getHours();
-        const min = today.getMinutes();
-        const formattedTime = hour + ':' + min
-
-        console.log(
-            {
-                url: video.url,
-                name: video.name,
-                img: video.img,
-                artist: video.artist,
-                uploaded: uploaded,
-                today: formattedToday,
-                timeRequested: formattedTime
-            }
-        );
+        axios.patch(sendSong, {
+            establishment: "Forcing you",
+            today: today,
+            timeRequested: time,
+            uploaded: uploaded,
+            url: video.url,
+            name: video.name,
+            img: video.img,
+            artist: video.artist
+        })
+            .then((res) => {
+                console.log(`sent: ${video.name}`);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
     }
 
     return (
@@ -42,7 +41,7 @@ function SuggestionBox({ video }) {
                 <div id='suggestion-small-row-container'>
                     <div className='suggestion-small-row'>{video.artist}</div>
                     <div className='dots'>&#x2022;</div>
-                    <div className='suggestion-small-row'>הועלה בשנת {time}</div>
+                    <div className='suggestion-small-row'>הועלה בשנת {uploadedYear}</div>
                 </div>
             </div>
         </div>
