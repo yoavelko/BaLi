@@ -39,8 +39,8 @@ function App() {
             <Route path='/' element={<><Outlet /><Footer /></>}>
               <Route index element={<User />} />
               <Route path='/admin' element={<><Header /><Admin /></>} />
+              <Route path='/on-start/:id' element={<EstablishmentID />} />
             </Route>
-            <Route path='/on-start/:id' element={<EstablishmentID />} />
           </Routes>
         </dateContext.Provider>
       </SocketProvider>
