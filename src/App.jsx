@@ -5,8 +5,9 @@ import Footer from './assets/components/footer/Footer';
 import User from './assets/components/user/User';
 import Admin from './assets/components/admin/Admin';
 import { dateContext } from './contexts/dateContext';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import EstablishmentID from './assets/components/EstablishmentID/EstablishmentID';
+import { SocketProvider } from './contexts/SocketContext';
 
 function App() {
 
@@ -32,15 +33,17 @@ function App() {
 
   return (
     <div id='app-container'>
-      <dateContext.Provider value={{ today, setToday, time, setTime }}>
-        <Routes>
-          <Route path='/on-start/:id' element={<EstablishmentID />} />
-          <Route path='/' element={<><Outlet /><Footer /></>}>
-            <Route index element={<User />} />
-            <Route path='/admin' element={<><Header /><Admin /></>} />
-          </Route>
-        </Routes>
-      </dateContext.Provider>
+      <SocketProvider>
+        <dateContext.Provider value={{ today, setToday, time, setTime }}>
+          <Routes>
+            <Route path='/on-start/:id' element={<EstablishmentID />} />
+            <Route path='/' element={<><Outlet /><Footer /></>}>
+              <Route index element={<User />} />
+              <Route path='/admin' element={<><Header /><Admin /></>} />
+            </Route>
+          </Routes>
+        </dateContext.Provider>
+      </SocketProvider>
     </div>
   )
 }
