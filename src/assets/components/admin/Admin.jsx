@@ -5,6 +5,7 @@ import { useState, useEffect, useContext } from 'react';
 import axios from 'axios'
 import { getRequested, getAccepted, acceptSong, removeRequest, removeAccept } from '../../../utils/UserRoutes';
 import { dateContext } from '../../../contexts/dateContext';
+import { SocketContext } from '../../../contexts/SocketContext';
 
 function Admin() {
 
@@ -13,8 +14,9 @@ function Admin() {
     const [toPush, setToPush] = useState([])
     const [render, setRender] = useState(false)
     const [checked, setChecked] = useState(false)
-    const {today, time} = useContext(dateContext)
+    const { today, time } = useContext(dateContext)
     const [checkedAccept, setCheckedAccept] = useState([])
+    const { socket } = useContext(SocketContext);
 
     useEffect(() => {
         axios.post(getRequested, {
@@ -40,20 +42,26 @@ function Admin() {
             })
     }, [render])
 
+    useEffect(() => {
+        socket.on('song-request', obj => {
+            console.log(obj);
+        })
+    }, [])
+
     function hadnlePush() {
         axios.patch(acceptSong, {
             establishment: "Forcing you",
             today: today,
             acceptedSong: toPush
         })
-        .then((res) => {
-            setRender(!render)
-            document.querySelectorAll('input[type=checkbox]').forEach( el => el.checked = false );
-            setToPush([])
-        })
-        .catch((err) => {
-            console.log(err);
-        })
+            .then((res) => {
+                setRender(!render)
+                document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false);
+                setToPush([])
+            })
+            .catch((err) => {
+                console.log(err);
+            })
     }
 
     function handleRequestDelete() {
@@ -62,14 +70,14 @@ function Admin() {
             today: today,
             checkedSong: toPush
         })
-        .then ((res) => {
-            setRender(!render)
-            document.querySelectorAll('input[type=checkbox]').forEach( el => el.checked = false );
-            setToPush([])
-        })
-        .catch ((err) => {
-            console.log(err);
-        })
+            .then((res) => {
+                setRender(!render)
+                document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false);
+                setToPush([])
+            })
+            .catch((err) => {
+                console.log(err);
+            })
     }
 
     function handleAcceptDelete() {
@@ -78,14 +86,14 @@ function Admin() {
             today: today,
             checkedSong: checkedAccept
         })
-        .then ((res) => {
-            setRender(!render)
-            document.querySelectorAll('input[type=checkbox]').forEach( el => el.checked = false );
-            setCheckedAccept([])
-        })
-        .catch ((err) => {
-            console.log(err);
-        })
+            .then((res) => {
+                setRender(!render)
+                document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false);
+                setCheckedAccept([])
+            })
+            .catch((err) => {
+                console.log(err);
+            })
     }
 
 
@@ -113,7 +121,7 @@ function Admin() {
                 </div>
                 <div id='requests-map-container'>
                     {accepted && accepted.map((value, index) => {
-                        return <Accepted key={index} accept={value} checkedAccept={checkedAccept} setCheckedAccept={setCheckedAccept}/>
+                        return <Accepted key={index} accept={value} checkedAccept={checkedAccept} setCheckedAccept={setCheckedAccept} />
                     })}
                 </div>
             </div>

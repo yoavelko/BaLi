@@ -3,9 +3,10 @@ import axios from 'axios';
 import { sendSong } from '../../../utils/UserRoutes';
 import { dateContext } from '../../../contexts/dateContext';
 import { useContext } from 'react';
+import { SocketContext } from '../../../contexts/SocketContext';
 
 function SuggestionBox({ video }) {
-
+    const { socket } = useContext(SocketContext);
     const { today, setToday, time, setTime } = useContext(dateContext);
 
     const uploadedYear = video.uploaded.slice(0, 4)
@@ -30,6 +31,17 @@ function SuggestionBox({ video }) {
             .catch((err) => {
                 console.log(err);
             })
+        socket.emit('test', {
+            establishment: "Forcing you",
+            today: today,
+            timeRequested: time,
+            uploaded: uploaded,
+            url: video.url,
+            name: video.name,
+            img: video.img,
+            artist: video.artist,
+            userId: localStorage.getItem('userId')
+        }, 'Forcing you')
     }
 
     return (
