@@ -30,7 +30,7 @@ function User() {
                 console.log(err);
             })
         }
-    })
+    }, [])
 
     function handleSearch() {
         axios.post(searchSong, {
@@ -56,7 +56,7 @@ function User() {
                 <button onClick={handleSearch}>חפש</button>
             </div>
             <div id='user-suggestion-container'>
-                {data && data.map((value, index) => {
+                {data && data?.map((value, index) => {
                     return <SuggestionBox key={index} video={value} />
                 })}
             </div>
