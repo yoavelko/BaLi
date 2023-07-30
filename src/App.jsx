@@ -36,11 +36,11 @@ function App() {
       <SocketProvider>
         <dateContext.Provider value={{ today, setToday, time, setTime }}>
           <Routes>
-            <Route path='/on-start/:id' element={<EstablishmentID />} />
             <Route path='/' element={<><Outlet /><Footer /></>}>
               <Route index element={<User />} />
               <Route path='/admin' element={<><Header /><Admin /></>} />
             </Route>
+            <Route path='/on-start/:id' element={<EstablishmentID />} />
           </Routes>
         </dateContext.Provider>
       </SocketProvider>
