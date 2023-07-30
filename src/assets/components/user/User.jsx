@@ -42,7 +42,7 @@ function User() {
         })
     }
 
-
+    console.log(data);
     return (
         <div id='user-container' dir='rtl'>
             <div id='bali-logo'>BaLi</div>
@@ -56,9 +56,9 @@ function User() {
                 <button onClick={handleSearch}>חפש</button>
             </div>
             <div id='user-suggestion-container'>
-                {/* {data && data?.map((value, index) => {
+                {data && data.map((value, index) => {
                     return <SuggestionBox key={index} video={value} />
-                })} */}
+                })}
             </div>
             <div id='user-footer'>
                 <div onClick={() => setSection(true)}>ישראל</div>
