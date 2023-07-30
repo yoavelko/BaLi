@@ -1,10 +1,10 @@
 import { createContext, useEffect } from "react";
 import { io } from 'socket.io-client'
-import { HOSTio } from '../utils/SocketRoutes'
 export const SocketContext = createContext();
+import {HOST} from '../utils/UserRoutes'
 
 export const SocketProvider = ({children}) => {
-    const socket = io(HOSTio);
+    const socket = io(HOST);
     useEffect(() => {
         socket.on('connect', () => {
           console.log(socket.id);
