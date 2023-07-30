@@ -11,7 +11,6 @@ import { SocketProvider } from './contexts/SocketContext';
 
 function App() {
 
-
   const date = new Date();
   const yyyy = date.getFullYear();
   let mm = date.getMonth() + 1;
@@ -36,10 +35,10 @@ function App() {
       <SocketProvider>
         <dateContext.Provider value={{ today, setToday, time, setTime }}>
           <Routes>
-            <Route path='/on-start/:id' element={<EstablishmentID />} />
             <Route path='/' element={<><Outlet /><Footer /></>}>
               <Route index element={<User />} />
               <Route path='/admin' element={<><Header /><Admin /></>} />
+              <Route path='/on-starta/:id' element={<EstablishmentID />} />
             </Route>
           </Routes>
         </dateContext.Provider>

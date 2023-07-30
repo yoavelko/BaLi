@@ -35,7 +35,7 @@ function User() {
                     console.log(err);
                 })
         }
-    })
+    }, [])
 
     function handleSearch() {
         axios.post(searchSong, {
@@ -47,7 +47,7 @@ function User() {
             })
     }
 
-
+    console.log(data);
     return (
         <>
             <div id='user-container' dir='rtl'>
