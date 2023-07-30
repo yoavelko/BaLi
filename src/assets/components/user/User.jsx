@@ -56,9 +56,9 @@ function User() {
                 <button onClick={handleSearch}>חפש</button>
             </div>
             <div id='user-suggestion-container'>
-                {data && data?.map((value, index) => {
+                {/* {data && data?.map((value, index) => {
                     return <SuggestionBox key={index} video={value} />
-                })}
+                })} */}
             </div>
             <div id='user-footer'>
                 <div onClick={() => setSection(true)}>ישראל</div>
