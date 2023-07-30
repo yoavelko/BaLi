@@ -6,7 +6,7 @@ function Request({ request, toPush, setToPush }) {
         if (toPush.includes(request._id)) {
             setToPush(toPush.filter(e => e != request._id))
         } else {
-            setToPush([...toPush, request._id])
+            setToPush([...toPush, request])
         }
     }
 

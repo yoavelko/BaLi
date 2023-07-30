@@ -1,0 +1,10 @@
+#modal-container {
+    width: 50%;
+    height: 50%;
+    background-color: red;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
