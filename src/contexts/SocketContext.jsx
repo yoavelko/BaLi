@@ -7,6 +7,7 @@ export const SocketProvider = ({children}) => {
     const socket = io(HOSTio);
     useEffect(() => {
         socket.on('connect', () => {
+          console.log(socket.id);
           socket.emit('join-room', 'Forcing you')
         })
       }, [])
