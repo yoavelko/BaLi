@@ -9,7 +9,7 @@ import { SocketContext } from '../../../contexts/SocketContext';
 
 function Admin() {
 
-    const [requests, setRequests] = useState()
+    const [requests, setRequests] = useState([])
     const [accepted, setAccepted] = useState()
     const [toPush, setToPush] = useState([])
     const [render, setRender] = useState(false)
@@ -40,22 +40,25 @@ function Admin() {
             .catch((err) => {
                 console.log(err);
             })
-    }, [render])
+    }, [])
 
     useEffect(() => {
         socket.on('song-request', obj => {
-            console.log(obj);
+            setRequests(previous => [...previous, obj])
         })
     }, [])
 
-    function hadnlePush() {
+    function handlePush() {
         axios.patch(acceptSong, {
             establishment: "Forcing you",
             today: today,
-            acceptedSong: toPush
+            acceptedSong: toPush.map(value => value._id)
         })
             .then((res) => {
-                setRender(!render)
+                const render = requests.filter(x => !toPush.some(j => x._id === j._id))
+                setRequests(render)
+                const render2 = accepted.concat(toPush)
+                setAccepted(render2)
                 document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false);
                 setToPush([])
             })
@@ -71,7 +74,8 @@ function Admin() {
             checkedSong: toPush
         })
             .then((res) => {
-                setRender(!render)
+                const render = requests.filter(x => !toPush.some(j => x._id === j._id))
+                setRequests(render)
                 document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false);
                 setToPush([])
             })
@@ -87,14 +91,18 @@ function Admin() {
             checkedSong: checkedAccept
         })
             .then((res) => {
-                setRender(!render)
+                const render = accepted.filter(x => !checkedAccept.some(j => x._id === j._id))
                 document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false);
                 setCheckedAccept([])
+                setAccepted(render)
             })
             .catch((err) => {
                 console.log(err);
             })
     }
+
+    console.log(requests);
+    console.log(toPush);
 
 
     return (
@@ -104,7 +112,7 @@ function Admin() {
                 <div id='requests-control-container'>
                     <button className='requests-controls' onClick={() => console.log(requests)}>filter</button>
                     <button className='requests-controls' onClick={handleRequestDelete}>delete marked</button>
-                    <button className='requests-controls' onClick={hadnlePush}>push marked</button>
+                    <button className='requests-controls' onClick={handlePush}>push marked</button>
                 </div>
                 <div id='requests-map-container'>
                     {requests && requests.map((value, index) => {
