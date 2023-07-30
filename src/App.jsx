@@ -10,7 +10,7 @@ import EstablishmentID from './assets/components/EstablishmentID/EstablishmentID
 import { SocketProvider } from './contexts/SocketContext';
 
 function App() {
-
+  console.log(import.meta.env.VITE_SERVER);
 
   const date = new Date();
   const yyyy = date.getFullYear();
