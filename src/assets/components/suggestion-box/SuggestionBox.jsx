@@ -1,15 +1,26 @@
 import './SuggestionBox.css'
-import axios from 'axios';
-import { sendSong } from '../../../utils/UserRoutes';
-import { dateContext } from '../../../contexts/dateContext';
-import { useContext, useState } from 'react';
-import { SocketContext } from '../../../contexts/SocketContext';
-import { createPortal } from 'react-dom';
-import Modal from '../modal/Modal';
+import { useState } from 'react';
 
 function SuggestionBox({ video, setShowModal, setModalContent }) {
 
-    const { today, setToday, time, setTime } = useContext(dateContext);
+    const date = new Date();
+    const yyyy = date.getFullYear();
+    let mm = date.getMonth() + 1;
+    let dd = date.getDate();
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+  
+    let hour = date.getHours();
+    let min = date.getMinutes();
+    if (hour.toString().length < 2) {
+      hour = `0${date.getHours()}`
+    }
+    if (min.toString().length < 2) {
+      min = `0${date.getMinutes()}`
+    }
+  
+    const today = dd + '/' + mm + '/' + yyyy
+    const time = hour + ':' + min
     const uploadedYear = video.uploaded.slice(0, 4)
     const uploaded = `${video.uploaded.slice(8, 10)}/${video.uploaded.slice(5, 7)}/${video.uploaded.slice(0, 4)}`
     const content = {

@@ -1,3 +1,21 @@
-*{
+@import url(https://dl.dropboxusercontent.com/u/15746367/fonts/carmela/style.css);
+@import url(https://fonts.googleapis.com/earlyaccess/alefhebrew.css);
+@import url(https://fonts.googleapis.com/earlyaccess/opensanshebrewcondensed.css);
+@import url('https://fonts.googleapis.com/css2?family=Heebo&family=Rubik&display=swap');
+
+* {
     margin: 0;
+}
+
+#app-container {
+    background-color: var(--main);
+    color: rgba(255, 255, 255, 0.8);
+    /* font-family: "Carmela", sans-serif; */
+    /* font-family: "Alef Hebrew", sans-serif; */
+    /* font-family: 'Open Sans Hebrew Condensed', serif; */
+    /* font-family: 'Rubik', sans-serif; */
+    font-family: 'Heebo', sans-serif;
+    --main: #2D4356;
+    --sub: #9DB2BF;
+    --white: rgba(255, 255, 255, 0.8);
 }
