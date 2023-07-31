@@ -6,17 +6,18 @@ import axios from 'axios'
 import { getRequested, getAccepted, acceptSong, removeRequest, removeAccept } from '../../../utils/UserRoutes';
 import { dateContext } from '../../../contexts/dateContext';
 import { SocketContext } from '../../../contexts/SocketContext';
+import ReactPlayer from 'react-player/youtube'
 
 function Admin() {
 
     const [requests, setRequests] = useState([])
     const [accepted, setAccepted] = useState()
     const [toPush, setToPush] = useState([])
-    const [render, setRender] = useState(false)
-    const [checked, setChecked] = useState(false)
     const { today, time } = useContext(dateContext)
     const [checkedAccept, setCheckedAccept] = useState([])
     const { socket } = useContext(SocketContext);
+    const [songList, setSongList] = useState();
+    const [display, setDisplay] = useState(true);
 
     useEffect(() => {
         axios.post(getRequested, {
@@ -41,13 +42,17 @@ function Admin() {
                 console.log(err);
             })
     }, [])
-
     useEffect(() => {
         socket.on('song-request', obj => {
             setRequests(previous => [...previous, obj])
         })
     }, [])
-
+    useEffect(() => {
+        accepted && setSongList(accepted.map(v => v.url))
+    }, [accepted])
+    useEffect(() => {
+        !display && setDisplay(true)
+    }, [display])
     function handlePush() {
         axios.patch(acceptSong, {
             establishment: "Forcing you",
@@ -100,11 +105,6 @@ function Admin() {
                 console.log(err);
             })
     }
-
-    console.log(requests);
-    console.log(toPush);
-
-
     return (
         <div id='admin-container' dir='rtl'>
             <div id='requests-container'>
@@ -121,6 +121,7 @@ function Admin() {
                 </div>
             </div>
             <div id='playlist-container'>
+                {display && <ReactPlayer url={songList && [...songList]} controls={true} onDuration={(e) => console.log(e)} onProgress={e => console.log(e)}/>}
                 <div className='admin-headers'>תור השמעה</div>
                 <div id='requests-control-container'>
                     <button className='requests-controls' onClick={() => console.log('filter')}>filter</button>

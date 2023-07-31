@@ -1,6 +1,6 @@
 export const HOST = import.meta.env.DEV ? "http://localhost:3000" : import.meta.env.VITE_SERVER;
 export const sendSong = `${HOST}/user/send`;
-export const getDummyIsrael = `https://app2u.onrender.com/user/dummy/israel`;
+export const getDummyIsrael = `${HOST}/user/dummy/israel`;
 export const getDummyOverall = `${HOST}/user/dummy/overall`;
 export const searchSong = `${HOST}/user/search`;
 export const newUser = `${HOST}/user/new-user`
