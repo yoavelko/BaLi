@@ -43,6 +43,7 @@ function Admin() {
         })
             .then((res) => {
                 setAccepted(res.data);
+                setDisplay(false)
             })
             .catch((err) => {
                 console.log(err);
@@ -56,10 +57,13 @@ function Admin() {
         if (accepted) {
             (accepted[0]?.today !== today) && localStorage.setItem('songIndex', 0)
         }
-        accepted && setSongList(accepted.filter((value, index) => index >= parseInt(localStorage.getItem('songIndex'))).map(v => v.url))
+        // accepted && setSongList(accepted.filter((value, index) => index >= parseInt(localStorage.getItem('songIndex'))).map(v => v.url))
     }, [accepted])
     useEffect(() => {
-        !display && setDisplay(true)
+        if (!display) {
+            setSongList(accepted.filter((v, i) => i >= parseInt(localStorage.getItem('songIndex'))).map(v => v.url))
+            setDisplay(true)
+        }
     }, [display])
     function handlePush() {
         axios.patch(acceptSong, {
@@ -112,6 +116,12 @@ function Admin() {
                 console.log(err);
             })
     }
+    function handleProgress(e) {
+        if ((duration - e.playedSeconds) < 3) {
+            localStorage.setItem('songIndex', parseInt(localStorage.getItem('songIndex')) + 1)
+            setDisplay(false)
+        }
+    }
     return (
         <div id='admin-container' dir='rtl'>
             <div id='requests-container'>
@@ -128,10 +138,7 @@ function Admin() {
                 </div>
             </div>
             <div id='playlist-container'>
-                {display && <ReactPlayer url={songList && [...songList]} controls={true} onDuration={(e) => setDuration(e)} onProgress={e => {
-                    (duration - e.playedSeconds) < 3 && localStorage.setItem('songIndex', parseInt(localStorage.getItem('songIndex')) + 1)
-                        (duration - e.playedSeconds) < 3 && setDisplay(false)
-                }}/>}
+                {display && <ReactPlayer url={songList && [...songList]} controls={true} onDuration={(e) => setDuration(e)} onProgress={e => handleProgress(e)} />}
                 <div className='admin-headers'>תור השמעה</div>
                 <div id='requests-control-container'>
                     <button className='requests-controls' onClick={() => console.log('filter')}>filter</button>
@@ -139,7 +146,7 @@ function Admin() {
                     <button className='requests-controls' onClick={() => console.log('push marked')}>push marked</button>
                 </div>
                 <div id='requests-map-container'>
-                    {accepted && accepted.map((value, index) => {
+                    {accepted && accepted.filter((v, i) => i >= parseInt(localStorage.getItem('songIndex'))).map((value, index) => {
                         return <Accepted key={index} accept={value} checkedAccept={checkedAccept} setCheckedAccept={setCheckedAccept} />
                     })}
                 </div>
