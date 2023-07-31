@@ -53,7 +53,9 @@ function Admin() {
         !localStorage.getItem('songIndex') && localStorage.setItem('songIndex', 0)
     }, [])
     useEffect(() => {
-        accepted && accepted[0].today !== today && localStorage.setItem('songIndex', 0)
+        if (accepted) {
+            (accepted[0]?.today !== today) && localStorage.setItem('songIndex', 0)
+        }
         accepted && setSongList(accepted.filter((value, index) => index >= parseInt(localStorage.getItem('songIndex'))).map(v => v.url))
     }, [accepted])
     useEffect(() => {
@@ -101,10 +103,10 @@ function Admin() {
             checkedSong: checkedAccept
         })
             .then((res) => {
-                const render = accepted.filter(x => !checkedAccept.some(j => x._id === j._id))
+                const render = accepted.filter(x => !checkedAccept.some(j => x._id === j))
                 document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false);
+                setAccepted([...render])
                 setCheckedAccept([])
-                setAccepted(render)
             })
             .catch((err) => {
                 console.log(err);
@@ -127,9 +129,9 @@ function Admin() {
             </div>
             <div id='playlist-container'>
                 {display && <ReactPlayer url={songList && [...songList]} controls={true} onDuration={(e) => setDuration(e)} onProgress={e => {
-                    (duration - e.playedSeconds) < 2 && localStorage.setItem('songIndex', parseInt(localStorage.getItem('songIndex')) + 1)
-                        (duration - e.playedSeconds) < 2 && setDisplay(false)
-                }} />}
+                    (duration - e.playedSeconds) < 3 && localStorage.setItem('songIndex', parseInt(localStorage.getItem('songIndex')) + 1)
+                        (duration - e.playedSeconds) < 3 && setDisplay(false)
+                }}/>}
                 <div className='admin-headers'>תור השמעה</div>
                 <div id='requests-control-container'>
                     <button className='requests-controls' onClick={() => console.log('filter')}>filter</button>
