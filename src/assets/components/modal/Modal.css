@@ -64,6 +64,9 @@
 
 #close-modal {
     align-self: flex-end;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-right: 7%;
     width: 24px;
     height: 24px;
@@ -84,13 +87,14 @@
 }
 
 #modal-send-button {
-    width: 104px;
-    height: 32px;
+    width: 140px;
+    height: 40px;
     border-radius: 10px;
     border: 1px solid var(--sub);
     background-color: var(--main);
     color: var(--sub);
     font-weight: 600;
+    font-size: 16px;
 }
 
 .modal-small-row {
