@@ -10,10 +10,11 @@ import { getDummyIsrael, getDummyOverall, searchSong, newUser } from '../../../u
 
 function User() {
 
-    const [data, setData] = useState()
-    const [section, setSection] = useState(true)
-    const [input, setInput] = useState()
+    const [data, setData] = useState();
+    const [section, setSection] = useState(true);
+    const [input, setInput] = useState();
     const [showModal, setShowModal] = useState(false);
+    const [modalContent, setModalContent] = useState();
 
     useEffect(() => {
         axios.get(section ? getDummyIsrael : getDummyOverall)
@@ -63,7 +64,7 @@ function User() {
                 </div>
                 <div id='user-suggestion-container'>
                     {data && data.map((value, index) => {
-                        return <SuggestionBox key={index} video={value} setShowModal={setShowModal} />
+                        return <SuggestionBox key={index} video={value} setShowModal={setShowModal} setModalContent={setModalContent}/>
                     })}
                 </div>
                 <div id='user-footer'>
@@ -73,7 +74,7 @@ function User() {
                 </div>
             </div>
             {showModal && createPortal(
-                <Modal onClose={() => setShowModal(false)} />,
+                <Modal onClose={() => setShowModal(false)} modalContent={modalContent}/>,
                 document.body
             )}
         </>
