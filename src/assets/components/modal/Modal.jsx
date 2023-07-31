@@ -4,7 +4,7 @@ import axios from 'axios'
 import { sendSong } from '../../../utils/UserRoutes'
 import { SocketContext } from '../../../contexts/SocketContext'
 function Modal({ onClose, modalContent }) {
-    
+
     const [checked, setChecked] = useState(false)
     const { socket } = useContext(SocketContext);
 
@@ -38,28 +38,30 @@ function Modal({ onClose, modalContent }) {
     }
 
     return (
-        <div id='modal-container'>
-            <button id='close-modal' onClick={onClose}>X</button>
-            <div dir='rtl' id='your-choice'>השיר שבחרת:</div>
-            <div id='modal-content-container'>
+        <div id='modal-outer-container'>
+            <div id='modal-container'>
+                <button id='close-modal' onClick={onClose}>X</button>
+                <div dir='rtl' id='your-choice'>השיר שבחרת:</div>
                 <div id='modal-img-container'>
                     <img src={modalContent.img} alt="" />
                 </div>
-                <div id='modal-detail-container'>
-                    <div id='modal-video-name'>{modalContent.name}</div>
-                    <div id='modal-small-row-container'>
-                        <div className='modal-small-row'>{modalContent.artist}</div>
-                        <div className='dots'>&#x2022;</div>
-                        <div className='modal-small-row'>הועלה בשנת {modalContent.uploaded}</div>
+                <div id='modal-content-container'>
+                    <div id='modal-detail-container'>
+                        <div id='modal-video-name'>{modalContent.name}</div>
+                        <div id='modal-small-row-container'>
+                            <div className='modal-small-row'>{modalContent.artist}</div>
+                            <div className='dots'>&#x2022;</div>
+                            <div className='modal-small-row'>הועלה בשנת {modalContent.uploaded}</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div id='term-of-use-container' dir='rtl'>
-                <input type="checkbox" checked={checked} onChange={() => setChecked(!checked)}/>
-                <div>&nbsp;אני מאשר את תנאי השימוש</div>
-            </div>
-            <div>
-                <button onClick={handleRequest}>שלח</button>
+                <div id='term-of-use-container' dir='rtl'>
+                    <input type="checkbox" checked={checked} onChange={() => setChecked(!checked)} />
+                    <div>&nbsp;אני מאשר את תנאי השימוש</div>
+                </div>
+                <div>
+                    <button id='modal-send-button' onClick={handleRequest}>שלח</button>
+                </div>
             </div>
         </div>
     )

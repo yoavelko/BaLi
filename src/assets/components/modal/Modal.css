@@ -1,11 +1,25 @@
-#modal-container {
+@import url('https://fonts.googleapis.com/css2?family=Heebo&family=Rubik&display=swap');
+
+#modal-outer-container {
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1;
-    background-color: rgb(121, 95, 95);
-    width: 60%;
+}
+
+#modal-container {
+    font-family: 'Heebo', sans-serif;
+    --main: #2D4356;
+    --sub: #9DB2BF;
+    --white: rgba(255, 255, 255, 0.8);
+    margin-top: 40%;
+    background-color: var(--sub);
+    color: var(--main);
+    width: 100%;
     height: 60%;
     display: flex;
     align-items: center;
@@ -36,7 +50,7 @@
 #modal-video-name {
     width: 100%;
     text-align: center;
-    font-size: x-large;
+    font-size: 16px;
 }
 
 #modal-content-container {
@@ -50,18 +64,37 @@
 
 #close-modal {
     position: absolute;
-    top: 0;
+    top: 18.5%;
     right: 0;
-    margin: 25px;
-    width: 35px;
-    height: 35px;
+    margin: 15px;
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
+    font-weight: 600;
+    background-color: var(--main);
+    border: 1px solid var(--main);
+    color: var(--sub);
+    border-radius: 5px;
 }
 
 #your-choice {
     text-align: center;
-    font-size: larger;
 }
 
 #term-of-use-container {
     display: flex;
+}
+
+#modal-send-button {
+    width: 104px;
+    height: 32px;
+    border-radius: 10px;
+    border: 1px solid var(--sub);
+    background-color: var(--main);
+    color: var(--sub);
+    font-weight: 600;
+}
+
+.modal-small-row {
+    text-align: center;
 }

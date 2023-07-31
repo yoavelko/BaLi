@@ -4,7 +4,6 @@ import Accepted from '../accepted/Accepted';
 import { useState, useEffect, useContext } from 'react';
 import axios from 'axios'
 import { getRequested, getAccepted, acceptSong, removeRequest, removeAccept } from '../../../utils/UserRoutes';
-import { dateContext } from '../../../contexts/dateContext';
 import { SocketContext } from '../../../contexts/SocketContext';
 
 function Admin() {
@@ -14,9 +13,15 @@ function Admin() {
     const [toPush, setToPush] = useState([])
     const [render, setRender] = useState(false)
     const [checked, setChecked] = useState(false)
-    const { today, time } = useContext(dateContext)
     const [checkedAccept, setCheckedAccept] = useState([])
     const { socket } = useContext(SocketContext);
+    const date = new Date();
+    const yyyy = date.getFullYear();
+    let mm = date.getMonth() + 1;
+    let dd = date.getDate();
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;  
+    const today = dd + '/' + mm + '/' + yyyy
 
     useEffect(() => {
         axios.post(getRequested, {
