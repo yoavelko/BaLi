@@ -4,7 +4,6 @@ import Accepted from '../accepted/Accepted';
 import { useState, useEffect, useContext } from 'react';
 import axios from 'axios'
 import { getRequested, getAccepted, acceptSong, removeRequest, removeAccept } from '../../../utils/UserRoutes';
-import { dateContext } from '../../../contexts/dateContext';
 import { SocketContext } from '../../../contexts/SocketContext';
 import ReactPlayer from 'react-player/youtube'
 
@@ -13,11 +12,17 @@ function Admin() {
     const [requests, setRequests] = useState([])
     const [accepted, setAccepted] = useState()
     const [toPush, setToPush] = useState([])
-    const { today, time } = useContext(dateContext)
     const [checkedAccept, setCheckedAccept] = useState([])
     const { socket } = useContext(SocketContext);
     const [songList, setSongList] = useState();
     const [display, setDisplay] = useState(true);
+    const date = new Date();
+    const yyyy = date.getFullYear();
+    let mm = date.getMonth() + 1;
+    let dd = date.getDate();
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;  
+    const today = dd + '/' + mm + '/' + yyyy
 
     useEffect(() => {
         axios.post(getRequested, {

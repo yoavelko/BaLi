@@ -7,23 +7,78 @@
 }
 
 #bali-logo {
-    margin: 5%;
-    margin-left: 0;
-    margin-bottom: 0;
+    padding: 5%;
+    padding-left: 0;
+    padding-bottom: 0;
 }
 
 #user-search-container {
     display: flex;
     justify-content: center;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    padding-top: 16px; 
+    padding-bottom: 8px; 
+    background-color: var(--main);
+    width: 100vw;
+    height: 5vh;
+}
+
+#user-searchbar {
+    border: 1px solid var(--sub);
+    background-color: var(--white);
+    width: 61%;
+    height: 24px;
+    border-radius: 10px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+#user-searchbar::placeholder {
+    color: var(--main);
+    font-family: 'Heebo', sans-serif;
+}
+
+#search-button {
+    width: 21%;
+    height: 27px;
+    background-color: var(--white);
+    border: 1px solid var(--sub);
+    border-radius: 10px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    font-family: 'Heebo', sans-serif;
+}
+
+#user-search-breaker {
+    width: 3%;
 }
 
 #user-footer {
     position: fixed;
     bottom: 0;
-    background-color: white;
+    background-color: var(--main);
+    color: var(--white);
+    font-size: 18px;
+    font-weight: 550;
     width: 100%;
     display: flex;
     justify-content: space-evenly;
     height: 8vh;
     align-items: center;
+}
+
+#user-suggestion-container {
+    padding-bottom: 8vh;
+}
+
+#establishment-preslogan {
+    font-size: 10px;
+    font-weight: 500;
+}
+
+#establishment-slogan {
+    font-size: 12px;
+    font-weight: 550;
 }

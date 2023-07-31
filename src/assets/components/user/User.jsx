@@ -6,18 +6,19 @@ import { Link } from 'react-router-dom';
 import Modal from '../modal/Modal';
 import axios from 'axios'
 import { getDummyIsrael, getDummyOverall, searchSong, newUser } from '../../../utils/UserRoutes'
-
+import LOGO from './../../../media/UP2U.png'
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
 function User() {
 
     const [data, setData] = useState();
-    const [section, setSection] = useState(true);
+    const [section, setSection] = useState('israel');
     const [input, setInput] = useState();
     const [showModal, setShowModal] = useState(false);
     const [modalContent, setModalContent] = useState();
 
     useEffect(() => {
-        axios.get(section ? getDummyIsrael : getDummyOverall)
+        axios.get(section === 'israel' ? getDummyIsrael : section === 'overall' && getDummyOverall)
             .then((res) => {
                 setData(res.data);
             })
@@ -44,37 +45,55 @@ function User() {
         })
             .then((res) => {
                 setData(res.data)
-                console.log(res);
+                setSection('search')
+            })
+            .catch((err) => {
+                console.log(err);
             })
     }
 
-    console.log(data);
+    function handleKeyPress(e) {
+        if (e.key === 'Enter') {
+            handleSearch()
+        }
+    }
+
+    showModal ? disableBodyScroll(document) : enableBodyScroll(document)
+
     return (
         <>
             <div id='user-container' dir='rtl'>
-                <div id='bali-logo'>BaLi</div>
+                <div id='bali-logo'>
+
+                </div>
                 <Link to={'/admin'}>admin</Link>
                 <div id='user-establishment-container'>
-                    <div id='establishment-logo'>ESTAB LOGO</div>
-                    <div id='establishment-slogan'>"עשה לך רב וקנה לך חבר"</div>
+                    <div id='establishment-preslogan'>IT'S</div>
+                    <div id='establishment-logo'>
+                        <img width={80} src={LOGO} alt="" />
+                    </div>
+                    <div id='establishment-slogan'>SHARE YOUR TASTE</div>
                 </div>
                 <div id='user-search-container'>
-                    <input id='user-searchbar' type="text" placeholder='חפש...' onChange={(e) => { setInput(e.target.value) }} />
-                    <button onClick={handleSearch}>חפש</button>
+                    <input id='user-searchbar' type="text" placeholder=' חפש...' onChange={(e) => { setInput(e.target.value) }} onKeyDown={handleKeyPress} />
+                    <div id='user-search-breaker'></div>
+                    <button id='search-button' onClick={handleSearch}>חפש</button>
                 </div>
                 <div id='user-suggestion-container'>
                     {data && data.map((value, index) => {
-                        return <SuggestionBox key={index} video={value} setShowModal={setShowModal} setModalContent={setModalContent}/>
+                        return <SuggestionBox key={index} video={value} setShowModal={setShowModal} setModalContent={setModalContent} />
                     })}
                 </div>
                 <div id='user-footer'>
-                    <div onClick={() => setSection(true)}>ישראל</div>
-                    <div onClick={() => setSection(false)}>עולמי</div>
+                    <div onClick={() => setSection('israel')}>ישראל</div>
+                    <div>|</div>
+                    <div onClick={() => setSection('overall')}>עולמי</div>
+                    <div>|</div>
                     <div>עסק זה</div>
                 </div>
             </div>
             {showModal && createPortal(
-                <Modal onClose={() => setShowModal(false)} modalContent={modalContent}/>,
+                <Modal onClose={() => setShowModal(false)} modalContent={modalContent} />,
                 document.body
             )}
         </>
