@@ -7,39 +7,25 @@ import { SocketContext } from '../../../contexts/SocketContext';
 import { createPortal } from 'react-dom';
 import Modal from '../modal/Modal';
 
-function SuggestionBox({ video, setShowModal }) {
+function SuggestionBox({ video, setShowModal, setModalContent }) {
 
-    const { socket } = useContext(SocketContext);
     const { today, setToday, time, setTime } = useContext(dateContext);
     const uploadedYear = video.uploaded.slice(0, 4)
     const uploaded = `${video.uploaded.slice(8, 10)}/${video.uploaded.slice(5, 7)}/${video.uploaded.slice(0, 4)}`
-
-    function handleRequest() {
-
-        axios.patch(sendSong, {
-            establishment: "Forcing you",
-            today: today,
-            timeRequested: time,
-            uploaded: uploaded,
-            url: video.url,
-            name: video.name,
-            img: video.img,
-            artist: video.artist,
-            userId: localStorage.getItem('userId')
-        })
-            .then((res) => {
-                console.log(`sent: ${video.name}`);
-                socket.emit('test', res.data, 'Forcing you')
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-
-
+    const content = {
+        establishment: "Forcing you",
+        today: today,
+        timeRequested: time,
+        uploaded: uploadedYear,
+        url: video.url,
+        name: video.name,
+        img: video.img,
+        artist: video.artist,
+        userId: localStorage.getItem('userId')
     }
 
     return (
-        <div id='suggestion-box-container' dir='rtl' onClick={() => setShowModal(true)}>
+        <div id='suggestion-box-container' dir='rtl' onClick={() => {setShowModal(true), setModalContent(content)}}>
             <div id='suggestion-img-container'>
                 <img src={video.img} alt="" />
             </div>
