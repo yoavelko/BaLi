@@ -63,10 +63,8 @@
 }
 
 #close-modal {
-    position: absolute;
-    top: 18.5%;
-    right: 0;
-    margin: 15px;
+    align-self: flex-end;
+    margin-right: 7%;
     width: 24px;
     height: 24px;
     font-size: 10px;
