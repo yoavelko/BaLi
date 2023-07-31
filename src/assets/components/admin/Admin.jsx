@@ -21,8 +21,9 @@ function Admin() {
     let mm = date.getMonth() + 1;
     let dd = date.getDate();
     if (dd < 10) dd = '0' + dd;
-    if (mm < 10) mm = '0' + mm;  
+    if (mm < 10) mm = '0' + mm;
     const today = dd + '/' + mm + '/' + yyyy
+    const [duration, setDuration] = useState();
 
     useEffect(() => {
         axios.post(getRequested, {
@@ -46,14 +47,14 @@ function Admin() {
             .catch((err) => {
                 console.log(err);
             })
-    }, [])
-    useEffect(() => {
         socket.on('song-request', obj => {
             setRequests(previous => [...previous, obj])
         })
+        !localStorage.getItem('songIndex') && localStorage.setItem('songIndex', 0)
     }, [])
     useEffect(() => {
-        accepted && setSongList(accepted.map(v => v.url))
+        accepted && accepted[0].today !== today && localStorage.setItem('songIndex', 0)
+        accepted && setSongList(accepted.filter((value, index) => index >= parseInt(localStorage.getItem('songIndex'))).map(v => v.url))
     }, [accepted])
     useEffect(() => {
         !display && setDisplay(true)
@@ -76,7 +77,6 @@ function Admin() {
                 console.log(err);
             })
     }
-
     function handleRequestDelete() {
         axios.patch(removeRequest, {
             establishment: "Forcing you",
@@ -126,7 +126,10 @@ function Admin() {
                 </div>
             </div>
             <div id='playlist-container'>
-                {display && <ReactPlayer url={songList && [...songList]} controls={true} onDuration={(e) => console.log(e)} onProgress={e => console.log(e)}/>}
+                {display && <ReactPlayer url={songList && [...songList]} controls={true} onDuration={(e) => setDuration(e)} onProgress={e => {
+                    (duration - e.playedSeconds) < 2 && localStorage.setItem('songIndex', parseInt(localStorage.getItem('songIndex')) + 1)
+                        (duration - e.playedSeconds) < 2 && setDisplay(false)
+                }} />}
                 <div className='admin-headers'>תור השמעה</div>
                 <div id='requests-control-container'>
                     <button className='requests-controls' onClick={() => console.log('filter')}>filter</button>
