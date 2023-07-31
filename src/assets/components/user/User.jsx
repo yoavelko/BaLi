@@ -18,13 +18,15 @@ function User() {
     const [modalContent, setModalContent] = useState();
 
     useEffect(() => {
-        axios.get(section === 'israel' ? getDummyIsrael : section === 'overall' && getDummyOverall)
+        if (section === 'israel' || section === 'overall') {
+            axios.get(section === 'israel' ? getDummyIsrael : section === 'overall' && getDummyOverall)
             .then((res) => {
                 setData(res.data);
             })
             .catch((err) => {
                 console.log(err);
             })
+        }
     }, [section])
 
     useEffect(() => {
