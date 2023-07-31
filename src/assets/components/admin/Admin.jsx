@@ -57,7 +57,7 @@ function Admin() {
         if (accepted) {
             (accepted[0]?.today !== today) && localStorage.setItem('songIndex', 0)
         }
-        // accepted && setSongList(accepted.filter((value, index) => index >= parseInt(localStorage.getItem('songIndex'))).map(v => v.url))
+        accepted && songList < 1 && setSongList(accepted.filter((value, index) => index >= parseInt(localStorage.getItem('songIndex'))).map(v => v.url))
     }, [accepted])
     useEffect(() => {
         if (!display) {
