@@ -8,6 +8,7 @@ import { SocketContext } from '../../../contexts/SocketContext';
 import ReactPlayer from 'react-player/youtube'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import cookies from 'js-cookie'
+import { useNavigate } from 'react-router-dom'
 
 function Admin() {
 
@@ -26,9 +27,11 @@ function Admin() {
     if (mm < 10) mm = '0' + mm;
     const today = dd + '/' + mm + '/' + yyyy
     const [duration, setDuration] = useState();
+    const navigate = useNavigate();
 
 
     useEffect(() => {
+        if (!cookies.get('establishment')) navigate('/error')
         axios.post(getRequested, {
             establishment: cookies.get('establishment'),
             today: today
@@ -203,7 +206,7 @@ function Admin() {
                                 {...provided.droppableProps}
                             >
                                 {accepted && accepted.filter((v, i) => i >= parseInt(localStorage.getItem('songIndex'))).map((value, index) => {
-                                    return <Accepted key={index} index={index} accept={value} checkedAccept={checkedAccept} setCheckedAccept={setCheckedAccept}/>
+                                    return <Accepted key={index} index={index} accept={value} checkedAccept={checkedAccept} setCheckedAccept={setCheckedAccept} />
                                 })}
                                 {provided.placeholder}
                             </div>
