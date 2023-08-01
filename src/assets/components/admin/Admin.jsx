@@ -6,6 +6,7 @@ import axios from 'axios'
 import { getRequested, getAccepted, acceptSong, removeRequest, removeAccept } from '../../../utils/UserRoutes';
 import { SocketContext } from '../../../contexts/SocketContext';
 import ReactPlayer from 'react-player/youtube'
+import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
 function Admin() {
 
@@ -24,6 +25,7 @@ function Admin() {
     if (mm < 10) mm = '0' + mm;
     const today = dd + '/' + mm + '/' + yyyy
     const [duration, setDuration] = useState();
+
 
     useEffect(() => {
         axios.post(getRequested, {
@@ -53,18 +55,22 @@ function Admin() {
         })
         !localStorage.getItem('songIndex') && localStorage.setItem('songIndex', 0)
     }, [])
+
     useEffect(() => {
         if (accepted) {
             (accepted[0]?.today !== today) && localStorage.setItem('songIndex', 0)
         }
         accepted && songList < 1 && setSongList(accepted.filter((value, index) => index >= parseInt(localStorage.getItem('songIndex'))).map(v => v.url))
     }, [accepted])
+
     useEffect(() => {
         if (!display) {
             setSongList(accepted.filter((v, i) => i >= parseInt(localStorage.getItem('songIndex'))).map(v => v.url))
             setDisplay(true)
         }
     }, [display])
+
+
     function handlePush() {
         axios.patch(acceptSong, {
             establishment: "Forcing you",
@@ -83,6 +89,7 @@ function Admin() {
                 console.log(err);
             })
     }
+
     function handleRequestDelete() {
         axios.patch(removeRequest, {
             establishment: "Forcing you",
@@ -116,42 +123,85 @@ function Admin() {
                 console.log(err);
             })
     }
+
+    function handleReqDrop(result) {
+        const { destination, source, draggableId } = result;
+
+        if (!destination) return;
+        if (destination.droppableId === source.droppableId && destination.index === source.index) return;
+
+        const updatedRequests = Array.from(requests);
+        const [removed] = updatedRequests.splice(source.index, 1);
+        updatedRequests.splice(destination.index, 0, removed);
+        setRequests(updatedRequests);
+    }
+
+    function handleAccDrop(result) {
+        const { destination, source, draggableId } = result;
+
+        if (!destination) return;
+        if (destination.droppableId === source.droppableId && destination.index === source.index) return;
+
+        const updatedRequests = Array.from(requests);
+        const [removed] = updatedRequests.splice(source.index, 1);
+        updatedRequests.splice(destination.index, 0, removed);
+        setRequests(updatedRequests);
+    }
     function handleProgress(e) {
         if ((duration - e.playedSeconds) < 3) {
             localStorage.setItem('songIndex', parseInt(localStorage.getItem('songIndex')) + 1)
             setDisplay(false)
         }
     }
+
     return (
-        <div id='admin-container' dir='rtl'>
-            <div id='requests-container'>
-                <div className='admin-headers'>בקשות ממתינות</div>
-                <div id='requests-control-container'>
-                    <button className='requests-controls' onClick={() => console.log(requests)}>filter</button>
-                    <button className='requests-controls' onClick={handleRequestDelete}>delete marked</button>
-                    <button className='requests-controls' onClick={handlePush}>push marked</button>
+        <DragDropContext onDragEnd={handleReqDrop} >
+            <div id='admin-container' dir='rtl'>
+                <div id='requests-container'>
+                    <div className='admin-headers'>בקשות ממתינות</div>
+                    <div id='requests-control-container'>
+                        <button className='requests-controls' onClick={() => console.log(requests)}>filter</button>
+                        <button className='requests-controls' onClick={handleRequestDelete}>delete marked</button>
+                        <button className='requests-controls' onClick={handlePush}>push marked</button>
+                    </div>
+                    <Droppable droppableId='req-drop'>
+                        {(provided) => (
+                            <div id='requests-map-container'
+                                ref={provided.innerRef}
+                                {...provided.droppableProps}
+                            >
+                                {requests && requests.map((value, index) => {
+                                    return <Request key={index} index={index} request={value} toPush={toPush} setToPush={setToPush} />
+                                })}
+                                {provided.placeholder}
+                            </div>
+                        )}
+                    </Droppable>
                 </div>
-                <div id='requests-map-container'>
-                    {requests && requests.map((value, index) => {
-                        return <Request key={index} request={value} toPush={toPush} setToPush={setToPush} />
-                    })}
-                </div>
-            </div>
-            <div id='playlist-container'>
-                {display && <ReactPlayer url={songList && [...songList]} controls={true} onDuration={(e) => setDuration(e)} onProgress={e => handleProgress(e)} />}
-                <div className='admin-headers'>תור השמעה</div>
-                <div id='requests-control-container'>
-                    <button className='requests-controls' onClick={() => console.log('filter')}>filter</button>
-                    <button className='requests-controls' onClick={handleAcceptDelete}>delete marked</button>
-                    <button className='requests-controls' onClick={() => console.log('push marked')}>push marked</button>
-                </div>
-                <div id='requests-map-container'>
-                    {accepted && accepted.filter((v, i) => i >= parseInt(localStorage.getItem('songIndex'))).map((value, index) => {
+                <div id='playlist-container'>
+                   {display && <ReactPlayer url={songList && [...songList]} controls={true} onDuration={(e) => setDuration(e)} onProgress={e => handleProgress(e)} />}
+                    <div className='admin-headers'>תור השמעה</div>
+                    <div id='requests-control-container'>
+                        <button className='requests-controls' onClick={() => console.log('filter')}>filter</button>
+                        <button className='requests-controls' onClick={handleAcceptDelete}>delete marked</button>
+                        <button className='requests-controls' onClick={() => console.log('push marked')}>push marked</button>
+                    </div>
+                    <Droppable droppableId='acc-drop'>
+                        {(provided) => (
+                            <div id='requests-map-container'
+                                ref={provided.innerRef}
+                                {...provided.droppableProps}
+                            >
+                                {accepted && accepted.filter((v, i) => i >= parseInt(localStorage.getItem('songIndex'))).map((value, index) => {
                         return <Accepted key={index} accept={value} checkedAccept={checkedAccept} setCheckedAccept={setCheckedAccept} />
                     })}
+                                {provided.placeholder}
+                            </div>
+                        )}
+                    </Droppable>
                 </div>
             </div>
-        </div>
+        </DragDropContext>
     )
 }
 
