@@ -13,27 +13,33 @@ function Accepted({ accept, checkedAccept, setCheckedAccept, index }) {
 
     return (
         <Draggable key={accept._id} draggableId={accept._id} index={index}>
-            {(provided) => (
-                <div id='single-accept-container'
+            {(provided, snapshot) => (
+                <div
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     ref={provided.innerRef}
                 >
-                    <div id='accept-adjust' className='accept-spacers'>
-                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIUlEQVR4nGNgGBRASkrqP6l4oN086IDUaCBSDqRGdiACALgqMrxHDJ9hAAAAAElFTkSuQmCC" />
-                    </div>
-                    <div id='accept-img-container'>
-                        <img id='accept-img' src={accept.img} alt="" />
-                    </div>
-                    <div id='accept-box-container'>
-                        <div>{accept.name}</div>
-                        <div id='accept-small-detail'>
-                            <div>{accept.artist}</div>
-                            <div>נשלח בשעה: {accept.timeRequested}</div>
+                    <div id='single-accept-container'
+                        style={{
+                            backgroundColor: snapshot.isDragging ? '#9DB2BF' : ''
+                        }}
+                    >
+                        <div id='accept-adjust' className='accept-spacers'>
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIUlEQVR4nGNgGBRASkrqP6l4oN086IDUaCBSDqRGdiACALgqMrxHDJ9hAAAAAElFTkSuQmCC" />
                         </div>
-                    </div>
-                    <div id='accept-input' className='request-spacers'>
-                        <input type="checkbox" onChange={handlePush} />
+                        <div id='accept-img-container'>
+                            <img id='accept-img' src={accept.img} alt="" />
+                        </div>
+                        <div id='accept-box-container'>
+                            <div>{accept.name}</div>
+                            <div id='accept-small-detail'>
+                                <div>{accept.artist}</div>
+                                <div>נשלח בשעה: {accept.timeRequested}</div>
+                            </div>
+                        </div>
+                        <div id='accept-input' className='request-spacers'>
+                            <input type="checkbox" onChange={handlePush} />
+                        </div>
                     </div>
                 </div>
             )}
