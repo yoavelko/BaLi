@@ -7,6 +7,7 @@ import { getRequested, getAccepted, acceptSong, removeRequest, removeAccept } fr
 import { SocketContext } from '../../../contexts/SocketContext';
 import ReactPlayer from 'react-player/youtube'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
+import cookies from 'js-cookie'
 
 function Admin() {
 
@@ -29,7 +30,7 @@ function Admin() {
 
     useEffect(() => {
         axios.post(getRequested, {
-            establishment: "Forcing you",
+            establishment: cookies.get('establishment'),
             today: today
         })
             .then((res) => {
@@ -40,7 +41,7 @@ function Admin() {
             })
 
         axios.post(getAccepted, {
-            establishment: "Forcing you",
+            establishment: cookies.get('establishment'),
             today: today
         })
             .then((res) => {
@@ -73,7 +74,7 @@ function Admin() {
 
     function handlePush() {
         axios.patch(acceptSong, {
-            establishment: "Forcing you",
+            establishment: cookies.get('establishment'),
             today: today,
             acceptedSong: toPush.map(value => value._id)
         })
@@ -92,7 +93,7 @@ function Admin() {
 
     function handleRequestDelete() {
         axios.patch(removeRequest, {
-            establishment: "Forcing you",
+            establishment: cookies.get('establishment'),
             today: today,
             checkedSong: toPush
         })
@@ -109,7 +110,7 @@ function Admin() {
 
     function handleAcceptDelete() {
         axios.patch(removeAccept, {
-            establishment: "Forcing you",
+            establishment: cookies.get('establishment'),
             today: today,
             checkedSong: checkedAccept
         })
