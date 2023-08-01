@@ -45,6 +45,7 @@ function Admin() {
         })
             .then((res) => {
                 setAccepted(res.data);
+                setDisplay(false)
             })
             .catch((err) => {
                 console.log(err);
@@ -59,11 +60,14 @@ function Admin() {
         if (accepted) {
             (accepted[0]?.today !== today) && localStorage.setItem('songIndex', 0)
         }
-        accepted && setSongList(accepted.filter((value, index) => index >= parseInt(localStorage.getItem('songIndex'))).map(v => v.url))
+        accepted && songList < 1 && setSongList(accepted.filter((value, index) => index >= parseInt(localStorage.getItem('songIndex'))).map(v => v.url))
     }, [accepted])
 
     useEffect(() => {
-        !display && setDisplay(true)
+        if (!display) {
+            setSongList(accepted.filter((v, i) => i >= parseInt(localStorage.getItem('songIndex'))).map(v => v.url))
+            setDisplay(true)
+        }
     }, [display])
 
 
@@ -143,7 +147,12 @@ function Admin() {
         updatedRequests.splice(destination.index, 0, removed);
         setRequests(updatedRequests);
     }
-
+    function handleProgress(e) {
+        if ((duration - e.playedSeconds) < 3) {
+            localStorage.setItem('songIndex', parseInt(localStorage.getItem('songIndex')) + 1)
+            setDisplay(false)
+        }
+    }
 
     return (
         <DragDropContext onDragEnd={handleReqDrop} >
@@ -170,10 +179,7 @@ function Admin() {
                     </Droppable>
                 </div>
                 <div id='playlist-container'>
-                    {display && <ReactPlayer url={songList && [...songList]} controls={true} onDuration={(e) => setDuration(e)} onProgress={e => {
-                        (duration - e.playedSeconds) < 3 && localStorage.setItem('songIndex', parseInt(localStorage.getItem('songIndex')) + 1)
-                            (duration - e.playedSeconds) < 3 && setDisplay(false)
-                    }} />}
+                   {display && <ReactPlayer url={songList && [...songList]} controls={true} onDuration={(e) => setDuration(e)} onProgress={e => handleProgress(e)} />}
                     <div className='admin-headers'>תור השמעה</div>
                     <div id='requests-control-container'>
                         <button className='requests-controls' onClick={() => console.log('filter')}>filter</button>
@@ -186,9 +192,9 @@ function Admin() {
                                 ref={provided.innerRef}
                                 {...provided.droppableProps}
                             >
-                                {accepted && accepted.map((value, index) => {
-                                    return <Accepted key={index} index={index} accept={value} checkedAccept={checkedAccept} setCheckedAccept={setCheckedAccept} />
-                                })}
+                                {accepted && accepted.filter((v, i) => i >= parseInt(localStorage.getItem('songIndex'))).map((value, index) => {
+                        return <Accepted key={index} accept={value} checkedAccept={checkedAccept} setCheckedAccept={setCheckedAccept} />
+                    })}
                                 {provided.placeholder}
                             </div>
                         )}

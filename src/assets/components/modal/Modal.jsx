@@ -3,6 +3,7 @@ import { useState, useContext } from 'react'
 import axios from 'axios'
 import { sendSong } from '../../../utils/UserRoutes'
 import { SocketContext } from '../../../contexts/SocketContext'
+import cookies from 'js-cookie'
 function Modal({ onClose, modalContent }) {
 
     const [checked, setChecked] = useState(false)
@@ -12,7 +13,7 @@ function Modal({ onClose, modalContent }) {
 
         if (checked === true) {
             axios.patch(sendSong, {
-                establishment: "Forcing you",
+                establishment: cookies.get('establishment'),
                 today: modalContent.today,
                 timeRequested: modalContent.timeRequested,
                 uploaded: modalContent.uploaded,
