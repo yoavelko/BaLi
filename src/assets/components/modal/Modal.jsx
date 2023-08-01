@@ -21,11 +21,11 @@ function Modal({ onClose, modalContent }) {
                 name: modalContent.name,
                 img: modalContent.img,
                 artist: modalContent.artist,
-                userId: localStorage.getItem('userId')
+                userId: cookies.get('userId')
             })
                 .then((res) => {
                     console.log(`sent: ${modalContent.name}`);
-                    socket.emit('test', res.data, 'Forcing you');
+                    socket.emit('test', res.data, cookies.get('establishment'));
                     onClose()
                 })
                 .catch((err) => {

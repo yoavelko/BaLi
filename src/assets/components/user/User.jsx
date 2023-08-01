@@ -20,10 +20,11 @@ function User() {
     const navigate = useNavigate();
     useEffect(() => {
         if(!cookies.get('establishment')) navigate('/error')
-        if (!localStorage.getItem('userId')) {
+        if (!cookies.get('userId')) {
             axios.get(newUser)
                 .then((res) => {
-                    localStorage.setItem('userId', res.data._id)
+                    console.log(res);
+                    cookies.set('userId', res.data._id, {expires: 1})
                 })
                 .catch((err) => {
                     console.log(err);

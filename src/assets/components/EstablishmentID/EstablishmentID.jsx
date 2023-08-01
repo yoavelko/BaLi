@@ -8,14 +8,16 @@ function EstablishmentID() {
     const { id } = useParams()
     useEffect(() => {
         if (id.includes('admin-')) {
+            console.log('what');
             axios.post(specificEstablishment, { name: id.replace('admin-', '') })
                 .then(() => {
                     cookies.set('establishment', id.replace('admin-', ''), {expires: 365})
                     navigate('/admin')
                 })
+                .catch(e => navigate('/error'))
         }
         else {
-
+            console.log('wrd');
             axios.post(specificEstablishment, { name: id })
                 .then(() => {
                     cookies.set('establishment', id, { expires: 1 })
