@@ -3,6 +3,11 @@ import { useState } from 'react';
 
 function SuggestionBox({ video, setShowModal, setModalContent }) {
 
+    let title = video.name
+    if (video.name.length > 20) {
+        title = video.name.slice(0, 26) + '...'
+    }
+
     const date = new Date();
     const yyyy = date.getFullYear();
     let mm = date.getMonth() + 1;
@@ -41,7 +46,7 @@ function SuggestionBox({ video, setShowModal, setModalContent }) {
                 <img src={video.img} alt="" />
             </div>
             <div id='suggestion-detail-container'>
-                <div id='suggestion-video-name'>{video.name}</div>
+                <div id='suggestion-video-name'>{title}</div>
                 <div id='suggestion-small-row-container'>
                     <div className='suggestion-small-row'>{video.artist}</div>
                     <div className='dots'>&#x2022;</div>
