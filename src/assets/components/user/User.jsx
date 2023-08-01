@@ -2,12 +2,13 @@ import './User.css'
 import SuggestionBox from '../suggestion-box/SuggestionBox'
 import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Modal from '../modal/Modal';
 import axios from 'axios'
 import { getDummyIsrael, getDummyOverall, searchSong, newUser } from '../../../utils/UserRoutes'
 import LOGO from './../../../media/UP2U.png'
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
+import cookies from 'js-cookie'
 
 function User() {
 
@@ -16,20 +17,9 @@ function User() {
     const [input, setInput] = useState();
     const [showModal, setShowModal] = useState(false);
     const [modalContent, setModalContent] = useState();
-
+    const navigate = useNavigate();
     useEffect(() => {
-        if (section === 'israel' || section === 'overall') {
-            axios.get(section === 'israel' ? getDummyIsrael : section === 'overall' && getDummyOverall)
-            .then((res) => {
-                setData(res.data);
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-        }
-    }, [section])
-
-    useEffect(() => {
+        if(!cookies.get('establishment')) navigate('/error')
         if (!localStorage.getItem('userId')) {
             axios.get(newUser)
                 .then((res) => {
@@ -40,6 +30,18 @@ function User() {
                 })
         }
     }, [])
+
+    useEffect(() => {
+        if (section === 'israel' || section === 'overall') {
+            axios.get(section === 'israel' ? getDummyIsrael : section === 'overall' && getDummyOverall)
+                .then((res) => {
+                    setData(res.data);
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+        }
+    }, [section])
 
     function handleSearch() {
         axios.post(searchSong, {
