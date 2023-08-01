@@ -130,10 +130,18 @@ function Admin() {
         if (!destination) return;
         if (destination.droppableId === source.droppableId && destination.index === source.index) return;
 
-        const updatedRequests = Array.from(requests);
-        const [removed] = updatedRequests.splice(source.index, 1);
-        updatedRequests.splice(destination.index, 0, removed);
-        setRequests(updatedRequests);
+        if (source.droppableId === 'req-drop') {
+            const updatedRequests = Array.from(requests);
+            const [removed] = updatedRequests.splice(source.index, 1);
+            updatedRequests.splice(destination.index, 0, removed);
+            setRequests(updatedRequests);
+        } else {
+            const updatedAccepted = Array.from(accepted);
+            const [removed] = updatedAccepted.splice(source.index, 1);
+            updatedAccepted.splice(destination.index, 0, removed);
+            setAccepted(updatedAccepted);
+        }
+
     }
 
     function handleAccDrop(result) {
@@ -147,6 +155,7 @@ function Admin() {
         updatedRequests.splice(destination.index, 0, removed);
         setRequests(updatedRequests);
     }
+
     function handleProgress(e) {
         if ((duration - e.playedSeconds) < 3) {
             localStorage.setItem('songIndex', parseInt(localStorage.getItem('songIndex')) + 1)
@@ -155,7 +164,7 @@ function Admin() {
     }
 
     return (
-        <DragDropContext onDragEnd={handleReqDrop} >
+        <DragDropContext onDragEnd={handleReqDrop} onDragStart={(result) => (console.log(result.source))}>
             <div id='admin-container' dir='rtl'>
                 <div id='requests-container'>
                     <div className='admin-headers'>בקשות ממתינות</div>
@@ -179,7 +188,7 @@ function Admin() {
                     </Droppable>
                 </div>
                 <div id='playlist-container'>
-                   {display && <ReactPlayer url={songList && [...songList]} controls={true} onDuration={(e) => setDuration(e)} onProgress={e => handleProgress(e)} />}
+                    {display && <ReactPlayer url={songList && [...songList]} controls={true} onDuration={(e) => setDuration(e)} onProgress={e => handleProgress(e)} />}
                     <div className='admin-headers'>תור השמעה</div>
                     <div id='requests-control-container'>
                         <button className='requests-controls' onClick={() => console.log('filter')}>filter</button>
@@ -193,8 +202,8 @@ function Admin() {
                                 {...provided.droppableProps}
                             >
                                 {accepted && accepted.filter((v, i) => i >= parseInt(localStorage.getItem('songIndex'))).map((value, index) => {
-                        return <Accepted key={index} accept={value} checkedAccept={checkedAccept} setCheckedAccept={setCheckedAccept} />
-                    })}
+                                    return <Accepted key={index} index={index} accept={value} checkedAccept={checkedAccept} setCheckedAccept={setCheckedAccept}/>
+                                })}
                                 {provided.placeholder}
                             </div>
                         )}
