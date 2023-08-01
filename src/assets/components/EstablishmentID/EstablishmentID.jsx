@@ -1,11 +1,28 @@
+import axios from 'axios';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom'
+import { specificEstablishment } from '../../../utils/Establishment';
+import cookies from 'js-cookie'
 function EstablishmentID() {
     const navigate = useNavigate();
     const { id } = useParams()
     useEffect(() => {
-        localStorage.setItem('establishment', id);
-        navigate('/')
+        if (id.includes('admin-')) {
+            axios.post(specificEstablishment, { name: id.replace('admin-', '') })
+                .then(() => {
+                    cookies.set('establishment', id.replace('admin-', ''), {expires: 365})
+                    navigate('/admin')
+                })
+        }
+        else {
+
+            axios.post(specificEstablishment, { name: id })
+                .then(() => {
+                    cookies.set('establishment', id, { expires: 1 })
+                    navigate('/')
+                })
+                .catch((e) => { navigate('/error') })
+        }
     }, [])
 }
 export default EstablishmentID;

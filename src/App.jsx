@@ -6,6 +6,7 @@ import User from './assets/components/user/User';
 import Admin from './assets/components/admin/Admin';
 import EstablishmentID from './assets/components/EstablishmentID/EstablishmentID';
 import { SocketProvider } from './contexts/SocketContext';
+import ErrorPage from './assets/components/ErrorPage/ErrorPage';
 
 function App() {
 
@@ -16,7 +17,8 @@ function App() {
           <Route path='/' element={<><Outlet /><Footer /></>}>
             <Route index element={<User />} />
             <Route path='/admin' element={<><Header /><Admin /></>} />
-            <Route path='/on-starta/:id' element={<EstablishmentID />} />
+            <Route path='/on-start/:id' element={<EstablishmentID />} />
+            <Route path='*' element={<ErrorPage/>}/>
           </Route>
         </Routes>
       </SocketProvider>
