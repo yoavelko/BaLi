@@ -3,6 +3,11 @@ import { Draggable } from 'react-beautiful-dnd'
 
 function Accepted({ accept, checkedAccept, setCheckedAccept, index }) {
 
+    let title = accept.name
+    if (accept.name.length > 20) {
+        title = accept.name.slice(0, 35) + '...'
+    }
+
     function handlePush() {
         if (checkedAccept.includes(accept._id)) {
             setCheckedAccept(checkedAccept.filter(e => e != accept._id))
@@ -31,7 +36,7 @@ function Accepted({ accept, checkedAccept, setCheckedAccept, index }) {
                             <img id='accept-img' src={accept.img} alt="" />
                         </div>
                         <div id='accept-box-container'>
-                            <div>{accept.name}</div>
+                            <div>{title}</div>
                             <div id='accept-small-detail'>
                                 <div>{accept.artist}</div>
                                 <div>נשלח בשעה: {accept.timeRequested}</div>

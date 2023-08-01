@@ -4,7 +4,10 @@ import { Draggable } from 'react-beautiful-dnd'
 
 function Request({ request, toPush, setToPush, index }) {
 
-    const [background, setBackground] = useState('black')
+    let title = request.name
+    if (request.name.length > 20) {
+        title = request.name.slice(0, 35) + '...'
+    }
 
     function hadnlePush() {
         if (toPush.includes(request._id)) {
@@ -25,7 +28,8 @@ function Request({ request, toPush, setToPush, index }) {
                 >
                     <div id='single-request-container'
                         style={{
-                            backgroundColor: snapshot.isDragging ? '#9DB2BF' : ''
+                            borderColor: snapshot.isDragging ? '#9DB2BF' : '',
+                            backgroundColor: snapshot.isDragging ? '#3a4a58' : ''
                         }}
                     >
                         <div id='request-adjust' className='request-spacers'>
@@ -35,7 +39,7 @@ function Request({ request, toPush, setToPush, index }) {
                             <img id='request-img' src={request.img} alt="" />
                         </div>
                         <div id='request-box-container'>
-                            <div>{request.name}</div>
+                            <div>{title}</div>
                             <div id='request-small-detail'>
                                 <div>{request.artist}</div>
                                 <div>נשלח בשעה: {request.timeRequested}</div>

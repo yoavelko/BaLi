@@ -192,8 +192,10 @@ function Admin() {
                     </Droppable>
                 </div>
                 <div id='playlist-container'>
+                    <div id='player-container'>
                     {display && <ReactPlayer url={songList && [...songList]} controls={true} onDuration={(e) => setDuration(e)} onProgress={e => handleProgress(e)} />}
-                    <div className='admin-headers'>תור השמעה</div>
+                    </div>
+                    <div className='admin-headers' id='playlist-header'>תור השמעה</div>
                     <div id='requests-control-container'>
                         <button className='requests-controls' onClick={() => console.log('filter')}>filter</button>
                         <button className='requests-controls' onClick={handleAcceptDelete}>delete marked</button>

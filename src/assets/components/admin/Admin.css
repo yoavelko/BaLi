@@ -27,3 +27,7 @@
 #requests-map-container {
     padding: 5%;
 }
+
+#player-container {
+    margin-right: calc((50vw - 640px) / 2);
+}
