@@ -1,7 +1,7 @@
 import './Admin.css'
 import Request from '../request/Request'
 import Accepted from '../accepted/Accepted';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useMemo } from 'react';
 import axios from 'axios'
 import { getRequested, getAccepted, acceptSong, removeRequest, removeAccept } from '../../../utils/UserRoutes';
 import { SocketContext } from '../../../contexts/SocketContext';
@@ -66,11 +66,11 @@ function Admin() {
         if (accepted) {
             (accepted[0]?.today !== today) && localStorage.setItem('songIndex', 0)
         }
-        accepted && setSongList(accepted.filter((v,i) => i > parseInt(localStorage.getItem('songIndex'))))
+        accepted && setSongList(accepted.filter((v,i) => i >= parseInt(localStorage.getItem('songIndex'))))
     }, [accepted])
     useEffect(() => {
         if (!display) {
-            setSongList(accepted.filter((v, i) => i > parseInt(localStorage.getItem('songIndex'))))
+            // setSongList(accepted.filter((v, i) => i >= parseInt(localStorage.getItem('songIndex'))))
             setDisplay(true)
         }
         else {
@@ -170,6 +170,10 @@ function Admin() {
             setDisplay(false)
         }
     }
+
+    const actualSongList = useMemo(() => {
+        songList && songList.map(v => v.url)
+    }, [display])
 
     return (
         <DragDropContext onDragEnd={handleDrop} onDragStart={(result) => (console.log(result.source))}>
