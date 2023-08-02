@@ -24,7 +24,7 @@ function User() {
             axios.get(newUser)
                 .then((res) => {
                     console.log(res);
-                    cookies.set('userId', res.data._id, {expires: 1})
+                    cookies.set('userId', res.data._id, {expires: 0.25})
                 })
                 .catch((err) => {
                     console.log(err);

@@ -20,7 +20,7 @@ function EstablishmentID() {
             console.log('wrd');
             axios.post(specificEstablishment, { name: id })
                 .then(() => {
-                    cookies.set('establishment', id, { expires: 1 })
+                    cookies.set('establishment', id, { expires: 0.25 })
                     navigate('/')
                 })
                 .catch((e) => { navigate('/error') })
