@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './Request.css'
 import { Draggable } from 'react-beautiful-dnd'
+import TimeComapre from '../functions/TimeCompare'
 
 function Request({ request, toPush, setToPush, index }) {
 
@@ -16,7 +17,7 @@ function Request({ request, toPush, setToPush, index }) {
             setToPush([...toPush, request])
         }
     }
-
+    
     return (
         <Draggable key={request._id} draggableId={request._id} index={index}>
             {(provided, snapshot) => (
@@ -44,7 +45,7 @@ function Request({ request, toPush, setToPush, index }) {
                             <div>{title}</div>
                             <div id='request-small-detail'>
                                 <div>{request.artist}</div>
-                                <div>נשלח בשעה: {request.timeRequested}</div>
+                                <div>{TimeComapre(request.timeRequested)}</div>
                             </div>
                         </div>
                         <div id='request-input' className='request-spacers'>
