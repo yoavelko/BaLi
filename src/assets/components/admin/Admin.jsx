@@ -49,7 +49,7 @@ function Admin() {
             today: today
         })
             .then((res) => {
-                setAccepted(res.data.filter((value, index) => index >= parseInt(localStorage.getItem('songIndex'))));
+                setAccepted(res.data);
                 setDisplay(false)
             })
             .catch((err) => {
@@ -65,11 +65,11 @@ function Admin() {
         if (accepted) {
             (accepted[0]?.today !== today) && localStorage.setItem('songIndex', 0)
         }
-        accepted && songList?.length < 1 && setSongList(accepted).map(v => v.url)
+        accepted && songList?.length < 1 && setSongList(accepted.filter((v,i) => i >= parseInt(localStorage.getItem('songIndex'))))
     }, [accepted])
     useEffect(() => {
         if (!display) {
-            setSongList(accepted.map(v => v.url))
+            setSongList(accepted.filter((v, i) => i >= parseInt(localStorage.getItem('songIndex'))))
             setDisplay(true)
         }
         else {
@@ -152,18 +152,6 @@ function Admin() {
 
     }
 
-    function handleAccDrop(result) {
-        const { destination, source, draggableId } = result;
-
-        if (!destination) return;
-        if (destination.droppableId === source.droppableId && destination.index === source.index) return;
-
-        const updatedRequests = Array.from(requests);
-        const [removed] = updatedRequests.splice(source.index, 1);
-        updatedRequests.splice(destination.index, 0, removed);
-        setRequests(updatedRequests);
-    }
-
     function handleProgress(e) {
         if ((duration - e.playedSeconds) < 3) {
             localStorage.setItem('songIndex', parseInt(localStorage.getItem('songIndex')) + 1)
@@ -205,7 +193,7 @@ function Admin() {
                 </div>
                 <div id='playlist-container'>
                     <div id='player-container'>
-                        {display && <ReactPlayer playing={true} muted={muted} url={songList} controls={true} onDuration={(e) => setDuration(e)} onProgress={e => handleProgress(e)} />}
+                        {display && <ReactPlayer playing={true} muted={muted} url={songList && songList.map(v => v.url)} controls={true} onDuration={(e) => setDuration(e)} onProgress={e => handleProgress(e)} />}
                     </div>
                     <div className='admin-headers' id='playlist-header'>תור השמעה</div>
                     <div id='requests-control-container'>
@@ -226,7 +214,7 @@ function Admin() {
                                         transition: 'background-color 0.2s ease'
                                     }}
                                 >
-                                {accepted && accepted.map((value, index) => {
+                                {songList && songList.map((value, index) => {
                                     return <Accepted key={index} index={index} accept={value} checkedAccept={checkedAccept} setCheckedAccept={setCheckedAccept} />
                                 })}
                                     {provided.placeholder}
