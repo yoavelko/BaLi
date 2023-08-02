@@ -19,12 +19,12 @@ function User() {
     const [modalContent, setModalContent] = useState();
     const navigate = useNavigate();
     useEffect(() => {
-        if(!cookies.get('establishment')) navigate('/error')
+        if (!cookies.get('establishment')) navigate('/error')
         if (!cookies.get('userId')) {
             axios.get(newUser)
                 .then((res) => {
                     console.log(res);
-                    cookies.set('userId', res.data._id, {expires: 0.25})
+                    cookies.set('userId', res.data._id, { expires: 0.25 })
                 })
                 .catch((err) => {
                     console.log(err);
@@ -68,10 +68,6 @@ function User() {
     return (
         <>
             <div id='user-container' dir='rtl'>
-                <div id='bali-logo'>
-
-                </div>
-                <Link to={'/admin'}>admin</Link>
                 <div id='user-establishment-container'>
                     <div id='establishment-preslogan'>IT'S</div>
                     <div id='establishment-logo'>
@@ -94,7 +90,7 @@ function User() {
                     <div>|</div>
                     <div onClick={() => setSection('overall')}>עולמי</div>
                     <div>|</div>
-                    <div>עסק זה</div>
+                    <div>UP2U</div>
                 </div>
             </div>
             {showModal && createPortal(
