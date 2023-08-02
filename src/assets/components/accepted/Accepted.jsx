@@ -31,10 +31,13 @@ function Accepted({ accept, checkedAccept, setCheckedAccept, index }) {
                             transition: 'background-color 0.2s ease'
                         }}
                     >
-                        <div id='accept-adjust' className='accept-spacers'
+                        <div id='accept-drag-container'
                             {...provided.dragHandleProps}
                         >
-                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIUlEQVR4nGNgGBRASkrqP6l4oN086IDUaCBSDqRGdiACALgqMrxHDJ9hAAAAAElFTkSuQmCC" />
+                            <div id='accept-adjust' className='accept-spacers'
+                            >
+                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIUlEQVR4nGNgGBRASkrqP6l4oN086IDUaCBSDqRGdiACALgqMrxHDJ9hAAAAAElFTkSuQmCC" />
+                            </div>
                         </div>
                         <div id='accept-img-container'>
                             <img id='accept-img' src={accept.img} alt="" />
