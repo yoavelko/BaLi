@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import './Request.css'
 import { Draggable } from 'react-beautiful-dnd'
 import TimeComapre from '../functions/TimeCompare'
@@ -17,7 +16,7 @@ function Request({ request, toPush, setToPush, index }) {
             setToPush([...toPush, request])
         }
     }
-    
+
     return (
         <Draggable key={request._id} draggableId={request._id} index={index}>
             {(provided, snapshot) => (
@@ -33,10 +32,12 @@ function Request({ request, toPush, setToPush, index }) {
                             transition: 'background-color 0.2s ease'
                         }}
                     >
-                        <div id='request-adjust' className='request-spacers'
+                        <div id='request-drag-container'
                             {...provided.dragHandleProps}
                         >
-                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIUlEQVR4nGNgGBRASkrqP6l4oN086IDUaCBSDqRGdiACALgqMrxHDJ9hAAAAAElFTkSuQmCC" />
+                            <div id='request-adjust' className='request-spacers'>
+                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIUlEQVR4nGNgGBRASkrqP6l4oN086IDUaCBSDqRGdiACALgqMrxHDJ9hAAAAAElFTkSuQmCC" />
+                            </div>
                         </div>
                         <div id='request-img-container'>
                             <img id='request-img' src={request.img} alt="" />
