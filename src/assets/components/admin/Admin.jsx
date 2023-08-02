@@ -9,6 +9,7 @@ import ReactPlayer from 'react-player/youtube'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import cookies from 'js-cookie'
 import { useNavigate } from 'react-router-dom'
+import TimeComapre from '../functions/TimeCompare';
 
 function Admin() {
 
@@ -130,7 +131,7 @@ function Admin() {
             })
     }
 
-    function handleReqDrop(result) {
+    function handleDrop(result) {
         const { destination, source, draggableId } = result;
 
         if (!destination) return;
@@ -148,20 +149,18 @@ function Admin() {
                 updatedAccepted.splice(destination.index, 0, removed);
                 setAccepted(updatedAccepted);
             }
+        } else {
+            const updatedRequests = Array.from(requests);
+            const updatedAccepted = Array.from(accepted);
+            if (source.droppableId === 'req-drop') {
+                const [removed] = updatedRequests.splice(source.index, 1);
+                const filter = updatedRequests.filter(a => a != removed)
+                updatedAccepted.splice(destination.index, 0, removed);
+                setRequests(filter);
+                setAccepted(updatedAccepted);
+            }
         }
 
-    }
-
-    function handleAccDrop(result) {
-        const { destination, source, draggableId } = result;
-
-        if (!destination) return;
-        if (destination.droppableId === source.droppableId && destination.index === source.index) return;
-
-        const updatedRequests = Array.from(requests);
-        const [removed] = updatedRequests.splice(source.index, 1);
-        updatedRequests.splice(destination.index, 0, removed);
-        setRequests(updatedRequests);
     }
 
     function handleProgress(e) {
@@ -173,7 +172,7 @@ function Admin() {
     }
 
     return (
-        <DragDropContext onDragEnd={handleReqDrop} onDragStart={(result) => (console.log(result.source))}>
+        <DragDropContext onDragEnd={handleDrop} onDragStart={(result) => (console.log(result.source))}>
             <div id='admin-container' dir='rtl'>
                 <div id='requests-container'>
                     <div className='admin-headers'>בקשות ממתינות</div>
