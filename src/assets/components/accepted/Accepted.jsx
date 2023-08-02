@@ -41,10 +41,7 @@ function Accepted({ accept, checkedAccept, setCheckedAccept, index }) {
                         </div>
                         <div id='accept-box-container'>
                             <div>{title}</div>
-                            <div id='accept-small-detail'>
-                                <div>{accept.artist}</div>
-                                <div>נשלח בשעה: {accept.timeRequested}</div>
-                            </div>
+                            <div>{accept.artist}</div>
                         </div>
                         <div id='accept-input' className='request-spacers'>
                             <input type="checkbox" onChange={handlePush} />

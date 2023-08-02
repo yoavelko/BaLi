@@ -208,7 +208,7 @@ function Admin() {
                 </div>
                 <div id='playlist-container'>
                     <div id='player-container'>
-                        {display && <ReactPlayer playing={true} muted={muted} url={actualSongList} controls={true} onDuration={(e) => setDuration(e)} onProgress={e => handleProgress(e)} />}
+                        {display && <ReactPlayer width={'90%'} playing={true} muted={muted} url={songList && songList.map(v => v.url)} controls={true} onDuration={(e) => setDuration(e)} onProgress={e => handleProgress(e)} />}
                     </div>
                     <div className='admin-headers' id='playlist-header'>תור השמעה</div>
                     <div id='requests-control-container'>
