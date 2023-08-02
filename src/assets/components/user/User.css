@@ -67,6 +67,7 @@
     justify-content: space-evenly;
     height: 8vh;
     align-items: center;
+    padding-bottom: 16px;
 }
 
 #user-suggestion-container {
