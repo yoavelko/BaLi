@@ -134,16 +134,18 @@ function Admin() {
         if (!destination) return;
         if (destination.droppableId === source.droppableId && destination.index === source.index) return;
 
-        if (source.droppableId === 'req-drop') {
-            const updatedRequests = Array.from(requests);
-            const [removed] = updatedRequests.splice(source.index, 1);
-            updatedRequests.splice(destination.index, 0, removed);
-            setRequests(updatedRequests);
-        } else {
-            const updatedAccepted = Array.from(accepted);
-            const [removed] = updatedAccepted.splice(source.index, 1);
-            updatedAccepted.splice(destination.index, 0, removed);
-            setAccepted(updatedAccepted);
+        if (source.droppableId === destination.droppableId) {            
+            if (source.droppableId === 'req-drop') {
+                const updatedRequests = Array.from(requests);
+                const [removed] = updatedRequests.splice(source.index, 1);
+                updatedRequests.splice(destination.index, 0, removed);
+                setRequests(updatedRequests);
+            } else {
+                const updatedAccepted = Array.from(accepted);
+                const [removed] = updatedAccepted.splice(source.index, 1);
+                updatedAccepted.splice(destination.index, 0, removed);
+                setAccepted(updatedAccepted);
+            }
         }
 
     }
@@ -178,22 +180,29 @@ function Admin() {
                         <button className='requests-controls' onClick={handlePush}>push marked</button>
                     </div>
                     <Droppable droppableId='req-drop'>
-                        {(provided) => (
-                            <div id='requests-map-container'
+                        {(provided, snapshot) => (
+                            <div
                                 ref={provided.innerRef}
                                 {...provided.droppableProps}
-                            >
-                                {requests && requests.map((value, index) => {
-                                    return <Request key={index} index={index} request={value} toPush={toPush} setToPush={setToPush} />
-                                })}
-                                {provided.placeholder}
+                                isDraggingOver={snapshot.isDraggingOver}>
+                                <div id='requests-map-container'
+                                    style={{
+                                        backgroundColor: snapshot.isDraggingOver ? '#3a4a58' : '',
+                                        transition: 'background-color 0.2s ease'
+                                    }}
+                                >
+                                    {requests && requests.map((value, index) => {
+                                        return <Request key={index} index={index} request={value} toPush={toPush} setToPush={setToPush} />
+                                    })}
+                                    {provided.placeholder}
+                                </div>
                             </div>
                         )}
                     </Droppable>
                 </div>
                 <div id='playlist-container'>
                     <div id='player-container'>
-                    {display && <ReactPlayer url={songList && [...songList]} controls={true} onDuration={(e) => setDuration(e)} onProgress={e => handleProgress(e)} />}
+                        {display && <ReactPlayer url={songList && [...songList]} controls={true} onDuration={(e) => setDuration(e)} onProgress={e => handleProgress(e)} />}
                     </div>
                     <div className='admin-headers' id='playlist-header'>תור השמעה</div>
                     <div id='requests-control-container'>
@@ -202,15 +211,23 @@ function Admin() {
                         <button className='requests-controls' onClick={() => console.log('push marked')}>push marked</button>
                     </div>
                     <Droppable droppableId='acc-drop'>
-                        {(provided) => (
-                            <div id='requests-map-container'
+                        {(provided, snapshot) => (
+                            <div
                                 ref={provided.innerRef}
                                 {...provided.droppableProps}
+                                isDraggingOver={snapshot.isDraggingOver}
                             >
-                                {accepted && accepted.filter((v, i) => i >= parseInt(localStorage.getItem('songIndex'))).map((value, index) => {
-                                    return <Accepted key={index} index={index} accept={value} checkedAccept={checkedAccept} setCheckedAccept={setCheckedAccept} />
-                                })}
-                                {provided.placeholder}
+                                <div id='requests-map-container'
+                                    style={{
+                                        backgroundColor: snapshot.isDraggingOver ? '#3a4a58' : '',
+                                        transition: 'background-color 0.2s ease'
+                                    }}
+                                >
+                                    {accepted && accepted.filter((v, i) => i >= parseInt(localStorage.getItem('songIndex'))).map((value, index) => {
+                                        return <Accepted key={index} index={index} accept={value} checkedAccept={checkedAccept} setCheckedAccept={setCheckedAccept} />
+                                    })}
+                                    {provided.placeholder}
+                                </div>
                             </div>
                         )}
                     </Droppable>

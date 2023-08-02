@@ -20,19 +20,21 @@ function Request({ request, toPush, setToPush, index }) {
     return (
         <Draggable key={request._id} draggableId={request._id} index={index}>
             {(provided, snapshot) => (
-                <div 
+                <div
                     {...provided.draggableProps}
-                    {...provided.dragHandleProps}
                     ref={provided.innerRef}
                     isDragging={snapshot.isDragging}
                 >
                     <div id='single-request-container'
                         style={{
                             borderColor: snapshot.isDragging ? '#9DB2BF' : '',
-                            backgroundColor: snapshot.isDragging ? '#3a4a58' : ''
+                            backgroundColor: snapshot.isDragging ? '#9DB2BF' : '',
+                            transition: 'background-color 0.2s ease'
                         }}
                     >
-                        <div id='request-adjust' className='request-spacers'>
+                        <div id='request-adjust' className='request-spacers'
+                            {...provided.dragHandleProps}
+                        >
                             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIUlEQVR4nGNgGBRASkrqP6l4oN086IDUaCBSDqRGdiACALgqMrxHDJ9hAAAAAElFTkSuQmCC" />
                         </div>
                         <div id='request-img-container'>

@@ -21,15 +21,19 @@ function Accepted({ accept, checkedAccept, setCheckedAccept, index }) {
             {(provided, snapshot) => (
                 <div
                     {...provided.draggableProps}
-                    {...provided.dragHandleProps}
                     ref={provided.innerRef}
+                    isDragging={snapshot.isDragging}
                 >
                     <div id='single-accept-container'
                         style={{
-                            backgroundColor: snapshot.isDragging ? '#9DB2BF' : ''
+                            borderColor: snapshot.isDragging ? '#9DB2BF' : '',
+                            backgroundColor: snapshot.isDragging ? '#9DB2BF' : '',
+                            transition: 'background-color 0.2s ease'
                         }}
                     >
-                        <div id='accept-adjust' className='accept-spacers'>
+                        <div id='accept-adjust' className='accept-spacers'
+                            {...provided.dragHandleProps}
+                        >
                             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIUlEQVR4nGNgGBRASkrqP6l4oN086IDUaCBSDqRGdiACALgqMrxHDJ9hAAAAAElFTkSuQmCC" />
                         </div>
                         <div id='accept-img-container'>
