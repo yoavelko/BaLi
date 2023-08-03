@@ -10,6 +10,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import cookies from 'js-cookie'
 import { useNavigate } from 'react-router-dom'
 import TimeComapre from '../functions/TimeCompare';
+import { changeAccepted } from '../../../utils/Establishment';
 
 function Admin() {
 
@@ -21,6 +22,7 @@ function Admin() {
     const [songList, setSongList] = useState();
     const [display, setDisplay] = useState(true);
     const [muted, setMuted] = useState(true);
+    const [currentSong, setCurrentSong] = useState();
     const date = new Date();
     const yyyy = date.getFullYear();
     let mm = date.getMonth() + 1;
@@ -66,11 +68,16 @@ function Admin() {
         if (accepted) {
             (accepted[0]?.today !== today) && localStorage.setItem('songIndex', 0)
         }
-        accepted && setSongList(accepted.filter((v,i) => i >= parseInt(localStorage.getItem('songIndex'))))
+        accepted && setSongList(accepted.filter((v, i) => i >= parseInt(localStorage.getItem('songIndex'))))
     }, [accepted])
     useEffect(() => {
         if (!display) {
-            // setSongList(accepted.filter((v, i) => i >= parseInt(localStorage.getItem('songIndex'))))
+            if (songList) {
+                setCurrentSong(songList[0]?.url)
+            }
+            else {
+                setCurrentSong(accepted.filter((v, i) => i >= parseInt(localStorage.getItem('songIndex')))[0]?.url)
+            }
             setDisplay(true)
         }
         else {
@@ -137,27 +144,37 @@ function Admin() {
         if (!destination) return;
         if (destination.droppableId === source.droppableId && destination.index === source.index) return;
 
-        if (source.droppableId === destination.droppableId) {            
+        if (source.droppableId === destination.droppableId) {
             if (source.droppableId === 'req-drop') {
                 const updatedRequests = Array.from(requests);
                 const [removed] = updatedRequests.splice(source.index, 1);
                 updatedRequests.splice(destination.index, 0, removed);
                 setRequests(updatedRequests);
             } else {
-                const updatedAccepted = Array.from(accepted);
+                const updatedAccepted = Array.from(songList);
                 const [removed] = updatedAccepted.splice(source.index, 1);
                 updatedAccepted.splice(destination.index, 0, removed);
-                setAccepted(updatedAccepted);
+                setSongList(updatedAccepted);
             }
         } else {
             const updatedRequests = Array.from(requests);
-            const updatedAccepted = Array.from(accepted);
+            const updatedAccepted = Array.from(songList);
             if (source.droppableId === 'req-drop') {
                 const [removed] = updatedRequests.splice(source.index, 1);
                 const filter = updatedRequests.filter(a => a != removed)
                 updatedAccepted.splice(destination.index, 0, removed);
                 setRequests(filter);
-                setAccepted(updatedAccepted);
+                setSongList(updatedAccepted);
+                console.log(accepted.slice(0, parseInt(localStorage.getItem('songIndex'))).concat(updatedAccepted).map(v => v.name));
+                axios.patch(changeAccepted, {
+                    establishment: cookies.get('establishment'),
+                    today,
+                    accepted: accepted.slice(0, parseInt(localStorage.getItem('songIndex'))).concat(updatedAccepted).map(v => v._id)
+                })
+                .then(({data}) => console.log(data))
+                .catch(err => {
+                    alert('An error has occured: ' + err.response.data)
+                })
             }
         }
 
@@ -166,17 +183,13 @@ function Admin() {
     function handleProgress(e) {
         if ((duration - e.playedSeconds) < 3) {
             localStorage.setItem('songIndex', parseInt(localStorage.getItem('songIndex')) + 1)
-            setSongList()
+            setSongList(accepted.filter((v, i) => i >= parseInt(localStorage.getItem('songIndex'))))
             setDisplay(false)
         }
     }
 
-    const actualSongList = useMemo(() => {
-        songList && songList.map(v => v.url)
-    }, [display])
-
     return (
-        <DragDropContext onDragEnd={handleDrop} onDragStart={(result) => (console.log(result.source))}>
+        <DragDropContext onDragEnd={handleDrop}>
             <div id='admin-container' dir='rtl'>
                 <div id='requests-container'>
                     <div className='admin-headers'>בקשות ממתינות</div>
@@ -208,7 +221,7 @@ function Admin() {
                 </div>
                 <div id='playlist-container'>
                     <div id='player-container'>
-                        {display && <ReactPlayer width={'90%'} playing={true} muted={muted} url={songList && songList.map(v => v.url)} controls={true} onDuration={(e) => setDuration(e)} onProgress={e => handleProgress(e)} />}
+                        {display && <ReactPlayer width={'90%'} playing={true} muted={muted} url={currentSong} controls={true} onDuration={(e) => setDuration(e)} onProgress={e => handleProgress(e)} />}
                     </div>
                     <div className='admin-headers' id='playlist-header'>תור השמעה</div>
                     <div id='requests-control-container'>
@@ -229,9 +242,9 @@ function Admin() {
                                         transition: 'background-color 0.2s ease'
                                     }}
                                 >
-                                {songList && songList.map((value, index) => {
-                                    return <Accepted key={index} index={index} accept={value} checkedAccept={checkedAccept} setCheckedAccept={setCheckedAccept} />
-                                })}
+                                    {songList && songList.map((value, index) => {
+                                        return <Accepted key={index} index={index} accept={value} checkedAccept={checkedAccept} setCheckedAccept={setCheckedAccept} />
+                                    })}
                                     {provided.placeholder}
                                 </div>
                             </div>
