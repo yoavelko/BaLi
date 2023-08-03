@@ -170,6 +170,7 @@ function Admin() {
                     accepted: accepted.slice(0, parseInt(localStorage.getItem('songIndex'))).concat(updatedAccepted).map(v => v._id)
                 })
                 .then(({data}) => {
+                    if(data.history[today].accepted[0]._id !== songList[0]._id) setDisplay(false)
                     setAccepted(data.history[today].accepted)
                 })
             }
@@ -188,6 +189,7 @@ function Admin() {
                     accepted: accepted.slice(0, parseInt(localStorage.getItem('songIndex'))).concat(updatedAccepted).map(v => v._id)
                 })
                 .then(({data}) => {
+                    if(data.history[today].accepted[0]._id !== songList[0]._id) setDisplay(false)
                     setAccepted(data.history[today].accepted)
                 })
                 .catch(err => {
