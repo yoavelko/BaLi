@@ -1,5 +1,4 @@
 import './SuggestionBox.css'
-import { useState } from 'react';
 
 function SuggestionBox({ video, setShowModal, setModalContent }) {
 
@@ -43,7 +42,7 @@ function SuggestionBox({ video, setShowModal, setModalContent }) {
     return (
         <div id='suggestion-box-container' dir='rtl' onClick={() => {setShowModal(true), setModalContent(content)}}>
             <div id='suggestion-img-container'>
-                <img src={video.img} alt="" />
+                <img width={'100px'} src={video.img} alt="" />
             </div>
             <div id='suggestion-detail-container'>
                 <div id='suggestion-video-name'>{title}</div>

@@ -68,14 +68,16 @@
     justify-content: center;
     align-items: center;
     margin-right: 7%;
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     font-size: 10px;
     font-weight: 600;
     background-color: var(--main);
     border: 1px solid var(--main);
     color: var(--sub);
     border-radius: 5px;
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
 }
 
 #your-choice {

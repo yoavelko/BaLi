@@ -1,21 +1,22 @@
 #suggestion-img-container {
-    width: 120px;
-    height: 90px;
+    width: 100px;
 }
 
 #suggestion-box-container {
     display: flex;
-    justify-content: space-evenly;
-    margin: 5%;
+    justify-content: space-between;
+    margin: 1%;
+    height: 75px;
 }
 
 #suggestion-detail-container {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    width: 60%;
-    border-bottom: 1px solid var(--white);
-    border-top: 1px solid var(--white);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+    flex-grow: 1;
+    margin-left: 3%;
+    margin-right: 3%;
 }
 
 #suggestion-small-row-container {

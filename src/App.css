@@ -15,7 +15,7 @@
     /* font-family: 'Open Sans Hebrew Condensed', serif; */
     font-family: 'Rubik', sans-serif;
     /* font-family: 'Heebo', sans-serif; */
-    --main: #2D4356;
-    --sub: #9DB2BF;
+    --main: black;
+    --sub: rgb(255, 255, 255);
     --white: rgba(255, 255, 255, 0.8);
 }

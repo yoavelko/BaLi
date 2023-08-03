@@ -4,7 +4,13 @@
     justify-content: space-evenly;
     height: 70px;
     border: 2px solid black;
-    margin: 16px;
+    padding: 8px;
+    border-radius: 8px;
+}
+
+#single-accept-container:hover {
+    background-color: rgb(40, 40, 40);
+    cursor: pointer;
 }
 
 .accept-spacers {
