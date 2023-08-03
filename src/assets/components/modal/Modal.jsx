@@ -4,6 +4,8 @@ import axios from 'axios'
 import { sendSong } from '../../../utils/UserRoutes'
 import { SocketContext } from '../../../contexts/SocketContext'
 import cookies from 'js-cookie'
+import back from './../../../media/back.png'
+
 function Modal({ onClose, modalContent }) {
 
     const [checked, setChecked] = useState(false)
@@ -42,7 +44,9 @@ function Modal({ onClose, modalContent }) {
     return (
         <div id='modal-outer-container'>
             <div id='modal-container'>
-                <button id='close-modal' onClick={onClose}>X</button>
+                <div id='close-modal'>
+                    <img src={back} alt="" onClick={onClose} />
+                </div>
                 <div dir='rtl' id='your-choice'>השיר שבחרת:</div>
                 <div id='modal-img-container'>
                     <img src={modalContent.img} alt="" />

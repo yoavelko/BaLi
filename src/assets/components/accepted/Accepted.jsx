@@ -1,18 +1,23 @@
+import { useState } from 'react'
 import './Accepted.css'
 import { Draggable } from 'react-beautiful-dnd'
 
 function Accepted({ accept, checkedAccept, setCheckedAccept, index }) {
 
+    const [checked, setChecked] = useState(false)
+
     let title = accept.name
-    if (accept.name.length > 50) {
-        title = accept.name.slice(0, 50) + '...'
+    if (accept.name.length > 40) {
+        title = accept.name.slice(0, 40) + '...'
     }
 
     function handlePush() {
         if (checkedAccept.includes(accept._id)) {
             setCheckedAccept(checkedAccept.filter(e => e != accept._id))
+            console.log(checkedAccept)
         } else {
             setCheckedAccept([...checkedAccept, accept._id])
+            console.log(checkedAccept)
         }
     }
 
@@ -36,18 +41,21 @@ function Accepted({ accept, checkedAccept, setCheckedAccept, index }) {
                         >
                             <div id='accept-adjust' className='accept-spacers'
                             >
-                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIUlEQVR4nGNgGBRASkrqP6l4oN086IDUaCBSDqRGdiACALgqMrxHDJ9hAAAAAElFTkSuQmCC" />
+                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAN0lEQVR4nGNgGAXEgP///zf8pyJgwGKBA9QSqmCGUTACwX9ap6L/tM4Ho2AUUA5Gi+tRwEAJAABV5r4vuTw0OwAAAABJRU5ErkJggg==" />
                             </div>
                         </div>
-                        <div id='accept-img-container'>
+                        <div id='accept-img-container' onClick={() => { setChecked(!checked), handlePush() }}>
                             <img id='accept-img' src={accept.img} alt="" />
                         </div>
-                        <div id='accept-box-container'>
+                        <div id='accept-box-container' onClick={() => { setChecked(!checked), handlePush() }}>
                             <div>{title}</div>
                             <div>{accept.artist}</div>
                         </div>
                         <div id='accept-input' className='request-spacers'>
-                            <input type="checkbox" onChange={handlePush} />
+                            <label class="checkBox">
+                                <input id="ch1" type="checkbox" checked={checked} onChange={() => {setChecked(!checked), handlePush()}} />
+                                <div class="transition"></div>
+                            </label>
                         </div>
                     </div>
                 </div>

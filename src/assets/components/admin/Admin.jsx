@@ -171,10 +171,10 @@ function Admin() {
                     today,
                     accepted: accepted.slice(0, parseInt(localStorage.getItem('songIndex'))).concat(updatedAccepted).map(v => v._id)
                 })
-                .then(({data}) => console.log(data))
-                .catch(err => {
-                    alert('An error has occured: ' + err.response.data)
-                })
+                    .then(({ data }) => console.log(data))
+                    .catch(err => {
+                        alert('An error has occured: ' + err.response.data)
+                    })
             }
         }
 
@@ -194,9 +194,15 @@ function Admin() {
                 <div id='requests-container'>
                     <div className='admin-headers'>בקשות ממתינות</div>
                     <div id='requests-control-container'>
-                        <button className='requests-controls' onClick={() => console.log(requests)}>filter</button>
-                        <button className='requests-controls' onClick={handleRequestDelete}>delete marked</button>
-                        <button className='requests-controls' onClick={handlePush}>push marked</button>
+                    <div className='requests-controls' onClick={() => console.log('mark all')}>
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACDklEQVR4nO3XzYtNcRwG8GvBeFmgzJAojJEa/wBKJpQsWFmIjZWSFGWh2WBvocRGETFTsvBSFjZkZ6MMU5MS2SFkzOT9o5/7Lcd1Hefce+dKzVNnc3/P93me3/vvVir/KzANs9tlNgUbcBwPMeonPuARTqIvcVttvg33/Y5xvKnz+zC2tsJ4FgYyws9wDGswPcPrwGocwdPg3saMZsznYyjE3mJvmvMCdVOxM2uOrvSV7fm9ME8heproSFdoDBUOgYthPoJ5LTBXOADWRcE7dLfVPCEz9Icr/8C8N4peZFd5W8wTYoslnKpMgHlM78E8gVtRvHkCzHswljzyRB6HwPI64l3NDDsWR/vzvADjQeqoI/4AnY2YZ07LhNG8AK+CNKfGIJmrDVFmwWFm8MbyAowE6Zf9n0wzIX4YlV3tmR02nEe6EaQdddo6awxLbTVsD/71PNL+IJ3/Q3s2RKl9jsGoOZBH6sa32C4LWnW5pPsE7/EVi/5GvhxJT+RwSl2vOB2a14qQV+FLfJuKmuTo9YXWR6woWtQfiV+mQE2Y92aebEfLPkCvZl5DGxsw34LXoTFY+qGqenJdCoG0MM9hYYG6JTgTCy7hSqM3ayVGoj9zRH/GTezBeizDSqzFvjhH0lwnfMKhljzRVXs1kBHPQwp5FkubNq4F5mJ3GNzBk/gPcBcXsKvUA2QSk6hU8R1JikRUQUXaOwAAAABJRU5ErkJggg==" />
+                        </div>
+                        <div className='requests-controls' onClick={handleRequestDelete}>
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAkElEQVR4nO2X0QqAIAxFfeqXIvy/rP9Uf+OGtSAoqLkJFTtvOue97D7NOeMhADoAM4CMM+VuKm9cK7CJ3xFaGsgk0l/UBqqllgZWautsIW2+Y2CnulGp373OAIRnM8AGFgGhNRGLgA0sAkJrIhbB9yPgomEg0R++otdTb5QYCJAzSheRcJgEh1jEmy4qxm9YAOFdIIezfl43AAAAAElFTkSuQmCC" />
+                        </div>
+                        <div className='requests-controls' onClick={handlePush}>
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAA00lEQVR4nO2WTQrCMBBG4yFcGBeeSsED2MO5VHfeSKRiL/CkGK2IqfmZJKD5NqWLkDcvwzBK1dRYAuwBrSKDSejBFmhKAjwSbEMCoDPfE7AqAaCNgSAb0QBq+F+anvDqDTGAPsAM2PnYEAWw2LiM2UgCYLFx+GQjGYCrjeQAIzbm2QD6ABNgA1zN0TOwzgZge45cT6DfhtWzIZMCcNfevGjP14TAAjh+G0riAAxVdy5jWRQAx6rFAfCsWhSAgKp/biEpupK1JZfSLTCNuTwKoOZvcgMNuAN9+8nzgAAAAABJRU5ErkJggg==" />
+                        </div>
                     </div>
                     <Droppable droppableId='req-drop'>
                         {(provided, snapshot) => (
@@ -225,9 +231,15 @@ function Admin() {
                     </div>
                     <div className='admin-headers' id='playlist-header'>תור השמעה</div>
                     <div id='requests-control-container'>
-                        <button className='requests-controls' onClick={() => console.log('filter')}>filter</button>
-                        <button className='requests-controls' onClick={handleAcceptDelete}>delete marked</button>
-                        <button className='requests-controls' onClick={() => console.log('push marked')}>push marked</button>
+                        <div className='requests-controls' onClick={() => console.log('mark all')}>
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACDklEQVR4nO3XzYtNcRwG8GvBeFmgzJAojJEa/wBKJpQsWFmIjZWSFGWh2WBvocRGETFTsvBSFjZkZ6MMU5MS2SFkzOT9o5/7Lcd1Hefce+dKzVNnc3/P93me3/vvVir/KzANs9tlNgUbcBwPMeonPuARTqIvcVttvg33/Y5xvKnz+zC2tsJ4FgYyws9wDGswPcPrwGocwdPg3saMZsznYyjE3mJvmvMCdVOxM2uOrvSV7fm9ME8heproSFdoDBUOgYthPoJ5LTBXOADWRcE7dLfVPCEz9Icr/8C8N4peZFd5W8wTYoslnKpMgHlM78E8gVtRvHkCzHswljzyRB6HwPI64l3NDDsWR/vzvADjQeqoI/4AnY2YZ07LhNG8AK+CNKfGIJmrDVFmwWFm8MbyAowE6Zf9n0wzIX4YlV3tmR02nEe6EaQdddo6awxLbTVsD/71PNL+IJ3/Q3s2RKl9jsGoOZBH6sa32C4LWnW5pPsE7/EVi/5GvhxJT+RwSl2vOB2a14qQV+FLfJuKmuTo9YXWR6woWtQfiV+mQE2Y92aebEfLPkCvZl5DGxsw34LXoTFY+qGqenJdCoG0MM9hYYG6JTgTCy7hSqM3ayVGoj9zRH/GTezBeizDSqzFvjhH0lwnfMKhljzRVXs1kBHPQwp5FkubNq4F5mJ3GNzBk/gPcBcXsKvUA2QSk6hU8R1JikRUQUXaOwAAAABJRU5ErkJggg==" />
+                        </div>
+                        <div className='requests-controls' onClick={handleAcceptDelete}>
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAkElEQVR4nO2X0QqAIAxFfeqXIvy/rP9Uf+OGtSAoqLkJFTtvOue97D7NOeMhADoAM4CMM+VuKm9cK7CJ3xFaGsgk0l/UBqqllgZWautsIW2+Y2CnulGp373OAIRnM8AGFgGhNRGLgA0sAkJrIhbB9yPgomEg0R++otdTb5QYCJAzSheRcJgEh1jEmy4qxm9YAOFdIIezfl43AAAAAElFTkSuQmCC" />
+                        </div>
+                        <div className='requests-controls' onClick={() => console.log('play next')}>
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAA00lEQVR4nO2WTQrCMBBG4yFcGBeeSsED2MO5VHfeSKRiL/CkGK2IqfmZJKD5NqWLkDcvwzBK1dRYAuwBrSKDSejBFmhKAjwSbEMCoDPfE7AqAaCNgSAb0QBq+F+anvDqDTGAPsAM2PnYEAWw2LiM2UgCYLFx+GQjGYCrjeQAIzbm2QD6ABNgA1zN0TOwzgZge45cT6DfhtWzIZMCcNfevGjP14TAAjh+G0riAAxVdy5jWRQAx6rFAfCsWhSAgKp/biEpupK1JZfSLTCNuTwKoOZvcgMNuAN9+8nzgAAAAABJRU5ErkJggg==" />
+                        </div>
                     </div>
                     <Droppable droppableId='acc-drop'>
                         {(provided, snapshot) => (

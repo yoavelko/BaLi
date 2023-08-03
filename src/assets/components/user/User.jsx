@@ -7,7 +7,7 @@ import Modal from '../modal/Modal';
 import axios from 'axios'
 import { getDummyIsrael, getDummyOverall, searchSong, newUser } from '../../../utils/UserRoutes'
 import { estabBest } from '../../../utils/Establishment';
-import LOGO from './../../../media/UP2U.png'
+import LOGO from './../../../media/LOGO.png'
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import cookies from 'js-cookie'
 
@@ -97,11 +97,11 @@ function User() {
                     })}
                 </div>
                 <div id='user-footer'>
-                    <div onClick={() => setSection('israel')}>ישראל</div>
+                    <div onClick={() => {setSection('israel'), window.scrollTo({top: 0, behavior: 'smooth'})}}>ישראל</div>
                     <div>|</div>
-                    <div onClick={() => setSection('overall')}>עולמי</div>
+                    <div onClick={() => {setSection('overall'), window.scrollTo({top: 0, behavior: 'smooth'})}}>עולמי</div>
                     <div>|</div>
-                    <div onClick={() => setSection('establishment')}>UP2U</div>
+                    <div onClick={() => {setSection('establishment'), window.scrollTo({top: 0, behavior: 'smooth'})}}>UP2U</div>
                 </div>
             </div>
             {showModal && createPortal(
