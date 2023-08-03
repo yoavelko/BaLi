@@ -10,7 +10,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import cookies from 'js-cookie'
 import { useNavigate } from 'react-router-dom'
 import TimeComapre from '../functions/TimeCompare';
-import { changeAccepted } from '../../../utils/Establishment';
+import { changeAccepted, changeRequested } from '../../../utils/Establishment';
 
 function Admin() {
 
@@ -150,11 +150,28 @@ function Admin() {
                 const [removed] = updatedRequests.splice(source.index, 1);
                 updatedRequests.splice(destination.index, 0, removed);
                 setRequests(updatedRequests);
+                axios.post(changeRequested, {
+                    establishment: cookies.get('establishment'),
+                    today,
+                    requested: updatedRequests.map(v => v._id)
+                })
+                .then(({data}) => console.log(data))
+                .catch(err => {
+                    alert('An error has occured: ' + err.response.data)
+                })
             } else {
                 const updatedAccepted = Array.from(songList);
                 const [removed] = updatedAccepted.splice(source.index, 1);
                 updatedAccepted.splice(destination.index, 0, removed);
                 setSongList(updatedAccepted);
+                axios.patch(changeAccepted, {
+                    establishment: cookies.get('establishment'),
+                    today,
+                    accepted: accepted.slice(0, parseInt(localStorage.getItem('songIndex'))).concat(updatedAccepted).map(v => v._id)
+                })
+                .then(({data}) => {
+                    setAccepted(data.history[today].accepted)
+                })
             }
         } else {
             const updatedRequests = Array.from(requests);
@@ -165,13 +182,14 @@ function Admin() {
                 updatedAccepted.splice(destination.index, 0, removed);
                 setRequests(filter);
                 setSongList(updatedAccepted);
-                console.log(accepted.slice(0, parseInt(localStorage.getItem('songIndex'))).concat(updatedAccepted).map(v => v.name));
                 axios.patch(changeAccepted, {
                     establishment: cookies.get('establishment'),
                     today,
                     accepted: accepted.slice(0, parseInt(localStorage.getItem('songIndex'))).concat(updatedAccepted).map(v => v._id)
                 })
-                .then(({data}) => console.log(data))
+                .then(({data}) => {
+                    setAccepted(data.history[today].accepted)
+                })
                 .catch(err => {
                     alert('An error has occured: ' + err.response.data)
                 })
