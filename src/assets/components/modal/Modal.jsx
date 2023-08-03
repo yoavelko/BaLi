@@ -30,6 +30,7 @@ function Modal({ onClose, modalContent }) {
                 })
                 .catch((err) => {
                     console.log(err);
+                    alert('ניתן לשלוח עד 3 שירים')
                 })
         } else {
             alert('נא לאשר את תנאי השימוש לפני שליחה')
