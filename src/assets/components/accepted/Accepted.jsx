@@ -4,8 +4,8 @@ import { Draggable } from 'react-beautiful-dnd'
 function Accepted({ accept, checkedAccept, setCheckedAccept, index }) {
 
     let title = accept.name
-    if (accept.name.length > 20) {
-        title = accept.name.slice(0, 35) + '...'
+    if (accept.name.length > 50) {
+        title = accept.name.slice(0, 50) + '...'
     }
 
     function handlePush() {

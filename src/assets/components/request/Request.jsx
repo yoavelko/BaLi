@@ -5,8 +5,8 @@ import TimeComapre from '../functions/TimeCompare'
 function Request({ request, toPush, setToPush, index }) {
 
     let title = request.name
-    if (request.name.length > 20) {
-        title = request.name.slice(0, 35) + '...'
+    if (request.name.length > 50) {
+        title = request.name.slice(0, 50) + '...'
     }
 
     function hadnlePush() {
