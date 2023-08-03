@@ -42,7 +42,7 @@ function User() {
                 .catch((err) => {
                     console.log(err);
                 })
-        } else {
+        } else if (section === 'establishment') {
             axios.post(estabBest, {
                 establishment: cookies.get('establishment')
             })
