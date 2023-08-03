@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Modal from '../modal/Modal';
 import axios from 'axios'
 import { getDummyIsrael, getDummyOverall, searchSong, newUser } from '../../../utils/UserRoutes'
+import { estabBest } from '../../../utils/Establishment';
 import LOGO from './../../../media/UP2U.png'
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import cookies from 'js-cookie'
@@ -41,6 +42,16 @@ function User() {
                 .catch((err) => {
                     console.log(err);
                 })
+        } else {
+            axios.post(estabBest, {
+                establishment: cookies.get('establishment')
+            })
+            .then((res) => {
+                setData(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
         }
     }, [section])
 
@@ -90,7 +101,7 @@ function User() {
                     <div>|</div>
                     <div onClick={() => setSection('overall')}>עולמי</div>
                     <div>|</div>
-                    <div>UP2U</div>
+                    <div onClick={() => setSection('establishment')}>UP2U</div>
                 </div>
             </div>
             {showModal && createPortal(
