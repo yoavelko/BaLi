@@ -30,8 +30,8 @@ function Request({ request, toPush, setToPush, index }) {
                 >
                     <div id='single-request-container'
                         style={{
-                            borderColor: snapshot.isDragging ? '#9DB2BF' : '',
-                            backgroundColor: snapshot.isDragging ? '#9DB2BF' : '',
+                            borderColor: snapshot.isDragging ? 'rgb(40, 40, 40)' : '',
+                            backgroundColor: snapshot.isDragging ? 'rgb(40, 40, 40)' : '',
                             transition: 'background-color 0.2s ease'
                         }}
                     >

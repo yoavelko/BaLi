@@ -62,6 +62,7 @@ function User() {
             .then((res) => {
                 setData(res.data)
                 setSection('search')
+                window.scrollTo({top: 0, behavior: 'smooth'})
             })
             .catch((err) => {
                 console.log(err);

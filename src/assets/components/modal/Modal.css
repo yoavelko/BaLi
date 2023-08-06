@@ -17,8 +17,8 @@
     --sub: #9DB2BF;
     --white: rgba(255, 255, 255, 0.8);
     margin-top: 40%;
-    background-color: var(--sub);
-    color: var(--main);
+    background-color: rgb(150, 150, 150);
+    color: black;
     width: 100%;
     height: 60%;
     display: flex;
@@ -72,8 +72,8 @@
     height: 32px;
     font-size: 10px;
     font-weight: 600;
-    background-color: var(--main);
-    border: 1px solid var(--main);
+    background-color: black;
+    border: 1px solid black;
     color: var(--sub);
     border-radius: 5px;
     -webkit-transform: scaleX(-1);
@@ -93,7 +93,7 @@
     height: 40px;
     border-radius: 10px;
     border: 1px solid var(--sub);
-    background-color: var(--main);
+    background-color: black;
     color: var(--sub);
     font-weight: 600;
     font-size: 16px;
@@ -101,4 +101,21 @@
 
 .modal-small-row {
     text-align: center;
+}
+
+
+@media screen and (min-width: 768px) {
+
+    #modal-outer-container {
+        height: calc(55vh - 24px);
+        width: 100%;
+        position: inherit;
+        transform: translate(0, 0);
+    }
+
+    #modal-container {
+        width: 100%;
+        height: 100%;
+        margin-top: 0;
+    }
 }
