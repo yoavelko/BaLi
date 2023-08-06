@@ -8,7 +8,7 @@ function Request({ request, toPush, setToPush, index }) {
     const [checked, setChecked] = useState(false)
 
     let title = request.name
-    if (request.name.length > 50) {
+    if (request.name?.length > 50) {
         title = request.name.slice(0, 50) + '...'
     }
 
@@ -53,9 +53,9 @@ function Request({ request, toPush, setToPush, index }) {
                             </div>
                         </div>
                         <div id='request-input' className='request-spacers'>
-                            <label class="checkBox">
+                            <label className="checkBox">
                                 <input id="ch1" type="checkbox" checked={checked} onChange={() => {setChecked(!checked), hadnlePush()}} />
-                                <div class="transition"></div>
+                                <div className="transition"></div>
                             </label>
                         </div>
                     </div>

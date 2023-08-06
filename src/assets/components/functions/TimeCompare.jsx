@@ -10,8 +10,8 @@ function TimeComapre(sent) {
         min = `0${date.getMinutes()}`
     }
     const time = hour + ':' + min
-    let minDifference = parseInt(time.slice(3, 5)) - parseInt(sent.slice(3, 5));
-    let hourDifference = parseInt(time.slice(0, 2)) - parseInt(sent.slice(0, 2));
+    let minDifference = parseInt(time.slice(3, 5)) - parseInt(sent?.slice(3, 5));
+    let hourDifference = parseInt(time.slice(0, 2)) - parseInt(sent?.slice(0, 2));
     if (hourDifference === 1) {
         hourDifference = 'שעה'
     } else if (hourDifference === 2) {
@@ -24,7 +24,7 @@ function TimeComapre(sent) {
     }
 
 
-    if (sent.slice(0, 2) === time.slice(0, 2)) {
+    if (sent?.slice(0, 2) === time.slice(0, 2)) {
         if (minDifference === 'דקה') {
             return 'נשלח לפני דקה'
         } else {
