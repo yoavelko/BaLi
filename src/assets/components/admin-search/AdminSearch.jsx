@@ -7,6 +7,7 @@ import cookies from 'js-cookie'
 import back from './../../../media/back.png'
 import { sendSong } from '../../../utils/UserRoutes'
 import { Socket } from 'socket.io-client'
+import LOGO from './../../../media/LOGO.png'
 
 function AdminSearch() {
 
@@ -49,7 +50,8 @@ function AdminSearch() {
         })
             .then((res) => {
                 console.log(`sent: ${adminModalContent.name}`);
-                socket.emit('test', res.data, cookies.get('establishment'));
+                Socket.emit('test', res.data, cookies.get('establishment'));
+                alert('השיר נשלח בהצלחה')
             })
             .catch((err) => {
                 console.log(err.response);
@@ -61,21 +63,22 @@ function AdminSearch() {
     return (
         <div id='admin-search-container'>
             <div id='admin-search'>
-                <input id='user-searchbar' type="text" placeholder=' חפש...' onChange={(e) => { setInput(e.target.value) }} onKeyDown={handleKeyPress} />
-                <div id='user-search-breaker'></div>
-                <button id='search-button' onClick={handleSearch}>חפש</button>
-                <button onClick={() => setHideSearch(!hideSearch)}>
+                <input id='admin-searchbar' type="text" placeholder=' חפש...' onChange={(e) => { setInput(e.target.value) }} onKeyDown={handleKeyPress} />
+                <div className='admin-search-buttons' onClick={handleSearch}>חפש</div>
+                <div className='admin-search-buttons' id='hide-button' onClick={() => setHideSearch(!hideSearch)}>
                     {
                         hideSearch ?
                             'הצג חיפוש'
                             :
                             'הסתר חיפוש'
                     }
-                </button>
+                </div>
             </div>
             {
                 hideSearch ?
-                    <></>
+                    <div id='admin-search-logo-placeholder'>
+                        <img src={LOGO} alt="" />
+                    </div>
                     :
                     adminModal ?
                         <div id='admin-search-results'>
