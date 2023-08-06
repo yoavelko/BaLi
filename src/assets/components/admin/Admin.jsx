@@ -11,6 +11,7 @@ import cookies from 'js-cookie'
 import { useNavigate } from 'react-router-dom'
 import TimeComapre from '../functions/TimeCompare';
 import { changeAccepted, changeRequested } from '../../../utils/Establishment';
+import AdminSearch from '../admin-search/AdminSearch';
 
 function Admin() {
 
@@ -233,6 +234,7 @@ function Admin() {
         <DragDropContext onDragEnd={handleDrop}>
             <div id='admin-container' dir='rtl'>
                 <div id='requests-container'>
+                    <AdminSearch />
                     <div className='admin-headers'>בקשות ממתינות</div>
                     <div id='requests-control-container'>
                         <div className='requests-controls' onClick={() => console.log('mark all')}>
@@ -253,7 +255,7 @@ function Admin() {
                                 isDraggingOver={snapshot.isDraggingOver}>
                                 <div id='requests-map-container'
                                     style={{
-                                        backgroundColor: snapshot.isDraggingOver ? '#3a4a58' : '',
+                                        backgroundColor: snapshot.isDraggingOver ? 'rgba(255, 255, 255, 0.2)' : '',
                                         transition: 'background-color 0.2s ease'
                                     }}
                                 >
@@ -291,7 +293,7 @@ function Admin() {
                             >
                                 <div id='requests-map-container'
                                     style={{
-                                        backgroundColor: snapshot.isDraggingOver ? '#3a4a58' : '',
+                                        backgroundColor: snapshot.isDraggingOver ? 'rgba(255, 255, 255, 0.2)' : '',
                                         transition: 'background-color 0.2s ease'
                                     }}
                                 >

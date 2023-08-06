@@ -1,0 +1,10 @@
+#admin-search-container {
+    height: 55vh;
+    overflow-y: scroll;
+    direction: ltr;
+}
+
+#admin-search {
+    display: flex;
+    direction: rtl;
+}

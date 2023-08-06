@@ -7,6 +7,7 @@ import Admin from './assets/components/admin/Admin';
 import EstablishmentID from './assets/components/EstablishmentID/EstablishmentID';
 import { SocketProvider } from './contexts/SocketContext';
 import ErrorPage from './assets/components/ErrorPage/ErrorPage';
+import Statistics from './assets/components/statistics/Statistics';
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
           <Route path='/' element={<><Outlet /><Footer /></>}>
             <Route index element={<User />} />
             <Route path='/admin' element={<><Header /><Admin /></>} />
+            <Route path='/statistics' element={<><Header /><Statistics /></>} />
             <Route path='/on-start/:id' element={<EstablishmentID />} />
             <Route path='*' element={<ErrorPage/>}/>
           </Route>
