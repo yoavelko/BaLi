@@ -8,6 +8,7 @@
 
 #playlist-container {
     width: 50%;
+    padding-top: 24px;
 }
 
 #requests-control-container {
@@ -41,9 +42,32 @@
     height: 34px;
     padding: 16px;
     border-radius: 4px;
+    transition: .2s;
 }
 
 .requests-controls:hover {
     background-color: rgba(255, 255, 255, 0.35);
     cursor: pointer;
+    transform: scale(1.1);
+}
+
+.tooltip {
+    position: absolute;
+    width: 160px;
+    height: 66px;
+    background-color: rgba(101, 101, 101);
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 4px;
+}
+
+#req-tooltip {
+    margin-right: 240px;
+}
+
+#acc-tooltip {
+    margin-left: 240px;
 }

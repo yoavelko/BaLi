@@ -15,6 +15,14 @@ import AdminSearch from '../admin-search/AdminSearch';
 
 function Admin() {
 
+    const [tooltip, setTooltip] = useState({
+        reqCheck: false,
+        reqDel: false,
+        reqPush: false,
+        accCheck: false,
+        accDel: false,
+        accNext: false
+    })
     const [requests, setRequests] = useState([])
     const [accepted, setAccepted] = useState()
     const [toPush, setToPush] = useState([])
@@ -229,7 +237,7 @@ function Admin() {
         setSongIndex(getSongIndex() + 1);
         setDisplay(false)
     }
-    console.log(requests);
+
     return (
         <DragDropContext onDragEnd={handleDrop}>
             <div id='admin-container' dir='rtl'>
@@ -237,14 +245,32 @@ function Admin() {
                     <AdminSearch />
                     <div className='admin-headers'>בקשות ממתינות</div>
                     <div id='requests-control-container'>
-                        <div className='requests-controls' onClick={() => console.log('mark all')}>
-                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACDklEQVR4nO3XzYtNcRwG8GvBeFmgzJAojJEa/wBKJpQsWFmIjZWSFGWh2WBvocRGETFTsvBSFjZkZ6MMU5MS2SFkzOT9o5/7Lcd1Hefce+dKzVNnc3/P93me3/vvVir/KzANs9tlNgUbcBwPMeonPuARTqIvcVttvg33/Y5xvKnz+zC2tsJ4FgYyws9wDGswPcPrwGocwdPg3saMZsznYyjE3mJvmvMCdVOxM2uOrvSV7fm9ME8heproSFdoDBUOgYthPoJ5LTBXOADWRcE7dLfVPCEz9Icr/8C8N4peZFd5W8wTYoslnKpMgHlM78E8gVtRvHkCzHswljzyRB6HwPI64l3NDDsWR/vzvADjQeqoI/4AnY2YZ07LhNG8AK+CNKfGIJmrDVFmwWFm8MbyAowE6Zf9n0wzIX4YlV3tmR02nEe6EaQdddo6awxLbTVsD/71PNL+IJ3/Q3s2RKl9jsGoOZBH6sa32C4LWnW5pPsE7/EVi/5GvhxJT+RwSl2vOB2a14qQV+FLfJuKmuTo9YXWR6woWtQfiV+mQE2Y92aebEfLPkCvZl5DGxsw34LXoTFY+qGqenJdCoG0MM9hYYG6JTgTCy7hSqM3ayVGoj9zRH/GTezBeizDSqzFvjhH0lwnfMKhljzRVXs1kBHPQwp5FkubNq4F5mJ3GNzBk/gPcBcXsKvUA2QSk6hU8R1JikRUQUXaOwAAAABJRU5ErkJggg==" />
+                        <div className='requests-controls' onClick={() => console.log('mark all')} onMouseEnter={() => setTooltip({ ...tooltip, reqCheck: true })} onMouseLeave={() => setTooltip({ ...tooltip, reqCheck: false })}>
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAj0lEQVR4nO2WUQqAIBAFvYTSZ9frfHaShDrOhLRCpPURmEU734uzrPJcY5SvAFhgaCmf2Bhaymegqy3sAS9iBwSRxyZsof4WVw14qQk7eSjJazVgdyOPLNXHftHE8/KE3L8zbwHNgQ3NgQxukp8kaA4kNAfeug8sT+0DY3oDhy/ZtdwH3Em95sBPckBRTCVW5xngxlwryaIAAAAASUVORK5CYII=" />
+                            {
+                                tooltip.reqCheck ?
+                                    <div id='req-tooltip' className='tooltip' onMouseEnter={() => setTooltip({ ...tooltip, reqCheck: false })}>סמן את כל השירים הממתינים</div>
+                                    :
+                                    <></>
+                            }
                         </div>
-                        <div className='requests-controls' onClick={handleRequestDelete}>
+                        <div className='requests-controls' onClick={handleRequestDelete} onMouseEnter={() => setTooltip({ ...tooltip, reqDel: true })} onMouseLeave={() => setTooltip({ ...tooltip, reqDel: false })}>
                             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAkElEQVR4nO2X0QqAIAxFfeqXIvy/rP9Uf+OGtSAoqLkJFTtvOue97D7NOeMhADoAM4CMM+VuKm9cK7CJ3xFaGsgk0l/UBqqllgZWautsIW2+Y2CnulGp373OAIRnM8AGFgGhNRGLgA0sAkJrIhbB9yPgomEg0R++otdTb5QYCJAzSheRcJgEh1jEmy4qxm9YAOFdIIezfl43AAAAAElFTkSuQmCC" />
+                            {
+                                tooltip.reqDel ?
+                                    <div id='req-tooltip' className='tooltip' onMouseEnter={() => setTooltip({ ...tooltip, reqDel: false })}>מחק את כל המסומנים</div>
+                                    :
+                                    <></>
+                            }
                         </div>
-                        <div className='requests-controls' onClick={handlePush}>
+                        <div className='requests-controls' onClick={handlePush} onMouseEnter={() => setTooltip({ ...tooltip, reqPush: true })} onMouseLeave={() => setTooltip({ ...tooltip, reqPush: false })}>
                             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABuklEQVR4nO3XzWoUURAF4F4oCRgUt4quoiMoBEcXgvgE4s/LJONKlKgP4B8uIj6DO1EniJBnEN2IBhI3KhiNippPLlakhTh9u6dHIeQsu6vOObfm0nWmKLaQCXTQw2M8w0d8wXI8u4ypom3gOPry8RSn2hDejptYC+K3mMPZmMYOjGEfTkftu6hNPXcw3lR8N+aD7BNmsTOjL5m6hm/Ru5C4mpx8Pghe42jDn+1VyUT+JPwa5br4nrriJZ5JLAXX7TrO12LstU++Ad8UvuIHTuQ09MPx7LDiJc6rwfmgqrBTuu0DLxwutWXwN3AhDMwVFeKpqGgbeBQGzlWJj8rAi+CerBIflYGV4J6oEh8Ggwx8GGCg9y8MPI+ag395/4eJYjNewpngvltR1xuVgc5//RAlRLJJuFK0hEhKCfdzio/FMlpFtwXxbsS27zic23QjHC9i75Dr+E2tdVwKJP2SiW7DNfyyFEjGmkSyfhCsxkrdldE3gYv4XBKv7NsQ2IbrpVCaAuc9nMehEBvHfpyJEPo+alPPrdonH3CR1j9SOXiCk0XbwAFM42H8MVmJUS+FwTT6I60Lb2HT4ye69MSmF9ojPQAAAABJRU5ErkJggg==" />
+                            {
+                                tooltip.reqPush ?
+                                    <div id='req-tooltip' className='tooltip' onMouseEnter={() => setTooltip({ ...tooltip, reqPush: false })}>העבר את כל המסומנים לתור השמעה</div>
+                                    :
+                                    <></>
+                            }
                         </div>
                     </div>
                     <Droppable droppableId='req-drop'>
@@ -274,14 +300,32 @@ function Admin() {
                     </div>
                     <div className='admin-headers' id='playlist-header'>תור השמעה</div>
                     <div id='requests-control-container'>
-                        <div className='requests-controls' onClick={() => console.log('mark all')}>
-                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACDklEQVR4nO3XzYtNcRwG8GvBeFmgzJAojJEa/wBKJpQsWFmIjZWSFGWh2WBvocRGETFTsvBSFjZkZ6MMU5MS2SFkzOT9o5/7Lcd1Hefce+dKzVNnc3/P93me3/vvVir/KzANs9tlNgUbcBwPMeonPuARTqIvcVttvg33/Y5xvKnz+zC2tsJ4FgYyws9wDGswPcPrwGocwdPg3saMZsznYyjE3mJvmvMCdVOxM2uOrvSV7fm9ME8heproSFdoDBUOgYthPoJ5LTBXOADWRcE7dLfVPCEz9Icr/8C8N4peZFd5W8wTYoslnKpMgHlM78E8gVtRvHkCzHswljzyRB6HwPI64l3NDDsWR/vzvADjQeqoI/4AnY2YZ07LhNG8AK+CNKfGIJmrDVFmwWFm8MbyAowE6Zf9n0wzIX4YlV3tmR02nEe6EaQdddo6awxLbTVsD/71PNL+IJ3/Q3s2RKl9jsGoOZBH6sa32C4LWnW5pPsE7/EVi/5GvhxJT+RwSl2vOB2a14qQV+FLfJuKmuTo9YXWR6woWtQfiV+mQE2Y92aebEfLPkCvZl5DGxsw34LXoTFY+qGqenJdCoG0MM9hYYG6JTgTCy7hSqM3ayVGoj9zRH/GTezBeizDSqzFvjhH0lwnfMKhljzRVXs1kBHPQwp5FkubNq4F5mJ3GNzBk/gPcBcXsKvUA2QSk6hU8R1JikRUQUXaOwAAAABJRU5ErkJggg==" />
+                        <div className='requests-controls' onClick={() => console.log('mark all')} onMouseEnter={() => setTooltip({ ...tooltip, accCheck: true })} onMouseLeave={() => setTooltip({ ...tooltip, accCheck: false })}>
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAj0lEQVR4nO2WUQqAIBAFvYTSZ9frfHaShDrOhLRCpPURmEU734uzrPJcY5SvAFhgaCmf2Bhaymegqy3sAS9iBwSRxyZsof4WVw14qQk7eSjJazVgdyOPLNXHftHE8/KE3L8zbwHNgQ3NgQxukp8kaA4kNAfeug8sT+0DY3oDhy/ZtdwH3Em95sBPckBRTCVW5xngxlwryaIAAAAASUVORK5CYII=" />
+                            {
+                                tooltip.accCheck ?
+                                    <div id='acc-tooltip' className='tooltip' onMouseEnter={() => setTooltip({ ...tooltip, accCheck: false })}>סמן את כל השירים בפלייליסט</div>
+                                    :
+                                    <></>
+                            }
                         </div>
-                        <div className='requests-controls' onClick={handleAcceptDelete}>
+                        <div className='requests-controls' onClick={handleAcceptDelete} onMouseEnter={() => setTooltip({ ...tooltip, accDel: true })} onMouseLeave={() => setTooltip({ ...tooltip, accDel: false })}>
                             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAkElEQVR4nO2X0QqAIAxFfeqXIvy/rP9Uf+OGtSAoqLkJFTtvOue97D7NOeMhADoAM4CMM+VuKm9cK7CJ3xFaGsgk0l/UBqqllgZWautsIW2+Y2CnulGp373OAIRnM8AGFgGhNRGLgA0sAkJrIhbB9yPgomEg0R++otdTb5QYCJAzSheRcJgEh1jEmy4qxm9YAOFdIIezfl43AAAAAElFTkSuQmCC" />
+                            {
+                                tooltip.accDel ?
+                                    <div id='acc-tooltip' className='tooltip' onMouseEnter={() => setTooltip({ ...tooltip, accDel: false })}>מחק את כל המסומנים</div>
+                                    :
+                                    <></>
+                            }
                         </div>
-                        <div className='requests-controls' onClick={playNext}>
-                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAA00lEQVR4nO2WTQrCMBBG4yFcGBeeSsED2MO5VHfeSKRiL/CkGK2IqfmZJKD5NqWLkDcvwzBK1dRYAuwBrSKDSejBFmhKAjwSbEMCoDPfE7AqAaCNgSAb0QBq+F+anvDqDTGAPsAM2PnYEAWw2LiM2UgCYLFx+GQjGYCrjeQAIzbm2QD6ABNgA1zN0TOwzgZge45cT6DfhtWzIZMCcNfevGjP14TAAjh+G0riAAxVdy5jWRQAx6rFAfCsWhSAgKp/biEpupK1JZfSLTCNuTwKoOZvcgMNuAN9+8nzgAAAAABJRU5ErkJggg==" />
+                        <div className='requests-controls' onClick={playNext} onMouseEnter={() => setTooltip({ ...tooltip, accNext: true })} onMouseLeave={() => setTooltip({ ...tooltip, accNext: false })}>
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABOklEQVR4nO3WvS8EQRzG8SUXCYWoUCFRKYQOjUSi1fgDVAq1RqujFdW1Si3dJVQ6BSoKFdGJhgTBRy5mkz25c7O5Cy7Zb7OTnWdnnuzvmZckKSgoCOAE80kkOMRYrD5mwJQKpiP1T9hETzsNVHnHPsYj9eeYbZeBXbyEdvW5g8Ef9NcZ09Vv+1sykHy1R1DGW3j9iG0M1DHQG8qQmr7DSksGUjARSvERuu+xESat0WMyBDklX0jVMZDpm8NxZvCbBoa7sYaHzJ9bR6klAylYxGk2fUkdMIS9XCEVYSDourCEiwjDC7jMhLTcMKQiDWT0JaxG6PqwhdcwxS2WO9eA/CW4alsJxIdw+FsIzzDTectQ6xvRaNOJU/7NVqz2MHr+9cPoPxzHFUz9xYXkqOlSqdUf5ApZQUFBUp9PDcmNQzVLXigAAAAASUVORK5CYII=" />
+                            {
+                                tooltip.accNext ?
+                                    <div id='acc-tooltip' className='tooltip' onMouseEnter={() => setTooltip({ ...tooltip, accNext:false })}>נגן את הבא בתור</div>
+                                    :
+                                    <></>
+                            }
                         </div>
                     </div>
                     <Droppable droppableId='acc-drop'>

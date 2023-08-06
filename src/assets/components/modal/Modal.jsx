@@ -29,6 +29,7 @@ function Modal({ onClose, modalContent }) {
                     console.log(`sent: ${modalContent.name}`);
                     socket.emit('test', res.data, cookies.get('establishment'));
                     onClose()
+                    alert('השיר נשלח בהצלחה')
                 })
                 .catch((err) => {
                     console.log(err.response.data);
