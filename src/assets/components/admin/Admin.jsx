@@ -80,7 +80,7 @@ function Admin() {
     useEffect(() => {
         if (!display) {
             if (songList) {
-                if (accepted && accepted[getSongIndex()]._id !== songList[0]._id) {
+                if (accepted && accepted[getSongIndex()]?._id !== songList[0]?._id) {
                     setSongList(accepted.filter((v, i) => i >= getSongIndex()))
                     setCurrentSong(accepted.filter((v, i) => i >= getSongIndex())[0].url)
                 }
@@ -90,6 +90,8 @@ function Admin() {
             }
             else {
                 setCurrentSong(accepted.filter((v, i) => i >= getSongIndex())[0]?.url)
+                setSongList(accepted.filter((v, i) => i >= getSongIndex()))
+                setDisplay(false)
             }
             setDisplay(true)
         }
@@ -202,11 +204,12 @@ function Admin() {
                     accepted: accepted.slice(0, getSongIndex()).concat(updatedAccepted).map(v => v._id)
                 })
                     .then(({ data }) => {
-                        if (data.history[today].accepted[0]._id !== songList[0]._id || !data.history[today].accepted[0]) setDisplay(false)
+                        if (data.history[today].accepted[0]?._id !== songList[0]?._id || accepted.length === 0) setDisplay(false)
+                        console.log(accepted);
                         setAccepted(data.history[today].accepted)
                     })
                     .catch(err => {
-                        alert('An error has occured: ' + err.response.data)
+                        alert('An error has occured: ' + err)
                     })
             }
         }
