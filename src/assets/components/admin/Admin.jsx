@@ -33,7 +33,14 @@ function Admin() {
     const [duration, setDuration] = useState();
     const navigate = useNavigate();
 
+    function getSongIndex() {
+        return parseInt(localStorage.getItem('songIndex'))
+    }
 
+    function setSongIndex(value) {
+        if (typeof (value) !== 'number') return Error('value must be number')
+        localStorage.setItem('songIndex', value)
+    }
     useEffect(() => {
         if (!cookies.get('establishment')) navigate('/error')
         axios.post(getRequested, {
@@ -61,22 +68,28 @@ function Admin() {
         socket.on('song-request', obj => {
             setRequests(previous => [...previous, obj])
         })
-        !localStorage.getItem('songIndex') && localStorage.setItem('songIndex', 0)
+        !getSongIndex() && setSongIndex(0)
     }, [])
 
     useEffect(() => {
         if (accepted) {
-            (accepted[0]?.today !== today) && localStorage.setItem('songIndex', 0)
+            (accepted[0]?.today !== today) && setSongIndex(0)
         }
-        accepted && setSongList(accepted.filter((v, i) => i >= parseInt(localStorage.getItem('songIndex'))))
+        accepted && setSongList(accepted.filter((v, i) => i >= getSongIndex()))
     }, [accepted])
     useEffect(() => {
         if (!display) {
             if (songList) {
-                setCurrentSong(songList[0]?.url)
+                if (accepted && accepted[getSongIndex()]._id !== songList[0]._id) {
+                    setSongList(accepted.filter((v, i) => i >= getSongIndex()))
+                    setCurrentSong(accepted.filter((v, i) => i >= getSongIndex())[0].url)
+                }
+                else {
+                    setCurrentSong(songList[0]?.url)
+                }
             }
             else {
-                setCurrentSong(accepted.filter((v, i) => i >= parseInt(localStorage.getItem('songIndex')))[0]?.url)
+                setCurrentSong(accepted.filter((v, i) => i >= getSongIndex())[0]?.url)
             }
             setDisplay(true)
         }
@@ -155,10 +168,10 @@ function Admin() {
                     today,
                     requested: updatedRequests.map(v => v._id)
                 })
-                .then(({data}) => console.log(data))
-                .catch(err => {
-                    alert('An error has occured: ' + err.response.data)
-                })
+                    .then(({ data }) => console.log(data))
+                    .catch(err => {
+                        alert('An error has occured: ' + err.response.data)
+                    })
             } else {
                 const updatedAccepted = Array.from(songList);
                 const [removed] = updatedAccepted.splice(source.index, 1);
@@ -167,12 +180,12 @@ function Admin() {
                 axios.patch(changeAccepted, {
                     establishment: cookies.get('establishment'),
                     today,
-                    accepted: accepted.slice(0, parseInt(localStorage.getItem('songIndex'))).concat(updatedAccepted).map(v => v._id)
+                    accepted: accepted.slice(0, getSongIndex()).concat(updatedAccepted).map(v => v._id)
                 })
-                .then(({data}) => {
-                    if(data.history[today].accepted[0]._id !== songList[0]._id) setDisplay(false)
-                    setAccepted(data.history[today].accepted)
-                })
+                    .then(({ data }) => {
+                        if (data.history[today].accepted[0]._id !== songList[0]._id) setDisplay(false)
+                        setAccepted(data.history[today].accepted)
+                    })
             }
         } else {
             const updatedRequests = Array.from(requests);
@@ -186,15 +199,15 @@ function Admin() {
                 axios.patch(changeAccepted, {
                     establishment: cookies.get('establishment'),
                     today,
-                    accepted: accepted.slice(0, parseInt(localStorage.getItem('songIndex'))).concat(updatedAccepted).map(v => v._id)
+                    accepted: accepted.slice(0, getSongIndex()).concat(updatedAccepted).map(v => v._id)
                 })
-                .then(({data}) => {
-                    if(data.history[today].accepted[0]._id !== songList[0]._id) setDisplay(false)
-                    setAccepted(data.history[today].accepted)
-                })
-                .catch(err => {
-                    alert('An error has occured: ' + err.response.data)
-                })
+                    .then(({ data }) => {
+                        if (data.history[today].accepted[0]._id !== songList[0]._id || !data.history[today].accepted[0]) setDisplay(false)
+                        setAccepted(data.history[today].accepted)
+                    })
+                    .catch(err => {
+                        alert('An error has occured: ' + err.response.data)
+                    })
             }
         }
 
@@ -202,19 +215,24 @@ function Admin() {
 
     function handleProgress(e) {
         if ((duration - e.playedSeconds) < 3) {
-            localStorage.setItem('songIndex', parseInt(localStorage.getItem('songIndex')) + 1)
-            setSongList(accepted.filter((v, i) => i >= parseInt(localStorage.getItem('songIndex'))))
+            setSongIndex(getSongIndex() + 1)
+            setSongList(accepted.filter((v, i) => i >= getSongIndex()))
             setDisplay(false)
         }
     }
 
+    function playNext() {
+        setSongIndex(getSongIndex() + 1);
+        setDisplay(false)
+    }
+    console.log(requests);
     return (
         <DragDropContext onDragEnd={handleDrop}>
             <div id='admin-container' dir='rtl'>
                 <div id='requests-container'>
                     <div className='admin-headers'>בקשות ממתינות</div>
                     <div id='requests-control-container'>
-                    <div className='requests-controls' onClick={() => console.log('mark all')}>
+                        <div className='requests-controls' onClick={() => console.log('mark all')}>
                             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACDklEQVR4nO3XzYtNcRwG8GvBeFmgzJAojJEa/wBKJpQsWFmIjZWSFGWh2WBvocRGETFTsvBSFjZkZ6MMU5MS2SFkzOT9o5/7Lcd1Hefce+dKzVNnc3/P93me3/vvVir/KzANs9tlNgUbcBwPMeonPuARTqIvcVttvg33/Y5xvKnz+zC2tsJ4FgYyws9wDGswPcPrwGocwdPg3saMZsznYyjE3mJvmvMCdVOxM2uOrvSV7fm9ME8heproSFdoDBUOgYthPoJ5LTBXOADWRcE7dLfVPCEz9Icr/8C8N4peZFd5W8wTYoslnKpMgHlM78E8gVtRvHkCzHswljzyRB6HwPI64l3NDDsWR/vzvADjQeqoI/4AnY2YZ07LhNG8AK+CNKfGIJmrDVFmwWFm8MbyAowE6Zf9n0wzIX4YlV3tmR02nEe6EaQdddo6awxLbTVsD/71PNL+IJ3/Q3s2RKl9jsGoOZBH6sa32C4LWnW5pPsE7/EVi/5GvhxJT+RwSl2vOB2a14qQV+FLfJuKmuTo9YXWR6woWtQfiV+mQE2Y92aebEfLPkCvZl5DGxsw34LXoTFY+qGqenJdCoG0MM9hYYG6JTgTCy7hSqM3ayVGoj9zRH/GTezBeizDSqzFvjhH0lwnfMKhljzRVXs1kBHPQwp5FkubNq4F5mJ3GNzBk/gPcBcXsKvUA2QSk6hU8R1JikRUQUXaOwAAAABJRU5ErkJggg==" />
                         </div>
                         <div className='requests-controls' onClick={handleRequestDelete}>
@@ -257,7 +275,7 @@ function Admin() {
                         <div className='requests-controls' onClick={handleAcceptDelete}>
                             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAkElEQVR4nO2X0QqAIAxFfeqXIvy/rP9Uf+OGtSAoqLkJFTtvOue97D7NOeMhADoAM4CMM+VuKm9cK7CJ3xFaGsgk0l/UBqqllgZWautsIW2+Y2CnulGp373OAIRnM8AGFgGhNRGLgA0sAkJrIhbB9yPgomEg0R++otdTb5QYCJAzSheRcJgEh1jEmy4qxm9YAOFdIIezfl43AAAAAElFTkSuQmCC" />
                         </div>
-                        <div className='requests-controls' onClick={() => console.log('play next')}>
+                        <div className='requests-controls' onClick={playNext}>
                             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAA00lEQVR4nO2WTQrCMBBG4yFcGBeeSsED2MO5VHfeSKRiL/CkGK2IqfmZJKD5NqWLkDcvwzBK1dRYAuwBrSKDSejBFmhKAjwSbEMCoDPfE7AqAaCNgSAb0QBq+F+anvDqDTGAPsAM2PnYEAWw2LiM2UgCYLFx+GQjGYCrjeQAIzbm2QD6ABNgA1zN0TOwzgZge45cT6DfhtWzIZMCcNfevGjP14TAAjh+G0riAAxVdy5jWRQAx6rFAfCsWhSAgKp/biEpupK1JZfSLTCNuTwKoOZvcgMNuAN9+8nzgAAAAABJRU5ErkJggg==" />
                         </div>
                     </div>

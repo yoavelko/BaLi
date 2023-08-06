@@ -31,7 +31,7 @@ function Modal({ onClose, modalContent }) {
                     onClose()
                 })
                 .catch((err) => {
-                    console.log(err);
+                    console.log(err.response.data);
                     alert('ניתן לשלוח עד 3 שירים')
                 })
         } else {

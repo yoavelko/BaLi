@@ -7,7 +7,7 @@ function Accepted({ accept, checkedAccept, setCheckedAccept, index }) {
     const [checked, setChecked] = useState(false)
 
     let title = accept.name
-    if (accept.name.length > 40) {
+    if (accept.name?.length > 40) {
         title = accept.name.slice(0, 40) + '...'
     }
 
@@ -52,9 +52,9 @@ function Accepted({ accept, checkedAccept, setCheckedAccept, index }) {
                             <div>{accept.artist}</div>
                         </div>
                         <div id='accept-input' className='request-spacers'>
-                            <label class="checkBox">
+                            <label className="checkBox">
                                 <input id="ch1" type="checkbox" checked={checked} onChange={() => {setChecked(!checked), handlePush()}} />
-                                <div class="transition"></div>
+                                <div className="transition"></div>
                             </label>
                         </div>
                     </div>
