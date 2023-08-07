@@ -83,3 +83,8 @@
     font-size: 12px;
     font-weight: 550;
 }
+
+#loader-filler {
+    height: 100vh;
+    background-color: black;
+}
