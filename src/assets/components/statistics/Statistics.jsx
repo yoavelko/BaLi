@@ -4,7 +4,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import cookies from 'js-cookie'
 import { estabBest } from '../../../utils/Establishment'
-import { getPlaylist } from '../../../utils/Establishment'
+import { getPlaylist } from '../../../utils/Statistics'
 
 function Statistics() {
 
