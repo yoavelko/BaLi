@@ -1,0 +1,35 @@
+#statistics-container {
+    direction: rtl;
+    background-color: white;
+    color: black;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.statistics-headers {
+    font-size: 36px;
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+
+.statistics-containers {
+    width: 50%;
+    padding: 10%;
+    padding-top: 5%;
+    line-height: 36px;
+    text-align: start;
+}
+
+#statistics-by-day-inner {
+    display: flex;
+}
+
+.statistics-inners {
+    width: 50%;
+}
+
+#daily-playlist-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+}
