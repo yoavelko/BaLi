@@ -1,6 +1,8 @@
 #statistics-songbox-container {
     border: 1px solid black;
     display: flex;
+    font-size: 14px;
+    width: 100%;
 }
 
 #songbox-detail-container {
@@ -15,4 +17,9 @@
 #songbox-small-row-container {
     display: flex;
     justify-content: space-evenly;
+}
+
+#songbox-outer {
+    display: flex;
+    width: 100%;
 }

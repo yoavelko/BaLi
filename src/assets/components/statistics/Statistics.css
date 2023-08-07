@@ -20,14 +20,6 @@
     text-align: start;
 }
 
-#statistics-by-day-inner {
-    display: flex;
-}
-
-.statistics-inners {
-    width: 50%;
-}
-
 #daily-playlist-header {
     display: flex;
     justify-content: space-between;
@@ -35,5 +27,5 @@
 }
 
 #single-playlist-song {
-    font-size: 10px;
+    font-size: 14px;
 }
