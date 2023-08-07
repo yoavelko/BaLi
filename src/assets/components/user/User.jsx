@@ -13,6 +13,11 @@ import cookies from 'js-cookie'
 
 function User() {
 
+    const [style, setStyle] = useState({
+        israel: 'rgb(157,178,191)',
+        overall: '',
+        establishment: ''
+    })
     const [data, setData] = useState();
     const [section, setSection] = useState('israel');
     const [input, setInput] = useState();
@@ -98,11 +103,11 @@ function User() {
                     })}
                 </div>
                 <div id='user-footer'>
-                    <div onClick={() => {setSection('israel'), window.scrollTo({top: 0, behavior: 'smooth'})}}>ישראל</div>
+                    <div style={{color: style.israel}} onClick={() => {setStyle({...style, israel: 'rgb(157,178,191)', overall: '', establishment: ''}), setSection('israel'), window.scrollTo({top: 0, behavior: 'smooth'})}}>ישראל</div>
                     <div>|</div>
-                    <div onClick={() => {setSection('overall'), window.scrollTo({top: 0, behavior: 'smooth'})}}>עולמי</div>
+                    <div style={{color: style.overall}} onClick={() => {setStyle({...style, overall: 'rgb(157,178,191)', israel:'', establishment:''}), setSection('overall'), window.scrollTo({top: 0, behavior: 'smooth'})}}>עולמי</div>
                     <div>|</div>
-                    <div onClick={() => {setSection('establishment'), window.scrollTo({top: 0, behavior: 'smooth'})}}>UP2U</div>
+                    <div style={{color: style.establishment}} onClick={() => {setStyle({...style, establishment: 'rgb(157,178,191)', israel:'', overall:''}), setSection('establishment'), window.scrollTo({top: 0, behavior: 'smooth'})}}>UP2U</div>
                 </div>
             </div>
             {showModal && createPortal(

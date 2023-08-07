@@ -1,0 +1,18 @@
+#statistics-songbox-container {
+    border: 1px solid black;
+    display: flex;
+}
+
+#songbox-detail-container {
+    width: 70%;
+    text-align: center;
+}
+
+#songbox-img-container {
+    width: 30%;
+}
+
+#songbox-small-row-container {
+    display: flex;
+    justify-content: space-evenly;
+}
