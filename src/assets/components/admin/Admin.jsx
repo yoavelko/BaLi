@@ -1,7 +1,7 @@
 import './Admin.css'
 import Request from '../request/Request'
 import Accepted from '../accepted/Accepted';
-import { useState, useEffect, useContext, useMemo } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import axios from 'axios'
 import { getRequested, getAccepted, acceptSong, removeRequest, removeAccept } from '../../../utils/UserRoutes';
 import { SocketContext } from '../../../contexts/SocketContext';
@@ -9,7 +9,6 @@ import ReactPlayer from 'react-player/youtube'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import cookies from 'js-cookie'
 import { useNavigate } from 'react-router-dom'
-import TimeComapre from '../functions/TimeCompare';
 import { changeAccepted, changeRequested } from '../../../utils/Establishment';
 import AdminSearch from '../admin-search/AdminSearch';
 
@@ -194,6 +193,7 @@ function Admin() {
                     accepted: accepted.slice(0, getSongIndex()).concat(updatedAccepted).map(v => v._id)
                 })
                     .then(({ data }) => {
+                        console.log(data.history[today].accepted[0]._id , songList[0]._id);
                         if (data.history[today].accepted[0]._id !== songList[0]._id) setDisplay(false)
                         setAccepted(data.history[today].accepted)
                     })
@@ -213,8 +213,8 @@ function Admin() {
                     accepted: accepted.slice(0, getSongIndex()).concat(updatedAccepted).map(v => v._id)
                 })
                     .then(({ data }) => {
-                        if (data.history[today].accepted[0]?._id !== songList[0]?._id || accepted.length === 0) setDisplay(false)
-                        console.log(accepted);
+                        console.log(data.history[today].accepted[0]?._id , songList[0]?._id, accepted.length);
+                        if (data.history[today].accepted[getSongIndex()]?._id !== songList[0]?._id || accepted.length === 0) setDisplay(false)
                         setAccepted(data.history[today].accepted)
                     })
                     .catch(err => {
