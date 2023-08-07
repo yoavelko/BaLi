@@ -8,6 +8,7 @@ import back from './../../../media/back.png'
 import { sendSong } from '../../../utils/UserRoutes'
 import { Socket } from 'socket.io-client'
 import LOGO from './../../../media/LOGO.png'
+import Loader from '../loader/Loader'
 
 function AdminSearch() {
 
@@ -16,13 +17,16 @@ function AdminSearch() {
     const [adminModal, setAdminModal] = useState(true)
     const [adminModalContent, setAdminModalContent] = useState()
     const [hideSearch, setHideSearch] = useState(false)
+    const [loader, setLoader] = useState(false)
 
     function handleSearch() {
+        setLoader(true)
         axios.post(searchSong, {
             input: input
         })
             .then((res) => {
                 setData(res.data)
+                setLoader(false)
             })
             .catch((err) => {
                 console.log(err);
@@ -81,6 +85,9 @@ function AdminSearch() {
                     </div>
                     :
                     adminModal ?
+                        loader ?
+                        <Loader />
+                        :
                         <div id='admin-search-results'>
                             {data && data.map((value, index) => {
                                 return <AdminSuggestion key={index} video={value} setAdminModal={setAdminModal} setAdminModalContent={setAdminModalContent} />

@@ -10,6 +10,7 @@ import { estabBest } from '../../../utils/Establishment';
 import LOGO from './../../../media/LOGO.png'
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import cookies from 'js-cookie'
+import Loader from '../loader/Loader';
 
 function User() {
 
@@ -23,6 +24,7 @@ function User() {
     const [input, setInput] = useState();
     const [showModal, setShowModal] = useState(false);
     const [modalContent, setModalContent] = useState();
+    const [loader, setLoader] = useState(false)
     const navigate = useNavigate();
     useEffect(() => {
         if (!cookies.get('establishment')) navigate('/error')
@@ -51,23 +53,25 @@ function User() {
             axios.post(estabBest, {
                 establishment: cookies.get('establishment')
             })
-            .then((res) => {
-                setData(res.data);
-            })
-            .catch((err) => {
-                console.log(err);
-            })
+                .then((res) => {
+                    setData(res.data);
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
         }
     }, [section])
 
     function handleSearch() {
+        setLoader(true)
         axios.post(searchSong, {
             input: input
         })
             .then((res) => {
                 setData(res.data)
                 setSection('search')
-                window.scrollTo({top: 0, behavior: 'smooth'})
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+                setLoader(false)
             })
             .catch((err) => {
                 console.log(err);
@@ -97,17 +101,24 @@ function User() {
                     <div id='user-search-breaker'></div>
                     <button id='search-button' onClick={handleSearch}>חפש</button>
                 </div>
-                <div id='user-suggestion-container'>
-                    {data && data.map((value, index) => {
-                        return <SuggestionBox key={index} video={value} setShowModal={setShowModal} setModalContent={setModalContent} />
-                    })}
-                </div>
+                {
+                    loader ?
+                        <div id='loader-filler'>
+                            <Loader />
+                        </div>
+                        :
+                        <div id='user-suggestion-container'>
+                            {data && data.map((value, index) => {
+                                return <SuggestionBox key={index} video={value} setShowModal={setShowModal} setModalContent={setModalContent} />
+                            })}
+                        </div>
+                }
                 <div id='user-footer'>
-                    <div style={{color: style.israel}} onClick={() => {setStyle({...style, israel: 'rgb(157,178,191)', overall: '', establishment: ''}), setSection('israel'), window.scrollTo({top: 0, behavior: 'smooth'})}}>ישראל</div>
+                    <div style={{ color: style.israel }} onClick={() => { setStyle({ ...style, israel: 'rgb(157,178,191)', overall: '', establishment: '' }), setSection('israel'), window.scrollTo({ top: 0, behavior: 'smooth' }) }}>ישראל</div>
                     <div>|</div>
-                    <div style={{color: style.overall}} onClick={() => {setStyle({...style, overall: 'rgb(157,178,191)', israel:'', establishment:''}), setSection('overall'), window.scrollTo({top: 0, behavior: 'smooth'})}}>עולמי</div>
+                    <div style={{ color: style.overall }} onClick={() => { setStyle({ ...style, overall: 'rgb(157,178,191)', israel: '', establishment: '' }), setSection('overall'), window.scrollTo({ top: 0, behavior: 'smooth' }) }}>עולמי</div>
                     <div>|</div>
-                    <div style={{color: style.establishment}} onClick={() => {setStyle({...style, establishment: 'rgb(157,178,191)', israel:'', overall:''}), setSection('establishment'), window.scrollTo({top: 0, behavior: 'smooth'})}}>UP2U</div>
+                    <div style={{ color: style.establishment }} onClick={() => { setStyle({ ...style, establishment: 'rgb(157,178,191)', israel: '', overall: '' }), setSection('establishment'), window.scrollTo({ top: 0, behavior: 'smooth' }) }}>UP2U</div>
                 </div>
             </div>
             {showModal && createPortal(

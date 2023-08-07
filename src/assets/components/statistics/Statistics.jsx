@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import cookies from 'js-cookie'
 import { estabBest } from '../../../utils/Establishment'
 import { getPlaylist, conversionRate } from '../../../utils/Statistics'
+import Loader from '../loader/Loader';
 
 
 
@@ -17,10 +18,12 @@ function Statistics() {
     const [date, setDate] = useState()
     const [playlist, setPlaylist] = useState()
     const [conversion, setConversion] = useState({ daily: '', overall: '' })
+    const [loader, setLoader] = useState(false)
 
     useEffect(() => {
 
         if (date) {
+            setLoader(true)
             axios.post(getPlaylist, {
                 establishment: cookies.get('establishment'),
                 date: date
@@ -38,6 +41,7 @@ function Statistics() {
             })
                 .then((res) => {
                     setConversion({ ...conversion, daily: res.data.daily, overall: res.data.overall });
+                    setLoader(false)
                 })
                 .catch((err) => {
                     console.log(err);
@@ -68,53 +72,53 @@ function Statistics() {
         shittyDate = shittyDate.slice(4, 15)
         const day = shittyDate.slice(4, 6)
         const year = shittyDate.slice(7, 11)
-        let month = shittyDate.slice(0, 3)
+        let month = shittyDate.slice(0, 3).toString()
         switch (month) {
-            case ('jan'):
+            case ('Jan'):
                 month = '01'
                 break;
-            case ('feb'):
+            case ('Feb'):
                 month = '02'
                 break;
-            case ('mar'):
+            case ('Mar'):
                 month = '03'
                 break;
-            case ('apr'):
+            case ('Apr'):
                 month = '04'
                 break;
-            case ('may'):
+            case ('May'):
                 month = '05'
                 break;
-            case ('jun'):
+            case ('Jun'):
                 month = '06'
                 break;
-            case ('jul'):
+            case ('Jul'):
                 month = '07'
                 break;
-            case ('aug'):
+            case ('Aug'):
                 month = '08'
                 break;
-            case ('sep'):
+            case ('Sep'):
                 month = '09'
                 break;
-            case ('oct'):
+            case ('Oct'):
                 month = '10'
                 break;
-            case ('nov'):
+            case ('Nov'):
                 month = '11'
                 break;
-            case ('dec'):
+            case ('Dec'):
                 month = '12'
         }
 
-        console.log(month);
+        setDate(`${day}/${month}/${year}`)
     }
 
     return (
         <div id='statistics-container'>
             <div className='statistics-containers' id='statistics-overall-container'>
                 <div className='statistics-headers' id='statistics-overall-header'>כללי</div>
-                <div id='overall-conversion'>אחוז המרה: {conversion.overall}</div>
+                <div id='overall-conversion'>אחוז המרה: {conversion.overall && `${Math.round(conversion.overall)}`}%</div>
                 <div id='top-ten-select'>
                     החמים ביותר&nbsp;
                     <select onChange={handleSelect}>
@@ -133,32 +137,37 @@ function Statistics() {
                 </div>
             </div>
             <div className='statistics-containers' id='statstics-by-day-container'>
-                <div className='statistics-headers' id='statistics-by-day-header'>לפי יום</div>
-                <div id='statistics-calendar-container' dir='ltr'>
-                    <Calendar onChange={onChange} value={value} onClickDay={handleDate} />
+                <div className='statistics-headers' id='statistics-by-day-header'>לפי יום {date ? `(${date})` : ''}</div>
+                <div id='statistics-calendar-container'>
+                    <Calendar onChange={onChange} value={value} onClickDay={handleDate} calendarType='hebrew' />
                 </div>
-                <div id='statistics-by-day-inner'>
-                    <div className='statistics-inners' id='statistics-inner-right'>
-                        <div>אחוז המרה: {conversion.daily}</div>
-                    </div>
-                    <div className='statistics-inners' id='statistics-inner-left'>
-                        <div id='daily-playlist-header'>
-                            <div>הפלייליסט של {playlist && playlist[0].today}</div>
-                            <button>ייבא פלייליסט</button>
+                {
+                    loader ?
+                        <Loader />
+                        :
+                        <div id='statistics-by-day-inner'>
+                            <div className='statistics-inners' id='statistics-inner-right'>
+                                <div>אחוז המרה: {conversion.daily && `${Math.round(conversion.daily)}%`}</div>
+                            </div>
+                            <div className='statistics-inners' id='statistics-inner-left'>
+                                <div id='daily-playlist-header'>
+                                    <div>הפלייליסט של {playlist && playlist[0].today}</div>
+                                    <button>ייבא פלייליסט</button>
+                                </div>
+                                <div id='daily-playlisy-container'>
+                                    {
+                                        playlist && playlist.map((value, index) => {
+                                            return (
+                                                <div id='single-playlist-song'>
+                                                    {value.timeRequested} - {value.name}
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            </div>
                         </div>
-                        <div id='daily-playlisy-container'>
-                            {
-                                playlist && playlist.map((value, index) => {
-                                    return (
-                                        <div id='single-playlist-song'>
-                                            {value.timeRequested} - {value.name}
-                                        </div>
-                                    )
-                                })
-                            }
-                        </div>
-                    </div>
-                </div>
+                }
             </div>
         </div>
     )
