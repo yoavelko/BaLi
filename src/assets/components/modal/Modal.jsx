@@ -31,12 +31,11 @@ function Modal({ onClose, modalContent }) {
                     userId: cookies.get('userId')
                 })
                     .then((res) => {
-                        console.log(`sent: ${modalContent.name}`);
-                        socket.emit('test', res.data, cookies.get('establishment'));
-                        onClose()
-                        setLoader(false)
-                        alert('השיר נשלח בהצלחה')
-                    })
+                    socket.emit('test', res.data, cookies.get('establishment'));
+                    onClose()
+                    setLoader(false)
+                    alert('השיר נשלח בהצלחה')
+                })
                     .catch((err) => {
                         setLoader(false)
                         alert('ניתן לשלוח עד 3 שירים')

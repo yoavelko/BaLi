@@ -2,7 +2,7 @@ import './User.css'
 import SuggestionBox from '../suggestion-box/SuggestionBox'
 import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Modal from '../modal/Modal';
 import axios from 'axios'
 import { getDummyIsrael, getDummyOverall, searchSong, newUser } from '../../../utils/UserRoutes'
