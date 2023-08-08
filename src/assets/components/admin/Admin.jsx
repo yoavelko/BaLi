@@ -73,9 +73,11 @@ function Admin() {
             .catch((err) => {
                 console.log(err);
             })
-        socket.on('song-request', obj => {
-            setRequests(previous => [...previous, obj])
-        })
+            socket.on('song-request', obj => {
+                if(obj) {
+                    setRequests(previous => [...previous, obj])
+                }
+            })
         !getSongIndex() && setSongIndex(0)
     }, [])
 
@@ -193,7 +195,7 @@ function Admin() {
                     accepted: accepted.slice(0, getSongIndex()).concat(updatedAccepted).map(v => v._id)
                 })
                     .then(({ data }) => {
-                        console.log(data.history[today].accepted[0]._id , songList[0]._id);
+                        console.log(data.history[today].accepted[0]._id, songList[0]._id);
                         if (data.history[today].accepted[0]._id !== songList[0]._id) setDisplay(false)
                         setAccepted(data.history[today].accepted)
                     })
@@ -213,7 +215,7 @@ function Admin() {
                     accepted: accepted.slice(0, getSongIndex()).concat(updatedAccepted).map(v => v._id)
                 })
                     .then(({ data }) => {
-                        console.log(data.history[today].accepted[0]?._id , songList[0]?._id, accepted.length);
+                        console.log(data.history[today].accepted[0]?._id, songList[0]?._id, accepted.length);
                         if (data.history[today].accepted[getSongIndex()]?._id !== songList[0]?._id || accepted.length === 0) setDisplay(false)
                         setAccepted(data.history[today].accepted)
                     })
@@ -322,7 +324,7 @@ function Admin() {
                             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABOklEQVR4nO3WvS8EQRzG8SUXCYWoUCFRKYQOjUSi1fgDVAq1RqujFdW1Si3dJVQ6BSoKFdGJhgTBRy5mkz25c7O5Cy7Zb7OTnWdnnuzvmZckKSgoCOAE80kkOMRYrD5mwJQKpiP1T9hETzsNVHnHPsYj9eeYbZeBXbyEdvW5g8Ef9NcZ09Vv+1sykHy1R1DGW3j9iG0M1DHQG8qQmr7DSksGUjARSvERuu+xESat0WMyBDklX0jVMZDpm8NxZvCbBoa7sYaHzJ9bR6klAylYxGk2fUkdMIS9XCEVYSDourCEiwjDC7jMhLTcMKQiDWT0JaxG6PqwhdcwxS2WO9eA/CW4alsJxIdw+FsIzzDTectQ6xvRaNOJU/7NVqz2MHr+9cPoPxzHFUz9xYXkqOlSqdUf5ApZQUFBUp9PDcmNQzVLXigAAAAASUVORK5CYII=" />
                             {
                                 tooltip.accNext ?
-                                    <div id='acc-tooltip' className='tooltip' onMouseEnter={() => setTooltip({ ...tooltip, accNext:false })}>נגן את הבא בתור</div>
+                                    <div id='acc-tooltip' className='tooltip' onMouseEnter={() => setTooltip({ ...tooltip, accNext: false })}>נגן את הבא בתור</div>
                                     :
                                     <></>
                             }
