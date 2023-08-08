@@ -6,6 +6,7 @@ import { SocketContext } from '../../../contexts/SocketContext'
 import cookies from 'js-cookie'
 import back from './../../../media/back.png'
 import Loader from '../loader/Loader'
+import SendButton from '../send-button/SendButton'
 
 function Modal({ onClose, modalContent }) {
 
@@ -16,29 +17,32 @@ function Modal({ onClose, modalContent }) {
     function handleRequest() {
 
         if (checked === true) {
-            setLoader(true)
-            axios.patch(sendSong, {
-                establishment: cookies.get('establishment'),
-                today: modalContent.today,
-                timeRequested: modalContent.timeRequested,
-                uploaded: modalContent.uploaded,
-                url: modalContent.url,
-                name: modalContent.name,
-                img: modalContent.img,
-                artist: modalContent.artist,
-                userId: cookies.get('userId')
-            })
-                .then((res) => {
-                    console.log(`sent: ${modalContent.name}`);
-                    socket.emit('test', res.data, cookies.get('establishment'));
-                    onClose()
-                    setLoader(false)
-                    alert('השיר נשלח בהצלחה')
+            setTimeout(() => {
+                setLoader(true)
+                axios.patch(sendSong, {
+                    establishment: cookies.get('establishment'),
+                    today: modalContent.today,
+                    timeRequested: modalContent.timeRequested,
+                    uploaded: modalContent.uploaded,
+                    url: modalContent.url,
+                    name: modalContent.name,
+                    img: modalContent.img,
+                    artist: modalContent.artist,
+                    userId: cookies.get('userId')
                 })
-                .catch((err) => {
-                    console.log(err.response.data);
-                    alert('ניתן לשלוח עד 3 שירים')
-                })
+                    .then((res) => {
+                        console.log(`sent: ${modalContent.name}`);
+                        socket.emit('test', res.data, cookies.get('establishment'));
+                        onClose()
+                        setLoader(false)
+                        alert('השיר נשלח בהצלחה')
+                    })
+                    .catch((err) => {
+                        setLoader(false)
+                        alert('ניתן לשלוח עד 3 שירים')
+                        onClose()
+                    })
+            }, 250);
         } else {
             alert('נא לאשר את תנאי השימוש לפני שליחה')
         }
@@ -76,7 +80,7 @@ function Modal({ onClose, modalContent }) {
                                 <div>&nbsp;אני מאשר את תנאי השימוש</div>
                             </div>
                             <div>
-                                <button id='modal-send-button' onClick={handleRequest}>שלח</button>
+                                <SendButton func={handleRequest}/>
                             </div>
                         </>
                 }

@@ -11,9 +11,12 @@ import cookies from 'js-cookie'
 import { useNavigate } from 'react-router-dom'
 import { changeAccepted, changeRequested } from '../../../utils/Establishment';
 import AdminSearch from '../admin-search/AdminSearch';
+import PlaylistButton from '../playlist-button/PlaylistButton';
+import Carousel from '../carousel/Carousel';
 
 function Admin() {
 
+    const buttons = [1, 2, 3, 4, 5, 6, 7, 8]
     const [tooltip, setTooltip] = useState({
         reqCheck: false,
         reqDel: false,
@@ -193,7 +196,7 @@ function Admin() {
                     accepted: accepted.slice(0, getSongIndex()).concat(updatedAccepted).map(v => v._id)
                 })
                     .then(({ data }) => {
-                        console.log(data.history[today].accepted[0]._id , songList[0]._id);
+                        console.log(data.history[today].accepted[0]._id, songList[0]._id);
                         if (data.history[today].accepted[0]._id !== songList[0]._id) setDisplay(false)
                         setAccepted(data.history[today].accepted)
                     })
@@ -213,7 +216,7 @@ function Admin() {
                     accepted: accepted.slice(0, getSongIndex()).concat(updatedAccepted).map(v => v._id)
                 })
                     .then(({ data }) => {
-                        console.log(data.history[today].accepted[0]?._id , songList[0]?._id, accepted.length);
+                        console.log(data.history[today].accepted[0]?._id, songList[0]?._id, accepted.length);
                         if (data.history[today].accepted[getSongIndex()]?._id !== songList[0]?._id || accepted.length === 0) setDisplay(false)
                         setAccepted(data.history[today].accepted)
                     })
@@ -298,6 +301,15 @@ function Admin() {
                     <div id='player-container'>
                         {display && <ReactPlayer width={'90%'} playing={true} muted={muted} url={currentSong} controls={true} onDuration={(e) => setDuration(e)} onProgress={e => handleProgress(e)} />}
                     </div>
+                    <div id='playlists-button-container' dir='ltr'>
+                        <Carousel show={3}>
+                            {
+                                buttons && buttons.map((value, index) => {
+                                    return <PlaylistButton />
+                                })
+                            }
+                        </Carousel>
+                    </div>
                     <div className='admin-headers' id='playlist-header'>תור השמעה</div>
                     <div id='requests-control-container'>
                         <div className='requests-controls' onClick={() => console.log('mark all')} onMouseEnter={() => setTooltip({ ...tooltip, accCheck: true })} onMouseLeave={() => setTooltip({ ...tooltip, accCheck: false })}>
@@ -322,7 +334,7 @@ function Admin() {
                             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABOklEQVR4nO3WvS8EQRzG8SUXCYWoUCFRKYQOjUSi1fgDVAq1RqujFdW1Si3dJVQ6BSoKFdGJhgTBRy5mkz25c7O5Cy7Zb7OTnWdnnuzvmZckKSgoCOAE80kkOMRYrD5mwJQKpiP1T9hETzsNVHnHPsYj9eeYbZeBXbyEdvW5g8Ef9NcZ09Vv+1sykHy1R1DGW3j9iG0M1DHQG8qQmr7DSksGUjARSvERuu+xESat0WMyBDklX0jVMZDpm8NxZvCbBoa7sYaHzJ9bR6klAylYxGk2fUkdMIS9XCEVYSDourCEiwjDC7jMhLTcMKQiDWT0JaxG6PqwhdcwxS2WO9eA/CW4alsJxIdw+FsIzzDTectQ6xvRaNOJU/7NVqz2MHr+9cPoPxzHFUz9xYXkqOlSqdUf5ApZQUFBUp9PDcmNQzVLXigAAAAASUVORK5CYII=" />
                             {
                                 tooltip.accNext ?
-                                    <div id='acc-tooltip' className='tooltip' onMouseEnter={() => setTooltip({ ...tooltip, accNext:false })}>נגן את הבא בתור</div>
+                                    <div id='acc-tooltip' className='tooltip' onMouseEnter={() => setTooltip({ ...tooltip, accNext: false })}>נגן את הבא בתור</div>
                                     :
                                     <></>
                             }
