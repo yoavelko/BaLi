@@ -202,8 +202,7 @@ function Admin() {
                     accepted: accepted.slice(0, getSongIndex()).concat(updatedAccepted).map(v => v._id)
                 })
                     .then(({ data }) => {
-                        console.log(data.history[today].accepted[0]._id, songList[0]._id);
-                        if (data.history[today].accepted[0]._id !== songList[0]._id) setDisplay(false)
+                        if (data.history[today].accepted[getSongIndex()]?._id !== songList[0]?._id || accepted.length === 0) setDisplay(false)
                         setAccepted(data.history[today].accepted)
                     })
             }
@@ -222,7 +221,6 @@ function Admin() {
                     accepted: accepted.slice(0, getSongIndex()).concat(updatedAccepted).map(v => v._id)
                 })
                     .then(({ data }) => {
-                        console.log(data.history[today].accepted[0]?._id, songList[0]?._id, accepted.length);
                         if (data.history[today].accepted[getSongIndex()]?._id !== songList[0]?._id || accepted.length === 0) setDisplay(false)
                         setAccepted(data.history[today].accepted)
                     })
