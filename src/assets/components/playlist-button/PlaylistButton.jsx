@@ -1,9 +1,9 @@
 import './PlaylistButton.css'
 
-function PlaylistButton() {
+function PlaylistButton({value, func}) {
 
     return (
-        <button id='playlist-button'>playlist name</button>
+        <button id='playlist-button' onClick={func}>{value.name}</button>
     )
 }
 

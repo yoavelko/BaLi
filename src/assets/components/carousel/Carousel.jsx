@@ -4,11 +4,11 @@ import { useState, useEffect } from 'react'
 function Carousel({ children, show }) {
 
     const [currentIndex, setCurrentIndex] = useState(0)
-    const [length, setLength] = useState(children.length)
+    const [length, setLength] = useState(children?.length)
     const [touchPosition, setTouchPosition] = useState(null)
 
     useEffect(() => {
-        setLength(children.length)
+        children && setLength(children.length)
     }, [children])
 
     const next = () => {

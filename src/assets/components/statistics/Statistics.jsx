@@ -7,7 +7,9 @@ import { useEffect, useState } from 'react'
 import cookies from 'js-cookie'
 import { estabBest } from '../../../utils/Establishment'
 import { getPlaylist, conversionRate } from '../../../utils/Statistics'
+import { updateEstablishment } from '../../../utils/Establishment'
 import Loader from '../loader/Loader';
+import Cookies from 'js-cookie';
 import timeDate from '../time&date/timeDate';
 
 
@@ -114,6 +116,16 @@ function Statistics() {
 
         setDate(`${day}/${month}/${year}`)
     }
+    
+    function handleExport() {
+        const name = prompt('מה השם לפלייליסט?');
+        axios.patch(updateEstablishment, {
+            name: Cookies.get('establishment'),
+            playlists: [{name, value: date}]
+        })
+        .then(() => console.log('success'))
+        .catch(err => console.log(err.response.data))
+    }
 
     return (
         <div id='statistics-container'>
@@ -153,7 +165,7 @@ function Statistics() {
                             <div className='statistics-inners' id='statistics-inner-left'>
                                 <div id='daily-playlist-header'>
                                     <div>הפלייליסט של {playlist && playlist[0].today}</div>
-                                    <button>ייבא פלייליסט</button>
+                                    <button onClick={handleExport}>ייבא פלייליסט</button>
                                 </div>
                                 <div id='daily-playlisy-container'>
                                     {
