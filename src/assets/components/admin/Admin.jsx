@@ -9,17 +9,18 @@ import ReactPlayer from 'react-player/youtube'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import cookies from 'js-cookie'
 import { useNavigate } from 'react-router-dom'
-import { changeAccepted, changeRequested, pushToPlayed } from '../../../utils/Establishment';
+import { changeAccepted, changeRequested, getFromPlaylist, pushToPlayed, specificEstablishment } from '../../../utils/Establishment';
 import AdminSearch from '../admin-search/AdminSearch';
 import PlaylistButton from '../playlist-button/PlaylistButton';
 import Carousel from '../carousel/Carousel';
 import timeDate from '../time&date/timeDate';
+import Cookies from 'js-cookie';
 
 function Admin() {
 
     const [first, setFirst] = useState()
     const time = String(timeDate().time)
-    const buttons = [1, 2, 3, 4, 5, 6, 7, 8]
+    const [buttons, setButtons] = useState();
     const [tooltip, setTooltip] = useState({
         reqCheck: false,
         reqDel: false,
@@ -81,20 +82,25 @@ function Admin() {
                 console.log(err);
             })
         socket.on('song-request', obj => {
-            if (obj) {
-                setRequests(previous => [...previous, obj])
-            }
+            axios.post(getRequested, {
+                today,
+                establishment: cookies.get('establishment')
+            })
+            .then(({data}) => setRequests(data))
         })
-        console.log(!getSongIndex());
         !getSongIndex() && setSongIndex(0)
-
+        axios.post(specificEstablishment, {
+            name: cookies.get('establishment')
+        })
+        .then(({data}) => setButtons(data.playlists))
+        .catch(err => console.log(err.response.data))
     }, [])
 
     useEffect(() => {
         if (accepted) {
             (accepted[0]?.today !== today) && setSongIndex(0)
         }
-        accepted && setSongList(accepted.filter((v, i) => i >= getSongIndex()))
+        accepted && setSongList(accepted?.filter((v, i) => i >= getSongIndex()))
     }, [accepted])
     useEffect(() => {
         if (!display) {
@@ -240,10 +246,10 @@ function Admin() {
 
     function handleProgress(e) {
         if (e.playedSeconds > 60 && !wasSent) {
-            
+
             axios.post(pushToPlayed, {
                 today,
-                establishment: cookies.get('establishment'),
+                establishment: Cookies.get('establishment'),
                 song: songList[0]._id,
                 time: time
             })
@@ -262,6 +268,16 @@ function Admin() {
     function playNext() {
         setSongIndex(getSongIndex() + 1);
         setDisplay(false)
+    }
+
+    function handlePushToAccepted(v) {
+        axios.post(getFromPlaylist, {
+            establishment: Cookies.get('establishment'),
+            playlist: v,
+            today
+        })
+        .then(({data}) => setAccepted(data))
+        .catch(err => console.log(err.response.data))
     }
 
     return (
@@ -328,7 +344,7 @@ function Admin() {
                         <Carousel show={3}>
                             {
                                 buttons && buttons.map((value, index) => {
-                                    return <PlaylistButton />
+                                    return <PlaylistButton value={value} func={() => handlePushToAccepted(value.value)}/>
                                 })
                             }
                         </Carousel>
@@ -377,7 +393,7 @@ function Admin() {
                                     }}
                                 >
                                     {songList && songList.map((value, index) => {
-                                        return <Accepted key={index} index={index} accept={value} checkedAccept={checkedAccept} setCheckedAccept={setCheckedAccept}/>
+                                        return <Accepted key={index} index={index} accept={value} checkedAccept={checkedAccept} setCheckedAccept={setCheckedAccept} />
                                     })}
                                     {provided.placeholder}
                                 </div>

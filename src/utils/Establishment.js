@@ -5,3 +5,5 @@ export const estabBest = `${HOST}/getEstabBest`;
 export const changeRequested = `${HOST}/change-requested`;
 export const getPlaylist = `${HOST}/getPlaylist`;
 export const pushToPlayed = `${HOST}/push-to-played`;
+export const updateEstablishment = `${HOST}/update`
+export const getFromPlaylist = `${HOST}/get-songs-from-playlist`
