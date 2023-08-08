@@ -29,7 +29,6 @@ function Modal({ onClose, modalContent }) {
                 userId: cookies.get('userId')
             })
                 .then((res) => {
-                    console.log(`sent: ${res.data}`);
                     socket.emit('test', res.data, cookies.get('establishment'));
                     onClose()
                     setLoader(false)
