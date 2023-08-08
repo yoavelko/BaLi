@@ -41,10 +41,12 @@ function User() {
     }, [])
 
     useEffect(() => {
+        setLoader(true)
         if (section === 'israel' || section === 'overall') {
             axios.get(section === 'israel' ? getDummyIsrael : section === 'overall' && getDummyOverall)
                 .then((res) => {
                     setData(res.data);
+                    setLoader(false)
                 })
                 .catch((err) => {
                     console.log(err);
@@ -55,6 +57,7 @@ function User() {
             })
                 .then((res) => {
                     setData(res.data);
+                    setLoader(false)
                 })
                 .catch((err) => {
                     console.log(err);
@@ -108,9 +111,17 @@ function User() {
                         </div>
                         :
                         <div id='user-suggestion-container'>
-                            {data && data.map((value, index) => {
-                                return <SuggestionBox key={index} video={value} setShowModal={setShowModal} setModalContent={setModalContent} />
-                            })}
+                                {/* data ?
+                                    <div id='no-history-page'>
+                                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAC40lEQVR4nO2YW0tUURTHjxppOH4A+wDZV8gub2EGQeEXKEPo4lNZj1JU0r3UMtB6iQiCSPwIhVYPXT5AVx1D7bEGuhD9YjHr0Gp79jiN+8w4cP5wYDhnzX/9995r//c6J4oyZFh7AJqA7cBl4BmwBPzUa0nvXQK2SWy0VgBsAE6qyHKxCAwALbUW3wPMUTlmgX21EN4AnAF+JwgaBrqADqBVrw69N5IwYOE4LZzVEt8I3HdEiKgD5dQ2xb3SC+QdjntVGYTOvMVDmeUKeHLApMN1Kh3V/9a8LZsrq5k1iqV4zSmnvWFV/03WojUe45GUUwDeBuCB4f2YijupVdqabw3InQPmDf/xUNx241mf358Qcx4oAEMleLwxwEHDvxBidS25nLAxZpPcBviqz7+U4PHG6CRZi90acgDSHsQY9sQMqcCzJXhKxgCjJs/FkAOQPiZGVzBiB0C3yTMThQLw2RBvCkbsQE/sGItRKAA/DHEuGHGyG8X4HoWC2XyCthVi1wP9wHN1nIKW4FF5FpX+b1taA3hbTgkBG4HX+PESaK9FCT0xxLs8Mc3AK1bGC99KALtN3HTIAZwzxCOemH67/HKaymzrNaD3YhzxcNxIy0Z3GOI5z0EmNe9tBYAT5vnThOfrnBa7M+QAhPy9Ie9dYaO3e/ZHjKSTuC+1VkITHDYJ8iHtlKL7fDL8x0Jxu+20daPJQO10IzBleGWlm8OoXp6sE/hlkl1dzSAoir/uvNDsCat6ecIZkzBeiVyFZTPlcA2mLX6cZMxrP99UpiH0OTUvuJvaS71H/IxTTrHFjmpXuVl7m5z+7lafzzv/kbIZTFv8hJN0XO9vAd5QOT5Uo+YTxTstxCHg3X8IXxCrTM1tSoif8LmO+bgr340e68oUtIWQb6HTwAV1srCHlOdTx5gj/k7qiUMgE18rkJVNbWf+Vl1uWAFw0xF/u27EC4CdwLe6m3kL7VPG6lJ8hgwZMkTVxh9duoVdPSe70wAAAABJRU5ErkJggg==" />
+                                        <div>עדיין אין היסטורה לעסק זה</div>
+                                    </div>
+                                    : */}
+                            {
+                                    data && data.map((value, index) => {
+                                        return <SuggestionBox key={index} video={value} setShowModal={setShowModal} setModalContent={setModalContent} />
+                                    })
+                            }
                         </div>
                 }
                 <div id='user-footer'>

@@ -21,7 +21,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    text-align: center;
+    text-align: start;
     width: calc(75% - 70px);
     height: 100%;
     padding-left: 20px;

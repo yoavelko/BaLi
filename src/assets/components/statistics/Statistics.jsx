@@ -160,7 +160,7 @@ function Statistics() {
                                         playlist && playlist.map((value, index) => {
                                             return (
                                                 <div id='single-playlist-song'>
-                                                    {value.timeRequested} - {value.name}
+                                                    {value.timePlayed} - {value.name}
                                                 </div>
                                             )
                                         })
