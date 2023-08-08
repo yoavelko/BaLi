@@ -13,9 +13,11 @@ import { changeAccepted, changeRequested, pushToPlayed } from '../../../utils/Es
 import AdminSearch from '../admin-search/AdminSearch';
 import PlaylistButton from '../playlist-button/PlaylistButton';
 import Carousel from '../carousel/Carousel';
+import timeDate from '../time&date/timeDate';
 
 function Admin() {
 
+    const time = String(timeDate().time)
     const buttons = [1, 2, 3, 4, 5, 6, 7, 8]
     const [tooltip, setTooltip] = useState({
         reqCheck: false,
@@ -236,14 +238,17 @@ function Admin() {
     }
 
     function handleProgress(e) {
-        if ((duration - e.playedSeconds) > 60 && !wasSent) {
+        if (e.playedSeconds > 60 && !wasSent) {
+            
             axios.post(pushToPlayed, {
                 today,
                 establishment: cookies.get('establishment'),
-                song: songList[0]._id
+                song: songList[0]._id,
+                time: time
             })
-                .then(() => {
+                .then((res) => {
                     setWasSent(true)
+                    console.log(res.data)
                 })
                 .catch(err => console.log(err))
         }
