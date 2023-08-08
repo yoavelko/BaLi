@@ -11,9 +11,12 @@ import cookies from 'js-cookie'
 import { useNavigate } from 'react-router-dom'
 import { changeAccepted, changeRequested, pushToPlayed } from '../../../utils/Establishment';
 import AdminSearch from '../admin-search/AdminSearch';
+import PlaylistButton from '../playlist-button/PlaylistButton';
+import Carousel from '../carousel/Carousel';
 
 function Admin() {
 
+    const buttons = [1, 2, 3, 4, 5, 6, 7, 8]
     const [tooltip, setTooltip] = useState({
         reqCheck: false,
         reqDel: false,
@@ -315,6 +318,15 @@ function Admin() {
                 <div id='playlist-container'>
                     <div id='player-container'>
                         {display && <ReactPlayer width={'90%'} playing={true} muted={muted} url={currentSong} controls={true} onDuration={(e) => setDuration(e)} onProgress={e => handleProgress(e)} />}
+                    </div>
+                    <div id='playlists-button-container' dir='ltr'>
+                        <Carousel show={3}>
+                            {
+                                buttons && buttons.map((value, index) => {
+                                    return <PlaylistButton />
+                                })
+                            }
+                        </Carousel>
                     </div>
                     <div className='admin-headers' id='playlist-header'>תור השמעה</div>
                     <div id='requests-control-container'>

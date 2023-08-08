@@ -73,3 +73,11 @@
 #acc-tooltip {
     margin-left: 240px;
 }
+
+#playlists-button-container {
+    height: 15vh;
+    margin-right: 10vw;
+    margin-left: 10vw;
+    display: flex;
+    align-items: center;
+}
