@@ -9,7 +9,7 @@ import ReactPlayer from 'react-player/youtube'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import cookies from 'js-cookie'
 import { useNavigate } from 'react-router-dom'
-import { changeAccepted, changeRequested } from '../../../utils/Establishment';
+import { changeAccepted, changeRequested, pushToPlayed } from '../../../utils/Establishment';
 import AdminSearch from '../admin-search/AdminSearch';
 
 function Admin() {
@@ -31,6 +31,7 @@ function Admin() {
     const [display, setDisplay] = useState(true);
     const [muted, setMuted] = useState(true);
     const [currentSong, setCurrentSong] = useState();
+    const [wasSent, setWasSent] = useState(false)
     const date = new Date();
     const yyyy = date.getFullYear();
     let mm = date.getMonth() + 1;
@@ -73,12 +74,14 @@ function Admin() {
             .catch((err) => {
                 console.log(err);
             })
-            socket.on('song-request', obj => {
-                if(obj) {
-                    setRequests(previous => [...previous, obj])
-                }
-            })
+        socket.on('song-request', obj => {
+            if (obj) {
+                setRequests(previous => [...previous, obj])
+            }
+        })
+        console.log(!getSongIndex());
         !getSongIndex() && setSongIndex(0)
+
     }, [])
 
     useEffect(() => {
@@ -109,6 +112,10 @@ function Admin() {
             setMuted(false)
         }
     }, [display])
+
+    useEffect(() => {
+        currentSong && setWasSent(false)
+    }, [currentSong])
 
     function handlePush() {
         axios.patch(acceptSong, {
@@ -228,6 +235,17 @@ function Admin() {
     }
 
     function handleProgress(e) {
+        if ((duration - e.playedSeconds) > 60 && !wasSent) {
+            axios.post(pushToPlayed, {
+                today,
+                establishment: cookies.get('establishment'),
+                song: songList[0]._id
+            })
+                .then(() => {
+                    setWasSent(true)
+                })
+                .catch(err => console.log(err))
+        }
         if ((duration - e.playedSeconds) < 3) {
             setSongIndex(getSongIndex() + 1)
             setSongList(accepted.filter((v, i) => i >= getSongIndex()))

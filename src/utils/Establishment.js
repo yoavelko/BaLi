@@ -4,3 +4,4 @@ export const changeAccepted = `${HOST}/change-accepted`;
 export const estabBest = `${HOST}/getEstabBest`;
 export const changeRequested = `${HOST}/change-requested`;
 export const getPlaylist = `${HOST}/getPlaylist`;
+export const pushToPlayed = `${HOST}/push-to-played`;
