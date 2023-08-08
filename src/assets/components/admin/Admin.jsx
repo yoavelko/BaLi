@@ -17,6 +17,7 @@ import timeDate from '../time&date/timeDate';
 
 function Admin() {
 
+    const [first, setFirst] = useState()
     const time = String(timeDate().time)
     const buttons = [1, 2, 3, 4, 5, 6, 7, 8]
     const [tooltip, setTooltip] = useState({
@@ -246,9 +247,8 @@ function Admin() {
                 song: songList[0]._id,
                 time: time
             })
-                .then((res) => {
+                .then(() => {
                     setWasSent(true)
-                    console.log(res.data)
                 })
                 .catch(err => console.log(err))
         }
@@ -370,14 +370,14 @@ function Admin() {
                                 {...provided.droppableProps}
                                 isDraggingOver={snapshot.isDraggingOver}
                             >
-                                <div id='requests-map-container'
+                                <div id='accepts-map-container'
                                     style={{
                                         backgroundColor: snapshot.isDraggingOver ? 'rgba(255, 255, 255, 0.2)' : '',
                                         transition: 'background-color 0.2s ease'
                                     }}
                                 >
                                     {songList && songList.map((value, index) => {
-                                        return <Accepted key={index} index={index} accept={value} checkedAccept={checkedAccept} setCheckedAccept={setCheckedAccept} />
+                                        return <Accepted key={index} index={index} accept={value} checkedAccept={checkedAccept} setCheckedAccept={setCheckedAccept}/>
                                     })}
                                     {provided.placeholder}
                                 </div>

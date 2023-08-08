@@ -3,8 +3,8 @@ import './SuggestionBox.css'
 function SuggestionBox({ video, setShowModal, setModalContent }) {
 
     let title = video.name
-    if (video.name.length > 20) {
-        title = video.name.slice(0, 26) + '...'
+    if (video.name.length > 32) {
+        title = video.name.slice(0, 32) + '...'
     }
 
     const date = new Date();

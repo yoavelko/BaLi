@@ -29,6 +29,16 @@
     padding: 5%;
 }
 
+#accepts-map-container {
+    padding: 5%;
+}
+
+#accepts-map-container > :first-child {
+    background-color: rgb(40, 40, 40);
+    border-radius: 10px;
+    color: white;
+  }
+
 #player-container {
     margin-right: 5vw;
     height: 55vh;
