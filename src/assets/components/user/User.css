@@ -87,6 +87,8 @@
 #loader-filler {
     height: 100vh;
     background-color: black;
+    margin-top: 50%;
+    position: sticky
 }
 
 #no-history-page {
