@@ -18,7 +18,6 @@ import Cookies from 'js-cookie';
 
 function Admin() {
 
-    const [first, setFirst] = useState()
     const time = String(timeDate().time)
     const [buttons, setButtons] = useState();
     const [tooltip, setTooltip] = useState({
@@ -50,12 +49,16 @@ function Admin() {
     const navigate = useNavigate();
 
     function getSongIndex() {
-        return parseInt(localStorage.getItem('songIndex'))
+        return JSON.parse(localStorage.getItem('songIndex')).value
+    }
+
+    function getDateFromStorage() {
+        return JSON.parse(localStorage.getItem('songIndex')).date
     }
 
     function setSongIndex(value) {
         if (typeof (value) !== 'number') return Error('value must be number')
-        localStorage.setItem('songIndex', value)
+        localStorage.setItem('songIndex', JSON.stringify({value: value, date: today}))
     }
     useEffect(() => {
         if (!cookies.get('establishment')) navigate('/error')
@@ -75,6 +78,7 @@ function Admin() {
             today: today
         })
             .then((res) => {
+                if(res.data[0].today !== getDateFromStorage()) setSongIndex(0)
                 setAccepted(res.data);
                 setDisplay(false)
             })
@@ -86,20 +90,17 @@ function Admin() {
                 today,
                 establishment: cookies.get('establishment')
             })
-            .then(({data}) => setRequests(data))
+                .then(({ data }) => setRequests(data))
         })
         !getSongIndex() && setSongIndex(0)
         axios.post(specificEstablishment, {
             name: cookies.get('establishment')
         })
-        .then(({data}) => setButtons(data.playlists))
-        .catch(err => console.log(err.response.data))
+            .then(({ data }) => setButtons(data.playlists))
+            .catch(err => console.log(err.response.data))
     }, [])
 
     useEffect(() => {
-        if (accepted) {
-            (accepted[0]?.today !== today) && setSongIndex(0)
-        }
         accepted && setSongList(accepted?.filter((v, i) => i >= getSongIndex()))
     }, [accepted])
     useEffect(() => {
@@ -277,7 +278,9 @@ function Admin() {
             today
         })
         .then(({data}) => {
+            console.log(data);
             accepted ? setAccepted(prev => prev.concat(data)) : setAccepted(data)
+            setDisplay(false)
         })
         .catch(err => console.log(err.response.data))
     }

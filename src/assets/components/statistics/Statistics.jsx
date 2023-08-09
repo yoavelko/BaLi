@@ -61,6 +61,7 @@ function Statistics() {
         axios.post(estabBest, searchObj)
             .then((res) => {
                 setBest(res.data);
+                console.log(res);
             })
             .catch((err) => {
                 console.log(err);
@@ -162,7 +163,7 @@ function Statistics() {
                             </div>
                             <div className='statistics-inners' id='statistics-inner-left'>
                                 <div id='daily-playlist-header'>
-                                    <div>הפלייליסט של {playlist && playlist[0].today}</div>
+                                    <div>הפלייליסט של {date}</div>
                                     <button onClick={handleExport}>ייבא פלייליסט</button>
                                 </div>
                                 <div id='daily-playlisy-container'>
