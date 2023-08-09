@@ -71,7 +71,7 @@ function Accepted({ accept, checkedAccept, setCheckedAccept, index, gif }) {
                                 </div>
                                 :
                                 <div id='gif-container'>
-                                    <img id='music-gif' pause src={musicImg} alt="" />
+                                    <img id='music-gif' src={musicImg} alt="" />
                                 </div>
                                 :
                                 <div id='accept-input' className='request-spacers'>

@@ -18,8 +18,7 @@ import Cookies from 'js-cookie';
 
 function Admin() {
 
-    const [first, setFirst] = useState()
-    const [gif, setGif] = useState(false)
+    const [gif, setGif] = useState()
     const time = String(timeDate().time)
     const [buttons, setButtons] = useState();
     const [tooltip, setTooltip] = useState({
