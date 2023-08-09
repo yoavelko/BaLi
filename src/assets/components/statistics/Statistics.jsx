@@ -61,6 +61,7 @@ function Statistics() {
         axios.post(estabBest, searchObj)
             .then((res) => {
                 setBest(res.data);
+                console.log(res);
             })
             .catch((err) => {
                 console.log(err);
