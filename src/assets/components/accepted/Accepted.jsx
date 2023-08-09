@@ -2,9 +2,10 @@ import { useState } from 'react'
 import './Accepted.css'
 import { Draggable } from 'react-beautiful-dnd'
 import { useEffect } from 'react'
-import gif from './../../../media/music-gif.gif'
+import musicGif from './../../../media/music-gif.gif'
+import musicImg from './../../../media/music-img.png'
 
-function Accepted({ accept, checkedAccept, setCheckedAccept, index }) {
+function Accepted({ accept, checkedAccept, setCheckedAccept, index, gif }) {
 
     const [checked, setChecked] = useState(false)
     const [first, setFirst] = useState(false)
@@ -64,8 +65,13 @@ function Accepted({ accept, checkedAccept, setCheckedAccept, index }) {
                         </div>
                         {
                             first ?
+                                gif ?
                                 <div id='gif-container'>
-                                    <img id='music-gif' src={gif} alt="" />
+                                    <img id='music-gif' src={musicGif} alt="" />
+                                </div>
+                                :
+                                <div id='gif-container'>
+                                    <img id='music-gif' src={musicImg} alt="" />
                                 </div>
                                 :
                                 <div id='accept-input' className='request-spacers'>
