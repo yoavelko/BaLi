@@ -86,14 +86,14 @@ function Admin() {
                 today,
                 establishment: cookies.get('establishment')
             })
-            .then(({data}) => setRequests(data))
+                .then(({ data }) => setRequests(data))
         })
         !getSongIndex() && setSongIndex(0)
         axios.post(specificEstablishment, {
             name: cookies.get('establishment')
         })
-        .then(({data}) => setButtons(data.playlists))
-        .catch(err => console.log(err.response.data))
+            .then(({ data }) => setButtons(data.playlists))
+            .catch(err => console.log(err.response.data))
     }, [])
 
     useEffect(() => {
@@ -276,10 +276,10 @@ function Admin() {
             playlist: v,
             today
         })
-        .then(({data}) => {
-            accepted ? setAccepted(prev => prev.concat(data)) : setAccepted(data)
-        })
-        .catch(err => console.log(err.response.data))
+            .then(({ data }) => {
+                accepted ? setAccepted(prev => prev.concat(data)) : setAccepted(data)
+            })
+            .catch(err => console.log(err.response.data))
     }
 
     return (
@@ -340,13 +340,13 @@ function Admin() {
                 </div>
                 <div id='playlist-container'>
                     <div id='player-container'>
-                        {display && <ReactPlayer onPlay={() => {setGif(true)}} onPause={() => {setGif(false)}} width={'90%'} playing={true} muted={muted} url={currentSong} controls={true} onDuration={(e) => setDuration(e)} onProgress={e => handleProgress(e)} />}
+                        {display && <ReactPlayer onPlay={() => { setGif(true) }} onPause={() => { setGif(false) }} width={'90%'} playing={true} muted={muted} url={currentSong} controls={true} onDuration={(e) => setDuration(e)} onProgress={e => handleProgress(e)} />}
                     </div>
                     <div id='playlists-button-container' dir='ltr'>
                         <Carousel show={3}>
                             {
                                 buttons && buttons.map((value, index) => {
-                                    return <PlaylistButton value={value} func={() => handlePushToAccepted(value.value)}/>
+                                    return <PlaylistButton value={value} func={() => handlePushToAccepted(value.value)} />
                                 })
                             }
                         </Carousel>

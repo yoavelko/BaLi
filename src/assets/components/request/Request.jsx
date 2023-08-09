@@ -15,8 +15,8 @@ function Request({ request, toPush, setToPush, index }) {
     function handlePush() {
         if (toPush.includes(request)) {
             setToPush(toPush.filter(e => e !== request))
-        } else {
             setToPush([...toPush, request])
+            setChecked(false)
         }
     }
 
