@@ -164,7 +164,7 @@ function Statistics() {
                             <div className='statistics-inners' id='statistics-inner-left'>
                                 <div id='daily-playlist-header'>
                                     <div>הפלייליסט של {date}</div>
-                                    <button onClick={handleExport}>ייבא פלייליסט</button>
+                                    <button onClick={handleExport}>ייצא פלייליסט</button>
                                 </div>
                                 <div id='daily-playlisy-container'>
                                     {

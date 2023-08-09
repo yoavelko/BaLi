@@ -63,7 +63,7 @@ function Admin() {
 
     function setSongIndex(value) {
         if (typeof (value) !== 'number') return Error('value must be number')
-        localStorage.setItem('songIndex', JSON.stringify({value: value, date: today}))
+        localStorage.setItem('songIndex', JSON.stringify({ value: value, date: today }))
     }
     useEffect(() => {
         if (!cookies.get('establishment')) navigate('/error')
@@ -83,7 +83,7 @@ function Admin() {
             today: today
         })
             .then((res) => {
-                if(res.data[0].today !== getDateFromStorage()) setSongIndex(0)
+                if (res.data[0].today !== getDateFromStorage()) setSongIndex(0)
                 setAccepted(res.data);
                 setDisplay(false)
             })
@@ -146,10 +146,9 @@ function Admin() {
             acceptedSong: toPush.map(value => value._id)
         })
             .then((res) => {
+                setAccepted(res.data)
                 const render = requests.filter(x => !toPush.some(j => x._id === j._id))
                 setRequests(render)
-                const render2 = accepted.concat(toPush)
-                setAccepted(render2)
                 setChecked(checked.map(v => !v))
                 setToPush([])
             })
@@ -182,9 +181,10 @@ function Admin() {
             checkedSong: checkedAccept
         })
             .then((res) => {
-                const render = accepted.filter(x => !checkedAccept.some(j => x._id === j))
-                document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false);
+                console.log(res.data);
+                const render = res.data
                 setAccepted([...render])
+                setSongList([...render])
                 setCheckedAccept([])
             })
             .catch((err) => {
@@ -286,13 +286,13 @@ function Admin() {
             playlist: v,
             today
         })
-        .then(({data}) => {
-            console.log(data);
-            accepted ? setAccepted(prev => prev.concat(data)) : setAccepted(data)
-          setChecked(res.data.map(v => !checked))
-            setDisplay(false)
-        })
-        .catch(err => console.log(err.response.data))
+            .then(({ data }) => {
+                console.log(data);
+                accepted ? setAccepted(prev => prev.concat(data)) : setAccepted(data)
+                setChecked(res.data.map(v => !checked))
+                setDisplay(false)
+            })
+            .catch(err => console.log(err.response.data))
     }
 
     function handleMarkReq() {
