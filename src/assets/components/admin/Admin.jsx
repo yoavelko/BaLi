@@ -322,7 +322,7 @@ function Admin() {
         <DragDropContext onDragEnd={handleDrop}>
             <div id='admin-container' dir='rtl'>
                 <div id='requests-container'>
-                    <AdminSearch />
+                    <AdminSearch setAccepted={setAccepted}/>
                     <div className='admin-headers'>בקשות ממתינות</div>
                     <div id='requests-control-container'>
                         <div className='requests-controls' onClick={handleMarkReq} onMouseEnter={() => setTooltip({ ...tooltip, reqCheck: true })} onMouseLeave={() => setTooltip({ ...tooltip, reqCheck: false })}>

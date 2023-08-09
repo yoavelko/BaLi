@@ -118,7 +118,7 @@ function Statistics() {
     function handleExport() {
         const name = prompt('מה השם לפלייליסט?');
         axios.patch(updateEstablishment, {
-            name: Cookies.get('establishment'),
+            name: cookies.get('establishment'),
             playlists: [{ name, value: date }]
         })
             .then(() => console.log('success'))
