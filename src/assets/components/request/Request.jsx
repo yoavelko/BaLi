@@ -3,9 +3,7 @@ import { Draggable } from 'react-beautiful-dnd'
 import TimeCompare from '../functions/TimeCompare'
 import { useState } from 'react'
 
-function Request({ request, toPush, setToPush, index }) {
-
-    const [checked, setChecked] = useState(false)
+function Request({ request, toPush, setToPush, index, checked, setChecked }) {
 
     let title = request.name
     if (request.name?.length > 50) {
@@ -15,8 +13,8 @@ function Request({ request, toPush, setToPush, index }) {
     function handlePush() {
         if (toPush.includes(request)) {
             setToPush(toPush.filter(e => e !== request))
+        } else {
             setToPush([...toPush, request])
-            setChecked(false)
         }
     }
 
@@ -42,10 +40,10 @@ function Request({ request, toPush, setToPush, index }) {
                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAN0lEQVR4nGNgGAXEgP///zf8pyJgwGKBA9QSqmCGUTACwX9ap6L/tM4Ho2AUUA5Gi+tRwEAJAABV5r4vuTw0OwAAAABJRU5ErkJggg==" />
                             </div>
                         </div>
-                        <div id='request-img-container' onClick={() => { setChecked(!checked); handlePush() }}>
+                        <div id='request-img-container' onClick={() => { setChecked(prev => prev.map((v, i) => i === index ? !v : v)), handlePush() }}>
                             <img id='request-img' src={request.img} alt="" />
                         </div>
-                        <div id='request-box-container' onClick={() => { setChecked(!checked); handlePush() }}>
+                        <div id='request-box-container' onClick={() => { setChecked(prev => prev.map((v, i) => i === index ? !v : v)), handlePush() }}>
                             <div>{title}</div>
                             <div id='request-small-detail'>
                                 <div>{request.artist}</div>
@@ -54,7 +52,7 @@ function Request({ request, toPush, setToPush, index }) {
                         </div>
                         <div id='request-input' className='request-spacers'>
                             <label className="checkBox">
-                                <input id="ch1" type="checkbox" checked={checked} onChange={() => { setChecked(!checked); handlePush() }} />
+                                <input id="ch1" type="checkbox" defaultChecked={checked[index]} onChange={() => { setChecked(prev => prev.map((v, i) => i === index ? !v : v)), handlePush() }} />
                                 <div className="transition"></div>
                             </label>
                         </div>

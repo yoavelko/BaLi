@@ -18,6 +18,10 @@ import Cookies from 'js-cookie';
 
 function Admin() {
 
+    const [all, setAll] = useState(true)
+    const [checked, setChecked] = useState([])
+    const [allAcc, setAllAcc] = useState(true)
+    const [accChecked, setAccChecked] = useState([])
     const [gif, setGif] = useState()
     const time = String(timeDate().time)
     const [buttons, setButtons] = useState();
@@ -99,6 +103,7 @@ function Admin() {
     useEffect(() => {
         if (accepted) {
             (accepted[0]?.today !== today) && setSongIndex(0)
+            setAccChecked(accepted.map(v => false))
         }
         accepted && setSongList(accepted?.filter((v, i) => i >= getSongIndex()))
     }, [accepted])
@@ -140,7 +145,7 @@ function Admin() {
                 setRequests(render)
                 const render2 = accepted.concat(toPush)
                 setAccepted(render2)
-                document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false);
+                setChecked(checked.map(v => !v))
                 setToPush([])
             })
             .catch((err) => {
@@ -278,8 +283,32 @@ function Admin() {
         })
             .then(({ data }) => {
                 accepted ? setAccepted(prev => prev.concat(data)) : setAccepted(data)
+                setChecked(res.data.map(v => !checked))
             })
             .catch(err => console.log(err.response.data))
+    }
+
+    function handleMarkReq() {
+        if (requests.length !== 0) {
+            setChecked(requests.map(v => all ? true : false))
+            all ?
+                setToPush(requests)
+                :
+                setToPush([])
+            setAll(!all)
+        }
+    }
+
+    function handleMarkAcc() {
+        if (songList.length !== 0) {
+            setAccChecked(songList.map(v => allAcc ? true : false))
+            console.log(songList.map(v => allAcc ? true : false));
+            allAcc ?
+                setCheckedAccept(songList)
+                :
+                setCheckedAccept([])
+            setAllAcc(!allAcc)
+        }
     }
 
     return (
@@ -289,11 +318,11 @@ function Admin() {
                     <AdminSearch />
                     <div className='admin-headers'>בקשות ממתינות</div>
                     <div id='requests-control-container'>
-                        <div className='requests-controls' onClick={() => console.log('mark all')} onMouseEnter={() => setTooltip({ ...tooltip, reqCheck: true })} onMouseLeave={() => setTooltip({ ...tooltip, reqCheck: false })}>
+                        <div className='requests-controls' onClick={handleMarkReq} onMouseEnter={() => setTooltip({ ...tooltip, reqCheck: true })} onMouseLeave={() => setTooltip({ ...tooltip, reqCheck: false })}>
                             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAj0lEQVR4nO2WUQqAIBAFvYTSZ9frfHaShDrOhLRCpPURmEU734uzrPJcY5SvAFhgaCmf2Bhaymegqy3sAS9iBwSRxyZsof4WVw14qQk7eSjJazVgdyOPLNXHftHE8/KE3L8zbwHNgQ3NgQxukp8kaA4kNAfeug8sT+0DY3oDhy/ZtdwH3Em95sBPckBRTCVW5xngxlwryaIAAAAASUVORK5CYII=" />
                             {
                                 tooltip.reqCheck ?
-                                    <div id='req-tooltip' className='tooltip' onMouseEnter={() => setTooltip({ ...tooltip, reqCheck: false })}>סמן את כל השירים הממתינים</div>
+                                    <div id='req-tooltip' className='tooltip' onMouseEnter={() => setTooltip({ ...tooltip, reqCheck: false })}>{requests.length === 0 ? 'סמן את כל השירים הממתינים' : all ? 'סמן את כל השירים הממתינים' : 'בטל סימון כל השירים הממתינים'}</div>
                                     :
                                     <></>
                             }
@@ -330,7 +359,7 @@ function Admin() {
                                     }}
                                 >
                                     {requests && requests.map((value, index) => {
-                                        return <Request key={index} index={index} request={value} toPush={toPush} setToPush={setToPush} />
+                                        return <Request key={index} index={index} request={value} toPush={toPush} setToPush={setToPush} checked={checked} setChecked={setChecked} />
                                     })}
                                     {provided.placeholder}
                                 </div>
@@ -353,7 +382,7 @@ function Admin() {
                     </div>
                     <div className='admin-headers' id='playlist-header'>תור השמעה</div>
                     <div id='requests-control-container'>
-                        <div className='requests-controls' onClick={() => console.log('mark all')} onMouseEnter={() => setTooltip({ ...tooltip, accCheck: true })} onMouseLeave={() => setTooltip({ ...tooltip, accCheck: false })}>
+                        <div className='requests-controls' onClick={handleMarkAcc} onMouseEnter={() => setTooltip({ ...tooltip, accCheck: true })} onMouseLeave={() => setTooltip({ ...tooltip, accCheck: false })}>
                             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAj0lEQVR4nO2WUQqAIBAFvYTSZ9frfHaShDrOhLRCpPURmEU734uzrPJcY5SvAFhgaCmf2Bhaymegqy3sAS9iBwSRxyZsof4WVw14qQk7eSjJazVgdyOPLNXHftHE8/KE3L8zbwHNgQ3NgQxukp8kaA4kNAfeug8sT+0DY3oDhy/ZtdwH3Em95sBPckBRTCVW5xngxlwryaIAAAAASUVORK5CYII=" />
                             {
                                 tooltip.accCheck ?
@@ -395,7 +424,7 @@ function Admin() {
                                     }}
                                 >
                                     {songList && songList.map((value, index) => {
-                                        return <Accepted gif={gif} key={index} index={index} accept={value} checkedAccept={checkedAccept} setCheckedAccept={setCheckedAccept} />
+                                        return <Accepted gif={gif} key={index} index={index} accept={value} checkedAccept={checkedAccept} setCheckedAccept={setCheckedAccept} accChecked={accChecked} setAccChecked={setAccChecked} />
                                     })}
                                     {provided.placeholder}
                                 </div>
