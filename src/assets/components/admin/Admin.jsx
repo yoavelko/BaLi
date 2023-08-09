@@ -50,12 +50,16 @@ function Admin() {
     const navigate = useNavigate();
 
     function getSongIndex() {
-        return parseInt(localStorage.getItem('songIndex'))
+        return JSON.parse(localStorage.getItem('songIndex')).value
+    }
+
+    function getDateFromStorage() {
+        return JSON.parse(localStorage.getItem('songIndex')).date
     }
 
     function setSongIndex(value) {
         if (typeof (value) !== 'number') return Error('value must be number')
-        localStorage.setItem('songIndex', value)
+        localStorage.setItem('songIndex', JSON.stringify({value: value, date: today}))
     }
     useEffect(() => {
         if (!cookies.get('establishment')) navigate('/error')
@@ -75,6 +79,7 @@ function Admin() {
             today: today
         })
             .then((res) => {
+                if(res.data[0].today !== getDateFromStorage()) setSongIndex(0)
                 setAccepted(res.data);
                 setDisplay(false)
             })
@@ -97,9 +102,6 @@ function Admin() {
     }, [])
 
     useEffect(() => {
-        if (accepted) {
-            (accepted[0]?.today !== today) && setSongIndex(0)
-        }
         accepted && setSongList(accepted?.filter((v, i) => i >= getSongIndex()))
     }, [accepted])
     useEffect(() => {
@@ -276,10 +278,12 @@ function Admin() {
             playlist: v,
             today
         })
-            .then(({ data }) => {
-                accepted ? setAccepted(prev => prev.concat(data)) : setAccepted(data)
-            })
-            .catch(err => console.log(err.response.data))
+        .then(({data}) => {
+            console.log(data);
+            accepted ? setAccepted(prev => prev.concat(data)) : setAccepted(data)
+            setDisplay(false)
+        })
+        .catch(err => console.log(err.response.data))
     }
 
     return (
