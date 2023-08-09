@@ -276,7 +276,9 @@ function Admin() {
             playlist: v,
             today
         })
-        .then(({data}) => setAccepted(data))
+        .then(({data}) => {
+            accepted ? setAccepted(prev => prev.concat(data)) : setAccepted(data)
+        })
         .catch(err => console.log(err.response.data))
     }
 

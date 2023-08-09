@@ -9,7 +9,6 @@ import { estabBest } from '../../../utils/Establishment'
 import { getPlaylist, conversionRate } from '../../../utils/Statistics'
 import { updateEstablishment } from '../../../utils/Establishment'
 import Loader from '../loader/Loader';
-import Cookies from 'js-cookie';
 import timeDate from '../time&date/timeDate';
 
 
@@ -54,20 +53,18 @@ function Statistics() {
 
 
     function handleSelect(event) {
-        const selectedValue = event.target.value
-
-        if (selectedValue === 'overall') {
-            axios.post(estabBest, {
-                establishment: cookies.get('establishment'),
-                splice: 10
-            })
-                .then((res) => {
-                    setBest(res.data);
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
+        const searchObj = {
+            establishment: cookies.get('establishment'),
+            splice: 10
         }
+        if (typeof (event.target.value) === 'number') searchObj.number = event.target.value
+        axios.post(estabBest, searchObj)
+            .then((res) => {
+                setBest(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
     }
 
     function handleDate() {
@@ -116,15 +113,15 @@ function Statistics() {
 
         setDate(`${day}/${month}/${year}`)
     }
-    
+
     function handleExport() {
         const name = prompt('מה השם לפלייליסט?');
         axios.patch(updateEstablishment, {
             name: Cookies.get('establishment'),
-            playlists: [{name, value: date}]
+            playlists: [{ name, value: date }]
         })
-        .then(() => console.log('success'))
-        .catch(err => console.log(err.response.data))
+            .then(() => console.log('success'))
+            .catch(err => console.log(err.response.data))
     }
 
     return (
@@ -135,9 +132,10 @@ function Statistics() {
                 <div id='top-ten-select'>
                     החמים ביותר&nbsp;
                     <select onChange={handleSelect}>
-                        <option value="today">היום</option>
-                        <option value="week">השבוע</option>
-                        <option value="month">החודש</option>
+                        <option selected disabled>בחר תקופת זמן</option>
+                        <option value={1}>היום</option>
+                        <option value={7}>השבוע</option>
+                        <option value={30}>החודש</option>
                         <option value="overall">בכל הזמנים</option>
                     </select>
                 </div>
