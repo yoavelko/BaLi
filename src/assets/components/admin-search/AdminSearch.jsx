@@ -5,12 +5,11 @@ import { searchSong } from '../../../utils/UserRoutes'
 import AdminSuggestion from '../admin-suggestion/AdminSuggestion'
 import cookies from 'js-cookie'
 import back from './../../../media/back.png'
-import { sendSong } from '../../../utils/UserRoutes'
-import { Socket } from 'socket.io-client'
 import LOGO from './../../../media/LOGO.png'
 import Loader from '../loader/Loader'
+import { adminSendSong } from '../../../utils/Establishment'
 
-function AdminSearch() {
+function AdminSearch({setAccepted}) {
 
     const [data, setData] = useState()
     const [input, setInput] = useState()
@@ -41,7 +40,7 @@ function AdminSearch() {
 
     function handleRequest() {
 
-        axios.patch(sendSong, {
+        axios.post(adminSendSong, {
             establishment: cookies.get('establishment'),
             today: adminModalContent.today,
             timeRequested: adminModalContent.timeRequested,
@@ -49,12 +48,10 @@ function AdminSearch() {
             url: adminModalContent.url,
             name: adminModalContent.name,
             img: adminModalContent.img,
-            artist: adminModalContent.artist,
-            userId: cookies.get('userId')
+            artist: adminModalContent.artist
         })
             .then((res) => {
-                console.log(`sent: ${adminModalContent.name}`);
-                Socket.emit('test', res.data, cookies.get('establishment'));
+                setAccepted(res.data)
                 alert('השיר נשלח בהצלחה')
             })
             .catch((err) => {
