@@ -5,9 +5,8 @@ import { useEffect } from 'react'
 import musicGif from './../../../media/music-gif.gif'
 import musicImg from './../../../media/music-img.png'
 
-function Accepted({ accept, checkedAccept, setCheckedAccept, index, gif }) {
+function Accepted({ accept, checkedAccept, setCheckedAccept, index, gif, accChecked, setAccChecked }) {
 
-    const [checked, setChecked] = useState(false)
     const [first, setFirst] = useState(false)
 
     useEffect(() => {
@@ -53,10 +52,10 @@ function Accepted({ accept, checkedAccept, setCheckedAccept, index, gif }) {
                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAN0lEQVR4nGNgGAXEgP///zf8pyJgwGKBA9QSqmCGUTACwX9ap6L/tM4Ho2AUUA5Gi+tRwEAJAABV5r4vuTw0OwAAAABJRU5ErkJggg==" />
                             </div>
                         </div>
-                        <div id='accept-img-container' onClick={() => { setChecked(!checked), handlePush() }}>
+                        <div id='accept-img-container' onClick={() => { setAccChecked(prev => prev.map((v, i) => i === index ? !v : v)), handlePush() }}>
                             <img id='accept-img' src={accept.img} alt="" />
                         </div>
-                        <div id='accept-box-container' onClick={() => { setChecked(!checked), handlePush() }}>
+                        <div id='accept-box-container' onClick={() => { setAccChecked(prev => prev.map((v, i) => i === index ? !v : v)), handlePush() }}>
                             <div>{title}</div>
                             <div id='now-playing-container'>
                                 <div>{accept.artist}</div>
@@ -76,7 +75,7 @@ function Accepted({ accept, checkedAccept, setCheckedAccept, index, gif }) {
                                 :
                                 <div id='accept-input' className='request-spacers'>
                                     <label className="checkBox">
-                                        <input id="ch1" type="checkbox" checked={checked} onChange={() => { setChecked(!checked), handlePush() }} />
+                                        <input id="ch1" type="checkbox" checked={accChecked[index]} onChange={() => { setAccChecked(prev => prev.map((v, i) => i === index ? !v : v)), handlePush() }} />
                                         <div className="transition"></div>
                                     </label>
                                 </div>
