@@ -6,12 +6,12 @@ function StatisticsSongbox({ value, index }) {
     index = index + 1
 
     if (value && value?.name?.length > 20) {
-        title = value.name.slice(0, 26) + '...'
+        title = value.name.slice(0, 40) + '...'
     }
 
     return (
         <div id='songbox-outer'>
-            <div>{index}.</div>
+            <div id='top-ten-numbers'>{index}.</div>
             <div id='statistics-songbox-container'>
                 <div id='songbox-img-container'>
                     <img src={value.img} alt="" />

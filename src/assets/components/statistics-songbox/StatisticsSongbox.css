@@ -23,3 +23,12 @@
     display: flex;
     width: 100%;
 }
+
+#top-ten-numbers {
+    width: 24px;
+    font-size: 16px;
+    display: flex;
+    justify-content: end;
+    margin-top: 4px;
+    padding-left: 12px;
+}

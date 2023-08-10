@@ -4,3 +4,13 @@
     align-items: center;
     height: 8vh;
 }
+
+.header-content {
+    font-size: 24px;
+    transition: .2s;
+}
+
+.header-content:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+}
