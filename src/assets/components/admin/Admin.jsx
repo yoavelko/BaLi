@@ -181,8 +181,8 @@ function Admin() {
             checkedSong: checkedAccept
         })
             .then((res) => {
-                console.log(res.data);
                 const render = res.data
+                render.length === 0 && setDisplay(false)
                 setAccepted([...render])
                 setSongList([...render])
                 setCheckedAccept([])
@@ -287,12 +287,11 @@ function Admin() {
             today
         })
             .then(({ data }) => {
-                console.log(data);
                 accepted ? setAccepted(prev => prev.concat(data)) : setAccepted(data)
-                setChecked(res.data.map(v => !checked))
-                setDisplay(false)
+                setChecked( data.map(v => !checked))
+                songList.length === 0 && setDisplay(false)
             })
-            .catch(err => console.log(err.response.data))
+            .catch(err => console.log(err))
     }
 
     function handleMarkReq() {
@@ -309,7 +308,6 @@ function Admin() {
     function handleMarkAcc() {
         if (songList.length !== 0) {
             setAccChecked(songList.map(v => allAcc ? true : false))
-            console.log(songList.map(v => allAcc ? true : false));
             allAcc ?
                 setCheckedAccept(songList)
                 :
