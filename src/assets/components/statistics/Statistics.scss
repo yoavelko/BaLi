@@ -1,0 +1,91 @@
+#statistics-container {
+    direction: rtl;
+    background-color: black;
+    color: var(--white);
+    display: flex;
+    min-height: 100vh;
+}
+
+.statistics-headers {
+    font-size: 36px;
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+
+.statistics-containers {
+    padding-top: 5%;
+    padding-right: 10%;
+    line-height: 36px;
+    text-align: start;
+}
+
+#statistics-by-day-container {
+    width: 70vw;
+}
+
+#statistics-overall-container {
+    width: 30vw;
+}
+
+#daily-playlist-header {
+    display: flex;
+    font-size: 14px;
+}
+
+#single-playlist-song {
+    font-size: 14px;
+}
+
+#export-button {
+    border-radius: 10px;
+    height: 32px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: rgb(51, 51, 51);
+    transition: .2s;
+}
+
+#export-button:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+    background-color: rgb(77, 77, 77);
+}
+
+#statistics-calendar-container {
+    color: black;
+    font-size: 12px;
+    text-align: center;
+}
+
+#top-ten-select {
+    position: relative;
+    margin-bottom: 5vh;
+}
+
+select {
+    margin-right: 12px;
+    appearance: none;
+    border: 0;
+    outline: 0;
+    font: inherit;
+    padding: 0 4em 0 1em;
+    background: url(https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg) no-repeat right 0.8em center / 1.4em,
+        linear-gradient(to left, rgba(255, 255, 255, 0.3) 3em, rgba(255, 255, 255, 0.2) 3em);
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+
+    option {
+        color: inherit;
+        background-color: black;
+    }
+
+    &:focus {
+        outline: none;
+    }
+
+    &::-ms-expand {
+        display: none;
+    }
+}

@@ -15,7 +15,7 @@ import Loader from '../loader/Loader';
 function User() {
 
     const [style, setStyle] = useState({
-        israel: 'rgb(157,178,191)',
+        israel: 'rgb(89, 147, 184)',
         overall: '',
         establishment: ''
     })
@@ -125,11 +125,11 @@ function User() {
                         </div>
                 }
                 <div id='user-footer'>
-                    <div style={{ color: style.israel }} onClick={() => { setStyle({ ...style, israel: 'rgb(157,178,191)', overall: '', establishment: '' }), setSection('israel'), window.scrollTo({ top: 0, behavior: 'smooth' }) }}>ישראל</div>
+                    <div style={{ color: style.israel }} onClick={() => { setStyle({ ...style, israel: 'rgb(89, 147, 184)', overall: '', establishment: '' }), setSection('israel'), window.scrollTo({ top: 0, behavior: 'smooth' }) }}>ישראל</div>
                     <div>|</div>
-                    <div style={{ color: style.overall }} onClick={() => { setStyle({ ...style, overall: 'rgb(157,178,191)', israel: '', establishment: '' }), setSection('overall'), window.scrollTo({ top: 0, behavior: 'smooth' }) }}>עולמי</div>
+                    <div style={{ color: style.overall }} onClick={() => { setStyle({ ...style, overall: 'rgb(89, 147, 184)', israel: '', establishment: '' }), setSection('overall'), window.scrollTo({ top: 0, behavior: 'smooth' }) }}>עולמי</div>
                     <div>|</div>
-                    <div style={{ color: style.establishment }} onClick={() => { setStyle({ ...style, establishment: 'rgb(157,178,191)', israel: '', overall: '' }), setSection('establishment'), window.scrollTo({ top: 0, behavior: 'smooth' }) }}>UP2U</div>
+                    <div style={{ color: style.establishment }} onClick={() => { setStyle({ ...style, establishment: 'rgb(89, 147, 184)', israel: '', overall: '' }), setSection('establishment'), window.scrollTo({ top: 0, behavior: 'smooth' }) }}>UP2U</div>
                 </div>
             </div>
             {showModal && createPortal(

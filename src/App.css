@@ -2,6 +2,19 @@
 
 * {
     margin: 0;
+    
+}
+
+a {
+    all: unset
+}
+
+a:hover {
+    cursor: pointer;
+}
+
+button {
+    all: unset;
 }
 
 #app-container {

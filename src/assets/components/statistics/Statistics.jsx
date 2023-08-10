@@ -1,4 +1,4 @@
-import './Statistics.css'
+import './Statistics.scss'
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import StatisticsSongbox from '../statistics-songbox/StatisticsSongbox'
@@ -21,6 +21,7 @@ function Statistics() {
     const [playlist, setPlaylist] = useState()
     const [conversion, setConversion] = useState({ daily: '', overall: '' })
     const [loader, setLoader] = useState(false)
+    const [loaderRight, setLoaderRight] = useState(false)
 
     useEffect(() => {
 
@@ -30,8 +31,9 @@ function Statistics() {
                 establishment: cookies.get('establishment'),
                 date: date
             })
-                .then((res) => {
-                    setPlaylist(res.data);
+                .then(({ data }) => {
+                    setPlaylist(data);
+                    setLoader(false)
                 })
                 .catch((err) => {
                     console.log(err);
@@ -41,9 +43,8 @@ function Statistics() {
                 establishment: cookies.get('establishment'),
                 date: date
             })
-                .then((res) => {
-                    setConversion({ ...conversion, daily: res.data.daily, overall: res.data.overall });
-                    setLoader(false)
+                .then(({ data }) => {
+                    setConversion({ ...conversion, daily: data.daily });
                 })
                 .catch((err) => {
                     console.log(err);
@@ -51,8 +52,22 @@ function Statistics() {
         }
     }, [date])
 
+    useEffect(() => {
+        axios.post(conversionRate, {
+            establishment: cookies.get('establishment'),
+            date: date
+        })
+            .then(({ data }) => {
+                setConversion({ ...conversion, overall: data.overall });
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+    }, [])
+
 
     function handleSelect(event) {
+        setLoaderRight(true)
         const searchObj = {
             establishment: cookies.get('establishment'),
             splice: 10
@@ -61,7 +76,7 @@ function Statistics() {
         axios.post(estabBest, searchObj)
             .then((res) => {
                 setBest(res.data);
-                console.log(res);
+                setLoaderRight(false)
             })
             .catch((err) => {
                 console.log(err);
@@ -131,7 +146,7 @@ function Statistics() {
                 <div className='statistics-headers' id='statistics-overall-header'>כללי</div>
                 <div id='overall-conversion'>אחוז המרה: {conversion.overall && `${Math.round(conversion.overall)}`}%</div>
                 <div id='top-ten-select'>
-                    החמים ביותר&nbsp;
+                    החמים ביותר
                     <select onChange={handleSelect}>
                         <option selected disabled>בחר תקופת זמן</option>
                         <option value={1}>היום</option>
@@ -140,13 +155,18 @@ function Statistics() {
                         <option value="overall">בכל הזמנים</option>
                     </select>
                 </div>
-                <div id='hottest-container'>
-                    {
-                        best && best.map((value, index) => {
-                            return <StatisticsSongbox key={index} index={index} value={value} />
-                        })
-                    }
-                </div>
+                {
+                    loaderRight ?
+                        <Loader />
+                        :
+                        <div id='hottest-container'>
+                            {
+                                best && best.map((value, index) => {
+                                    return <StatisticsSongbox key={index} index={index} value={value} />
+                                })
+                            }
+                        </div>
+                }
             </div>
             <div className='statistics-containers' id='statstics-by-day-container'>
                 <div className='statistics-headers' id='statistics-by-day-header'>לפי יום {date ? `(${date})` : ''}</div>
@@ -163,8 +183,8 @@ function Statistics() {
                             </div>
                             <div className='statistics-inners' id='statistics-inner-left'>
                                 <div id='daily-playlist-header'>
-                                    <div>הפלייליסט של {date}</div>
-                                    <button onClick={handleExport}>ייצא פלייליסט</button>
+                                    <div>הפלייליסט של {date}&nbsp;&nbsp;&nbsp;</div>
+                                    <button id='export-button' onClick={handleExport}>ייצא פלייליסט</button>
                                 </div>
                                 <div id='daily-playlisy-container'>
                                     {
