@@ -54,7 +54,7 @@ function Admin() {
     const navigate = useNavigate();
 
     function getSongIndex() {
-        return JSON.parse(localStorage.getItem('songIndex')).value
+        return JSON.parse(localStorage.getItem('songIndex'))?.value
     }
 
     function getDateFromStorage() {
@@ -66,6 +66,7 @@ function Admin() {
         localStorage.setItem('songIndex', JSON.stringify({ value: value, date: today }))
     }
     useEffect(() => {
+        if (!getSongIndex()) setSongIndex(0)
         if (!cookies.get('establishment')) navigate('/error')
         axios.post(getRequested, {
             establishment: cookies.get('establishment'),
@@ -83,7 +84,7 @@ function Admin() {
             today: today
         })
             .then((res) => {
-                if (res.data[0].today !== getDateFromStorage()) setSongIndex(0)
+                if (res.data[0]?.today !== getDateFromStorage()) setSongIndex(0)
                 setAccepted(res.data);
                 setDisplay(false)
             })
@@ -288,7 +289,7 @@ function Admin() {
         })
             .then(({ data }) => {
                 accepted ? setAccepted(prev => prev.concat(data)) : setAccepted(data)
-                setChecked( data.map(v => !checked))
+                setChecked(data.map(v => !checked))
                 songList.length === 0 && setDisplay(false)
             })
             .catch(err => console.log(err))
@@ -320,7 +321,7 @@ function Admin() {
         <DragDropContext onDragEnd={handleDrop}>
             <div id='admin-container' dir='rtl'>
                 <div id='requests-container'>
-                    <AdminSearch setAccepted={setAccepted}/>
+                    <AdminSearch setAccepted={setAccepted} />
                     <div className='admin-headers'>בקשות ממתינות</div>
                     <div id='requests-control-container'>
                         <div className='requests-controls' onClick={handleMarkReq} onMouseEnter={() => setTooltip({ ...tooltip, reqCheck: true })} onMouseLeave={() => setTooltip({ ...tooltip, reqCheck: false })}>
